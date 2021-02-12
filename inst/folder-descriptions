@@ -1,0 +1,9 @@
+# This contains descriptions of folders in verb/inst.
+
+configs - this contsins config files and data for apps and many server-wide settings often referred to by serfs
+config - this contains verious initial config files, such as the etc folder, (ie Apache and Monit) that need to be copied only once upon install
+make-apache - this is u/bin/sed as a base for creating the many Apache config files for the server
+make-verb - this is u/bin/sed by make-name and make-name-preserver to create the pre-install server before running setupverb
+make-email - this is u/bin/sed to set the email server to a domain other than .email
+make-verb-domain - this is u/bin/sed to retrain the entire Verber™ server engine to use a custom domain, not verb.ink, verb.blue, etc.
+

@@ -1,0 +1,50 @@
+$TTL    86400
+hostdomain286.		IN  SOA		DNSID286.DNSDOMAIN286. root.hostdomain286. (
+0000000001		; Serial No
+10800			; Refresh
+3600			; Retry
+604800			; Expire
+1800 )			; Minimum TTL
+
+$ORIGIN hostdomain286.
+; Nameserver Defaults
+@		IN  NS		ns1.DNSDOMAIN286.
+@		IN  NS		ns2.DNSDOMAIN286.
+@		IN  NS		ns3.DNSDOMAIN286.
+
+; Root Site Defaults
+@		IN  A		hostip286
+@		IN  AAAA	hostipv6286
+;; End Root Site Defaults
+
+; Hostname Record Defaults
+kiwi.hostdomain286.		IN  A		hostip286
+kiwi.hostdomain286.		IN  AAAA	hostipv6286
+ampache.hostdomain286.		IN  A		hostip286
+ampache.hostdomain286.		IN  AAAA	hostipv6286
+art.hostdomain286.		IN  A		hostip286
+art.hostdomain286.		IN  AAAA	hostipv6286
+ejabberd.hostdomain286.		IN  A		hostip286
+ejabberd.hostdomain286.		IN  AAAA	hostipv6286
+gallery.hostdomain286.		IN  A		hostip286
+gallery.hostdomain286.		IN  AAAA	hostipv6286
+media.hostdomain286.		IN  A		hostip286
+media.hostdomain286.		IN  AAAA	hostipv6286
+podcast.hostdomain286.		IN  A		hostip286
+podcast.hostdomain286.		IN  AAAA	hostipv6286
+prosody.hostdomain286.		IN  A		hostip286
+prosody.hostdomain286.		IN  AAAA	hostipv6286
+studio.hostdomain286.		IN  A		hostip286
+studio.hostdomain286.		IN  AAAA	hostipv6286
+voip.hostdomain286.		IN  A		hostip286
+voip.hostdomain286.		IN  AAAA	hostipv6286
+webrtc.hostdomain286.		IN  A		hostip286
+webrtc.hostdomain286.		IN  AAAA	hostipv6286
+
+; Aliase Default
+www.hostdomain286.		IN  CNAME	hostdomain286.
+*.hostdomain286.		IN  CNAME	hostdomain286.
+
+; Text Record Defaults
+hostdomain286.		IN  TXT		"v=spf1 a mx a:mailURI286 ip4:hostip286 ip6:hostipv6286 -all"
+_dmarc.hostdomain286.		IN  TXT		"v=DMARC1; p=reject; fo=0; aspf=r; adkim=r; pct=100; ri=86400; rua=mailto:dmark@hostdomain286;"

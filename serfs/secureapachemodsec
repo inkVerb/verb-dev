@@ -1,0 +1,166 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This installs mod_sec for Apache security
+#DEV currently this is broken:
+##Both currently removed:
+  #- /etc/apache2/mods-enabled/security2.conf ... was a real file, not at mods-available
+  #- /etc/apache2/mods-enabled/security2.load
+
+# How to use:
+## ./secureapachemodsec
+
+
+# Check if done
+if [ -f /opt/verb/conf/secapache ]; then
+  . /opt/verb/conf/secapache
+else
+  SEC_APACHE="no"
+  security2_module="no"
+  SecRuleEngine="no"
+  IncludeOptional="no"
+fi
+
+if [ $SEC_APACHE = "done" ]; then
+  /bin/echo "Already done."
+  exit 0
+fi
+
+# mod_sec installation
+## Consulted:
+## https://hostadvice.com/how-to/how-to-setup-modsecurity-for-apache-on-ubuntu-18-04/
+## https://phoenixnap.com/kb/setup-configure-modsecurity-on-apache
+## https://ownyourbits.com/2017/03/23/modsecurity-web-application-firewall-for-nextcloud/
+if [ $security2_module = "done" ]; then
+  /bin/echo "Already done."
+else
+
+/usr/bin/apt-get install -y libapache2-mod-security2
+/bin/systemctl restart apache2
+if [ "$(/usr/sbin/apachectl -M | /bin/grep security2_module)" = " security2_module (shared)" ]; then
+  /bin/echo "security2_module=\"done\"" > /opt/verb/conf/secapache
+else
+  /bin/echo "Something's wrong with security2_module, I quit."
+  exit 4
+fi
+
+fi
+
+# mod_sec
+if [ $SecRuleEngine = "done" ]; then
+  /bin/echo "Already done."
+else
+
+/bin/cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+/bin/sed -i "s/^SecRuleEngine DetectionOnly/SecRuleEngine On/" /etc/modsecurity/modsecurity.conf
+/bin/sed -i "s/^SecRequestBodyInMemoryLimit 131072/SecRequestBodyInMemoryLimit 5242880/" /etc/modsecurity/modsecurity.conf
+/bin/sed -i "s/^SecRequestBodyLimit 13107200/SecRequestBodyLimit 8589934592/" /etc/modsecurity/modsecurity.conf
+/bin/sed -i "s/^SecRequestBodyNoFilesLimit 131072/SecRequestBodyNoFilesLimit 5242880/" /etc/modsecurity/modsecurity.conf
+/bin/systemctl restart apache2
+if /bin/grep -q "SecRuleEngine On" /etc/modsecurity/modsecurity.conf; then
+  /bin/echo "SecRuleEngine=\"done\"" >> /opt/verb/conf/secapache
+else
+  /bin/echo "Something's wrong with SecRuleEngine, I quit."
+  exit 4
+fi
+
+fi
+
+## Put this in the right place
+/bin/mv /etc/apache2/mods-enabled/security2.conf /etc/apache2/mods-available/security2.conf
+/bin/ln -sfn /etc/apache2/mods-available/security2.conf /etc/apache2/mods-enabled/security2.conf
+
+# mod_sec rules
+if [ $IncludeOptional = "done" ]; then
+  /bin/echo "Already done."
+else
+
+/bin/mv /usr/share/modsecurity-crs /usr/share/modsecurity-crs.bk
+/usr/bin/git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git /usr/share/modsecurity-crs
+/bin/mv /usr/share/modsecurity-crs/crs-setup.conf.example /usr/share/modsecurity-crs/crs-setup.conf
+if ! /bin/grep -Fq '## inkVerb Nextcloud' /etc/apache2/mods-enabled/security2.conf; then
+  /bin/echo "
+  ## Added by inkVerb
+  #SecAction \
+  "id:900230,\
+  phase:1,\
+  nolog,\
+  pass,\
+  t:none,\
+  setvar:'tx.allowed_http_versions=HTTP/1.1 HTTP/2.0'"
+  #SecAction \
+  "id:900200,\
+  phase:1,\
+  nolog,\
+  pass,\
+  t:none,\
+  setvar:'tx.allowed_methods=GET HEAD POST OPTIONS PROPFIND'"
+  ## inkVerb Nextcloud" >> /usr/share/modsecurity-crs/crs-setup.conf
+fi
+if [ ! -d "/usr/share/modsecurity-crs" ]; then
+  /bin/echo "Something's wrong with modsecurity-crs, I quit."
+  exit 4
+fi
+
+if ! /bin/grep -Fq '## inkVerb IncludeOptional' /etc/apache2/mods-enabled/security2.conf; then
+  /bin/sed -i "/<\/IfModule>/d" /etc/apache2/mods-enabled/security2.conf
+  /bin/echo "
+  ## Added by inkVerb
+  IncludeOptional /usr/share/modsecurity-crs/*.conf
+  Include /usr/share/modsecurity-crs/rules/*.conf
+  ## inkVerb IncludeOptional
+  </IfModule>" >> /etc/apache2/mods-enabled/security2.conf
+fi
+
+## For Nextcloud, and to hide server info
+if ! /bin/grep -Fq '## inkVerb mod_sec' /etc/apache2/apache2.conf; then
+  /bin/sed -i "/# vim: syntax=apache ts=4 sw=4 sts=4 sr noet/d" /etc/apache2/apache2.conf
+  /bin/echo '
+## Added by inkVerb
+<Directory "/var/www/html/blue.nc">
+  # VIDEOS
+  SecRuleRemoveById 958291             # Range Header Checks
+  SecRuleRemoveById 981203             # Correlated Attack Attempt
+
+  # PDF
+  SecRuleRemoveById 950109             # Check URL encodings
+
+  # ADMIN (webdav)
+  SecRuleRemoveById 960024             # Repeatative Non-Word Chars (heuristic)
+  SecRuleRemoveById 981173             # SQL Injection Character Anomaly Usage
+  SecRuleRemoveById 981204             # Correlated Attack Attempt
+  SecRuleRemoveById 981243             # PHPIDS - Converted SQLI Filters
+  SecRuleRemoveById 981245             # PHPIDS - Converted SQLI Filters
+  SecRuleRemoveById 981246             # PHPIDS - Converted SQLI Filters
+  SecRuleRemoveById 981318             # String Termination/Statement Ending Injection Testing
+  SecRuleRemoveById 973332             # XSS Filters from IE
+  SecRuleRemoveById 973338             # XSS Filters - Category 3
+  SecRuleRemoveById 981143             # CSRF Protections ( TODO edit LocationMatch filter )
+
+  # COMING BACK FROM OLD SESSION
+  SecRuleRemoveById 970903             # Microsoft Office document properties leakage
+</Directory>
+# Hide server info
+<IfModule mod_security2.c>
+  SecServerSignature " "
+</IfModule>
+## inkVerb mod_sec
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet' >> /etc/apache2/apache2.conf
+fi
+
+/bin/systemctl restart apache2
+if /bin/grep -Fq 'IncludeOptional /usr/share/modsecurity-crs/*.conf' /etc/apache2/mods-enabled/security2.conf; then
+  /bin/echo "IncludeOptional=\"done\"" >> /opt/verb/conf/secapache
+else
+  /bin/echo "Something's wrong with IncludeOptional, I quit."
+  exit 4
+fi
+
+fi
+
+# Finish
+## Note in the settiongs
+/bin/echo "SEC_APACHE=\"done\"" >> /opt/verb/conf/secapache
+## Message
+/bin/echo "Secure Apache done."

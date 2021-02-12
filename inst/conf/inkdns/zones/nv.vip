@@ -1,0 +1,23 @@
+; PTR Domain
+hostarpaip286		IN  PTR  hostdomain286.
+hostarpaipv6286		IN  PTR  hostdomain286.
+
+; PTR Subdomain Defaults
+hostarpaip286		IN  PTR  vip.hostdomain286.
+hostarpaipv6286		IN  PTR  vip.hostdomain286.
+hostarpaip286		IN  PTR  cgi.hostdomain286.
+hostarpaipv6286		IN  PTR  cgi.hostdomain286.
+hostarpaip286		IN  PTR  ftp.hostdomain286.
+hostarpaipv6286		IN  PTR  ftp.hostdomain286.
+hostarpaip286		IN  PTR  files.hostdomain286.
+hostarpaipv6286		IN  PTR  files.hostdomain286.
+hostarpaip286		IN  PTR  fossil.hostdomain286.
+hostarpaipv6286		IN  PTR  fossil.hostdomain286.
+hostarpaip286		IN  PTR  ldap.hostdomain286.
+hostarpaipv6286		IN  PTR  ldap.hostdomain286.
+hostarpaip286		IN  PTR  net2ftp.hostdomain286.
+hostarpaipv6286		IN  PTR  net2ftp.hostdomain286.
+hostarpaip286		IN  PTR  repo.hostdomain286.
+hostarpaipv6286		IN  PTR  repo.hostdomain286.
+hostarpaip286		IN  PTR  sql.hostdomain286.
+hostarpaipv6286		IN  PTR  sql.hostdomain286.

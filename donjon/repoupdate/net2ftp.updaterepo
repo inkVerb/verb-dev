@@ -1,0 +1,54 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the net2ftp repo package
+
+# How to use:
+## ./net2ftp.updaterepo
+
+
+CVAPPNAME=net2ftp
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${net2ftp}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the net2ftp package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget http://www.net2ftp.com/download/net2ftp_v${DISTVER}.zip
+if [ ! -f "net2ftp_v${DISTVER}.zip" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(shasum -a 256 net2ftp_v${DISTVER}.zip)
+if [ "${CHECKSHA}" = "${net2ftpsha}  net2ftp_v${DISTVER}.zip" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/unzip net2ftp_v${DISTVER}.zip
+/bin/rm net2ftp_v${DISTVER}.zip
+cd net2ftp_v${DISTVER}
+/bin/mv files_to_upload ../${CVAPPNAME}
+cd ..
+/bin/rm -rf net2ftp_v${DISTVER}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has net2ftp v${DISTVER}."
+

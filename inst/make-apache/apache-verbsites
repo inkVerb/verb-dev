@@ -1,0 +1,48 @@
+#!/bin/sh
+# $0 is the script name, $1 id the first ARG, $2 is second...
+
+# This sets up all initial standard inkVerb subdomain Apache config files using makeverbsub
+
+# How to use:
+## ./apache-verbsites
+
+# Make executable by typing:
+## chmod ug+x apache-verbsites
+
+# Config files not created because they are unique:
+## email email.email email.boxes email.rc
+## one one.one 
+## ink ink.ink
+## blue blue.blue blue.owncloud blue.owncloud blue.pydio 
+## vip vip.vip vip.cgi  vip.fossil  vip.repo
+## kiwi kiwi.kiwi
+## pink pink.pink
+## red red.red
+## rocks rocks.rocks
+
+sh ./makepreverbsub blue nc
+sh ./makepreverbsub ink ask
+sh ./makepreverbsub ink bb
+sh ./makepreverbsub ink blog
+sh ./makepreverbsub ink code
+sh ./makepreverbsub ink home
+sh ./makepreverbsub ink shop
+sh ./makepreverbsub ink sn
+sh ./makepreverbsub ink wiki
+sh ./makepreverbsub vip files
+sh ./makepreverbsub vip ftp
+sh ./makepreverbsub vip mysql
+sh ./makepreverbsub vip net2ftp
+sh ./makepreverbsub red act
+sh ./makepreverbsub kiwi ampache
+sh ./makepreverbsub kiwi art
+sh ./makepreverbsub kiwi gallery
+sh ./makepreverbsub kiwi media
+sh ./makepreverbsub kiwi podcast
+sh ./makepreverbsub kiwi studio
+sh ./makepreverbsub red crm
+sh ./makepreverbsub red erp
+sh ./makepreverbsub red hrm
+sh ./makepreverbsub red odoo
+sh ./makepreverbsub red scm
+

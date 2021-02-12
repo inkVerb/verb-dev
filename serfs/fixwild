@@ -1,0 +1,28 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This adds the wildcard * subdomain wildcard to a domain's Apache config.
+
+# How to use:
+## ./fixwild [domain.tld or subdomain.domain.tld]
+
+
+DOMAIN=$1
+
+
+# Check to see if "fixwildcard" has already been added
+if /bin/grep -q "INKWILDFIX=fixed" /etc/apache2/sites-available/${DOMAIN}.conf; then
+/usr/sbin/apache2ctl graceful
+	/bin/echo "${DOMAIN} already has the wildcard subdomain fix. The server was just reloaded so the site should work."
+else
+
+# Add the config line
+/bin/sed -i "s/ServerName ${DOMAIN}/ServerName ${DOMAIN}\n\t\tServerAlias *.${DOMAIN}/" /etc/apache2/sites-available/${DOMAIN}.conf
+
+# Then add the fix config line.
+/bin/echo "
+##INKWILDFIX=fixed
+" >> /etc/apache2/sites-available/${DOMAIN}.conf
+/usr/sbin/apache2ctl graceful
+	/bin/echo "${DOMAIN} now has wildcard subdomain fix for subdomains and is ready to go."
+fi

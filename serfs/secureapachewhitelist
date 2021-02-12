@@ -1,0 +1,39 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This whitelists an IP4 address mod_sec for Apache security
+
+# How to use:
+## ./secureapachewhitelist
+
+
+WLIP4="$1"
+InlineWLIP4="$(echo "$WLIP4" | /bin/sed "s/\./\\\\\\\\\./g")"
+EntryWLIP4="SecRule REMOTE_ADDR \"^$InlineWLIP4\" \"phase:1,nolog,allow,ctl:ruleEngine=off,id:20000221\""
+# Check if done
+if [ -f /opt/verb/conf/secapache ]; then
+  . /opt/verb/conf/secapache
+
+if [ $SEC_APACHE != "done" ]; then
+  /bin/echo "secureapache not installed. Do that first"
+  exit 0
+fi
+
+else
+  /bin/echo "secureapache not installed. Do that first"
+  exit 0
+fi
+
+# Whitelist exists?
+if ! /bin/grep -Fq '## inkVerb whitelist' /etc/apache2/apache2.conf; then
+  /bin/sed -i "s/## inkVerb mod_sec/## inkVerb whitelist\n## inkVerb mod_sec/" /etc/apache2/apache2.conf
+fi
+
+# Make the entry
+if ! /bin/grep -Fq "$EntryWLIP4" /etc/apache2/apache2.conf; then
+  /bin/sed -i "s/## inkVerb whitelist/## inkVerb whitelist\n$EntryWLIP4/" /etc/apache2/apache2.conf
+fi
+/bin/systemctl restart apache2
+
+# Finish
+/bin/echo "$WLIP4 whitelisted for Apache secure."

@@ -1,0 +1,68 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This updates an existing Roundcube installation once it has been updated in the inkVerb repo
+## After, ensure that Roundcube works correctly, then run updatercrmvbak
+
+# How to use:
+## ./updaterc
+
+
+# Include the config file
+. /opt/verb/conf/sitenameip
+
+# Download and unpack
+cd /var/www
+## Remove any existing roundcube folder
+if [ -d roundcube ]; then
+/bin/rm -rf roundcube; fi
+## Get the update
+if [ -d /var/www/email/roundcube.vbak ]; then
+/bin/rm -rf /var/www/email/roundcube.vbak; fi
+/bin/cp -R /var/www/email/roundcube /var/www/email/roundcube.vbak
+/opt/verb/serfs/inkget roundcube; wait
+/opt/verb/serfs/vtxzout roundcube; wait
+/var/www/roundcube/bin/installto.sh /var/www/email/roundcube
+wait
+## Disable the installer
+/bin/sed -i "s/\$config\['enable_installer'\].*/\$config\['enable_installer'\] = false;/g" /var/www/email/roundcube/config/config.inc.php
+## Remove the updater
+cd /var/www
+/bin/rm -rf /var/www/roundcube
+
+# Set up plugins that Composer broke
+cd /var/www/email/roundcube/plugins/
+if [ ! -d "/var/www/email/roundcube/plugins/authres_status" ]; then
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/authres_status.vtxz .
+/opt/verb/serfs/vtxzout authres_status; wait; fi
+if [ ! -d "/var/www/email/roundcube/plugins/contextmenu" ]; then
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/contextmenu.vtxz .
+/opt/verb/serfs/vtxzout contextmenu; wait; fi
+
+# Copy the branding files
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/verbink_logo.png /var/www/email/roundcube/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/logo.svg /var/www/email/roundcube/skins/elastic/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/favicon.ico /var/www/email/roundcube/skins/elastic/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/favicon.ico /var/www/email/roundcube/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/verbink_logo.png /var/www/email/roundcube/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/watermark.jpg /var/www/email/roundcube/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/favicon.ico /var/www/email/roundcube/skins/larry/images/
+
+# Notify status
+/bin/echo "
+RoudCube update complete.
+
+If all works well, you may delete the backup wtih updatercrmvbak before updating again.
+
+Now updating plugins with Composer. Hold your breath and think good thoughts...
+"
+
+# Composer Plugins update
+cd /var/www/email/roundcube
+php composer.phar update -n
+
+# Finish
+/bin/echo "
+All done. :-)
+"
+

@@ -1,0 +1,50 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the Fossil repo package
+
+# How to use:
+## ./fossil.updaterepo
+
+
+CVAPPNAME=fossil
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${fossil}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the Fossil package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget https://www.fossil-scm.org/fossil/uv/fossil-linux-x64-${DISTVER}.tar.gz
+if [ ! -f "fossil-linux-x64-${DISTVER}.tar.gz" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(shasum -a 256 fossil-linux-x64-${DISTVER}.tar.gz)
+if [ "${CHECKSHA}" = "${fossilsha}  fossil-linux-x64-${DISTVER}.tar.gz" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+tar -xvf fossil-linux-x64-${DISTVER}.tar.gz
+/bin/rm fossil-linux-x64-${DISTVER}.tar.gz
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has Fossil v${DISTVER}."
+

@@ -1,0 +1,41 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This adds a subdomain A & AAAA records to an existing GURU DNS record in the inkDNS zone file on this Verber
+
+# How to use:
+## ./inkdnsaddvipsub [subdomain]
+
+
+DNSSUBDOM=$1
+
+# Include the configs
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/siteurilist
+
+# Check if already added
+if /bin/grep -Fq "${DNSSUBDOM}.${vipURI}" /opt/verb/conf/inkdns/zones/db.${vipURI}; then
+/bin/echo "The subdomain ${DNSSUBDOM} has already been added to ${vipURI}. Use inkdnskillsub to remove it."
+exit 0; fi
+
+# Echo the record
+## db.DOM
+/bin/echo "; Subdomain Records Added by inkDNS ${DNSSUBDOM}.${vipURI}" >> /opt/verb/conf/inkdns/zones/db.${vipURI}
+/bin/echo "${DNSSUBDOM}.${vipURI}   IN  A   ${SITEIP}" >> /opt/verb/conf/inkdns/zones/db.${vipURI}
+/bin/echo "${DNSSUBDOM}.${vipURI}   IN  AAAA   ${SITEIPV6}" >> /opt/verb/conf/inkdns/zones/db.${vipURI}
+## nv.DOM
+/bin/echo "; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}.${vipURI}" >> /opt/verb/conf/inkdns/zones/nv.${vipURI}
+/bin/echo "${SITEARPAIP4}		IN  PTR  ${DNSSUBDOM}.${vipURI}" >> /opt/verb/conf/inkdns/zones/nv.${vipURI}
+/bin/echo "${SITEARPAIP6}		IN  PTR  ${DNSSUBDOM}.${vipURI}" >> /opt/verb/conf/inkdns/zones/nv.${vipURI}
+
+# Set the Serial No
+/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+
+# Refresh zones
+if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
+  . /opt/verb/conf/inkdns/inkdnsstatus
+  if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
+/opt/verb/serfs/inkdnsrefreshbind; fi; fi
+
+# Finish
+/bin/echo "The GURU subdomain ${DNSSUBDOM} has been added to the DNS zone file."

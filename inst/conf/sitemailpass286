@@ -1,0 +1,5 @@
+#!/bin/sh
+## This is the site-wide email config file for passwords.
+
+SITEMAILPASSAPG="EMAIL_NOT_INSTALLED"
+SITERCPASSAPG="RC_NOT_INSTALLED"

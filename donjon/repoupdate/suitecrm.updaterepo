@@ -1,0 +1,51 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the SuiteCRM repo package
+
+# How to use:
+## ./suitecrm.updaterepo
+
+
+CVAPPNAME=suitecrm
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${suitecrm}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the SuiteCRM package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget https://sourceforge.net/projects/suitecrm/files/SuiteCRM-${DISTVER}.zip
+if [ ! -f "SuiteCRM-${DISTVER}.zip" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(sha1sum SuiteCRM-${DISTVER}.zip)
+if [ "${CHECKSHA}" = "${suitecrmsha}  SuiteCRM-${DISTVER}.zip" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/unzip SuiteCRM-${DISTVER}.zip
+/bin/rm SuiteCRM-${DISTVER}.zip
+/bin/mv SuiteCRM-${DISTVER} ${CVAPPNAME}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has SuiteCRM v${DISTVER}."
+

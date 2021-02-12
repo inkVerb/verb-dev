@@ -1,0 +1,35 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This removes a subdomain A & AAAA records from an existing GURU DNS record in the inkDNS zone file on this Verber
+
+# How to use:
+## ./inkdnskillvipsub [subdomain]
+
+
+DNSSUBDOM=$1
+
+# Include the configs
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/siteurilist
+
+# Check if already added
+if ! /bin/grep -Fq "${DNSSUBDOM}.${vipURI}" /opt/verb/conf/inkdns/zones/db.${vipURI}; then
+/bin/echo "The subdomain ${DNSSUBDOM} has not been added to ${vipURI}. Use inkdnsaddsub to add it."
+exit 0; fi
+
+# Remove the records
+/bin/sed -i "/; Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/zones/db.${vipURI}
+/bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/zones/nv.${vipURI}
+
+# Set the Serial No
+/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+
+# Refresh zones
+if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
+  . /opt/verb/conf/inkdns/inkdnsstatus
+  if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
+/opt/verb/serfs/inkdnsrefreshbind; fi; fi
+
+# Finish
+/bin/echo "The VIP subdomain ${DNSSUBDOM} has been removed from the DNS zone file."

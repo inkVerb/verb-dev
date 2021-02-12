@@ -1,0 +1,330 @@
+#!/bin/sh
+#inkVerbMaker! verb.ink
+
+# This makes the initial inkVerb Verber server with a "boss" sudoer user, new SSH login port, the name286 namespace for setupverb
+## Prerequisite: Copy the Vubuntu directory contents (verb) to /var/local/
+## Prerequisite: make-verber-preserver
+
+# NOTE on MySQL:
+## The MySQL root password will be saved to a filename in the inst directory for your reference
+## This file is moved to verb/configs by setupverb
+## On a healthy Verber server, you will never need the MySQL root password except for special maintanence
+## Verber can create other superusers for MySQL with grant privileges for login to PHPMyAdmin
+## Should the MySQL root password become necessary it is a headache if lost. Hence, it is saved in this one lo/bin/cation and you don't need to keep track of it.
+
+# How to use:
+## ./make-verber [swap-size, choose GB: 1, 2, 4, 8, 16, 32, 64 - optional (2 default, must be set for root password)] [mysql root password - optional]
+
+# Eg:
+## ./make-verber 1 mysqlrootpass
+## ./make-verber 4
+## ./make-verber 2 chewcud62
+
+
+# Good housekeeping
+/bin/chmod 750 /opt/verb/serfs/*
+
+# Install tools
+/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make
+# These have some mirror troubles, do them separately
+/usr/bin/pacman -S --noconfirm gcc autoconf imagemagick
+
+# swap sice
+if [ -z "$1" ]; then
+SWAPSIZEMAKE="4"
+else
+SWAPSIZEMAKE="$1"
+fi
+
+# MySQL root password
+if [ -z "$2" ]; then
+MYSQLPASS=$(/usr/bin/pwgen -0 -1 -A -B 11)
+else
+MYSQLPASS="$2"
+fi
+
+# MySQL boss password
+MYSQLBOSSPASS=$(/usr/bin/pwgen -s -1 10)
+
+# Verify SSH Directory
+cd ~
+if [ ! -d ~/.ssh ]; then
+/bin/mkdir .ssh
+fi
+
+# Swap
+/opt/verb/serfs/setswapsize ${SWAPSIZEMAKE}; wait
+## Enable swap at next startup
+/bin/echo "/var/swap.img    none    swap    sw    0    0" >> /etc/fstab
+
+# Link serfs & tools to boss box
+/bin/ln -sfn /opt/verb/serfs /opt/verb/boss/
+/bin/ln -sfn /opt/verb/tools /opt/verb/boss/
+
+# Link setupverb to serfs
+/bin/ln -sfn /opt/verb/inst/setupverb /opt/verb/serfs/
+
+# Link verb to root home
+/bin/ln -sfn /opt/verb /root/
+
+# Record the MySQL root password
+/bin/echo "${MYSQLPASS}" > /opt/verb/inst/mysqlrootpassword
+
+# Update
+/usr/bin/pacman -Syyu --noconfirm
+
+# Remove unneeded packages
+/usr/bin/pacman -Qdt
+
+#  LEMP Server
+## Nginx
+/usr/bin/pacman -S --noconfirm nginx
+/usr/bin/systemctl enable nginx
+/usr/bin/systemctl start nginx
+/usr/bin/mkdir /etc/nginx/sites-available
+/usr/bin/mkdir /etc/nginx/sites-enabled
+
+## Web directory
+/usr/bin/mkdir -p /srv/www/html
+/usr/bin/groupadd www
+/usr/bin/useradd -g www www
+/usr/bin/chmod +w /srv/www/html
+/usr/bin/chown -R www:www /srv/www/html
+
+# Snakeoil install
+/usr/bin/mkdir -p /etc/nginx/ssl
+cd /etc/nginx/ssl
+/usr/bin/rm -f server.key
+/usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.key
+/usr/bin/chmod 400 server.key
+/usr/bin/openssl req -new -sha256 -key server.key -out server.csr \
+    -subj "/C=/ST=/L=/O=/OU=/CN=/emailAddress=/unstructuredName=/"
+/usr/bin/openssl x509 -req -days 1095 -in server.csr -signkey server.key -out server.crt
+# Use OpenSSL to create a unique Diffie-Helman Group file (security)
+/bin/rm -f /etc/nginx/ssl/dhparams.pem
+/usr/bin/openssl dhparam -out /etc/nginx/ssl/dhparams.pem 2048
+/bin/chmod 600 /etc/nginx/ssl/dhparams.pem
+cd $OLDPWD
+
+## Nginx Settings
+/usr/bin/cat <<'EOF' > /etc/nginx/nginx.conf
+user http;
+worker_processes auto;
+worker_cpu_affinity auto;
+
+events {
+    multi_accept on;
+    worker_connections 1024;
+}
+
+http {
+    charset utf-8;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    server_tokens off;
+    log_not_found off;
+    types_hash_max_size 4096;
+    client_max_body_size 16M;
+
+    # SSL
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+
+    # MIME
+    include mime.types;
+    default_type application/octet-stream;
+
+    # logging
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log warn;
+
+    # load configs
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+EOF
+
+## PHP
+/usr/bin/pacman -S --noconfirm php php-fpm
+/usr/bin/systemctl enable php-fpm
+/usr/bin/systemctl start php-fpm
+
+## PHP-FPM
+/usr/bin/cat <<'EOF' > /etc/nginx/php_fastcgi.conf
+
+# 404
+  try_files $fastcgi_script_name =404;
+
+# default fastcgi_params
+  include fastcgi_params;
+
+# fastcgi settings
+  fastcgi_pass                    unix:/run/php-fpm/php-fpm.sock;
+  fastcgi_index                   index.php;
+  fastcgi_buffers                 8 16k;
+  fastcgi_buffer_size             32k;
+
+# fastcgi params
+  fastcgi_param DOCUMENT_ROOT     $realpath_root;
+  fastcgi_param SCRIPT_FILENAME   $realpath_root$fastcgi_script_name;
+  #fastcgi_param PHP_ADMIN_VALUE  "open_basedir=$base/:/usr/lib/php/:/tmp/";
+
+EOF
+## Security extensions
+echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/www.conf
+
+## PHP extras
+/usr/bin/pacman -S --noconfirm pkg-config php-gd php-apcu nginx-mod-headers-more fcgiwrap php-imagick php-intl
+
+## Restart
+/usr/bin/systemctl restart nginx
+/usr/bin/systemctl restart php-fpm
+
+# MySQL (viz MariaDB)
+/usr/bin/pacman -S --noconfirm mariadb
+/usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+/usr/bin/systemctl enable mariadb
+/usr/bin/systemctl start mariadb
+## Secure
+/usr/bin/mysql_secure_installation <<EOF
+
+y
+${MYSQLPASS}
+${MYSQLPASS}
+y
+y
+y
+y
+EOF
+## Alternate method of above Secure
+#/usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
+#/usr/bin/printf "${MYSQLPASS}\n n\n n\n n\n y\n y\n y\n" | /usr/bin/mysql_secure_installation
+
+
+# MySQL conf for Postfix Admin
+/bin/echo "##### Added by inkVerb ######
+# This removes NO_ZERO_IN_DATE and NO_ZERO_DATE, which cause problems for
+# Postfix Admin code, from strict mode.
+sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+##### End inkVerb #####
+" >> /etc/my.cnf
+/usr/bin/systemctl restart mariadb
+
+# Firewall
+/usr/bin/pacman -S --noconfirm ufw
+/usr/bin/ufw allow 80/tcp
+/usr/bin/ufw allow 443/tcp
+
+# Nginx site defaults
+/bin/mkdir -p /etc/nginx/conf.d
+/usr/bin/cat <<'EOF' > /etc/nginx/conf.d/default.conf
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  listen 443 ssl http2 default_server;
+  listen [::]:443 ssl http2 default_server;
+  server_name _;
+
+  location / {
+    root /srv/www/html/default;
+    index index.htm index.html;
+  }
+
+  ssl_certificate /etc/nginx/ssl/server.crt;
+  ssl_certificate_key /etc/nginx/ssl/server.key;
+  ssl_dhparam /etc/nginx/ssl/dhparams.pem;
+
+  #return 403;
+
+}
+EOF
+/bin/mkdir -p /srv/www/html/default
+/usr/bin/cat <<'EOF' > /srv/www/html/default/index.htm
+<!DOCTYPE html>
+<html>
+<head><title>Hey, Boo!</title></head>
+<body><h1 style="text-align:center">Hey, Boo!</h1><hr></body>
+</html>
+EOF
+/bin/chown -R www:www /srv/www/html/default
+/bin/cp /opt/verb/inst/root-config/etc/nginx/sites-available/* /etc/nginx/sites-available/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
+/usr/bin/systemctl restart nginx
+
+## tmp folder for a secure Apache & PHP
+/bin/mkdir -p /srv/www/tmp
+/bin/chmod -R 777 /srv/www/tmp
+
+## Create vip & vsftp web mod directories
+/bin/mkdir -p /srv/vip
+/bin/mkdir -p /srv/vip/_domains
+/bin/mkdir -p /srv/vip/_filecabinet
+/bin/mkdir -p /srv/vip/filers
+/bin/mkdir -p /srv/vip/files
+/bin/mkdir -p /srv/vip/sql
+/bin/mkdir -p /srv/vip/repo
+/bin/mkdir -p /srv/vip/_webapps
+/bin/mkdir -p /srv/vip/_subs.vip
+/bin/ln -sfn /srv/vip /srv/www/
+/bin/ln -sfn /srv/vip /opt/verb/boss/
+/bin/ln -sfn /srv/vip /root/
+## And the domains directory for hosted domains
+/bin/mkdir -p /srv/www/domains
+/bin/mkdir -p /srv/www/forwards
+## Create inkVerb app directories
+/bin/mkdir -p /srv/www/email
+/bin/mkdir -p /srv/www/one
+/bin/mkdir -p /srv/www/vapps
+## Create directory for Ghost installs
+/bin/mkdir -p /srv/www/ghost
+## Own everything
+/bin/chown -R www:www /srv/www
+/bin/chown -R www:www /srv/vip
+
+# inkGet repo
+/bin/mkdir -p /opt/verb/repo
+
+# MySQL superuser to auto-create databases
+/usr/bin/mysql -uroot -p${MYSQLPASS} -e "
+CREATE USER mysqlboss@localhost;
+SET PASSWORD FOR mysqlboss@localhost=PASSWORD('${MYSQLBOSSPASS}');
+GRANT ALL PRIVILEGES ON *.* TO 'mysqlboss'@'localhost' IDENTIFIED BY '${MYSQLBOSSPASS}' WITH GRANT OPTION;
+FLUSH PRIVILEGES;"
+## Set the mysqlboss as the mysqlboss config file so the password is not in the line command
+/bin/echo "[client]
+user = mysqlboss
+password = ${MYSQLBOSSPASS}
+host = localhost" > /opt/verb/inst/mysqlboss.cnf
+
+# Monit
+/usr/bin/pacman -S --noconfirm monit
+## Copy configs (These seem to have precedence, files in /etc/monit seem to conflict with them but may be u/bin/sed instead
+/bin/mkdir -p /etc/monit/monitrc.d
+sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
+/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/acpid /etc/monit/monitrc.d/
+/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/nginx /etc/monit/monitrc.d/
+/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/memcached /etc/monit/monitrc.d/
+/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/mysql /etc/monit/monitrc.d/
+/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/openssh-server /etc/monit/monitrc.d/
+/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/sshd /etc/monit/monitrc.d/
+/bin/systemctl enable monit
+/bin/systemctl start monit
+
+# Delete the snakeoil keys and Diffie-Helman Group security file to prevent security risks (keep this verber unique)
+/bin/rm -f /etc/nginx/ssl/dhparams.pem
+/bin/rm -f /etc/nginx/ssl/server.crt
+/bin/rm -f /etc/nginx/ssl/server.key
+
+# Restart Server and reconnect at the new port
+/bin/echo "
+The Verber™ server has been made and is ready to run setupverb.
+
+At this point, there is no urgent need to restart the server.
+"
+
+# Delete this one-time script
+/bin/rm -f /opt/verb/serfs/make-verber
+/bin/rm -f /opt/verb/inst/make-verber

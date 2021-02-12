@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# This sets up a single verb.ink subdomain Apache config files.
+## This does NOT make additions to Certbot ini files, as makeverbsub does!
+## This is intended as an OPTIONAL and fast way to create default inkVerb apache2 config files that are needed after running make-name-preserver and before make-name
+## For appendage after setupverb has already set the server, refer to newverbsub in serfs
+
+# How to use:
+## ./makepreverbsub [TLD] [SUBDOMAIN]
+
+## This runs with a relative path
+## After running, the sites-available directory will be created, containing the output for development purposes
+
+# Make executable by typing:
+## chmod ug+x makepreverbsub
+
+
+TLD=$1
+SUBDOMAIN=$2
+
+# Include the config file
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/siteurilist
+
+# Prepare the dir
+mkdir -p sites-available
+
+# Copy the file
+cp sub286.tldURI286.conf sites-available/${SUBDOMAIN}.${tldURI}.conf
+
+# Replace
+sed -i "s/sub286/${SUBDOMAIN}/g" sites-available/${SUBDOMAIN}.${tldURI}.conf
+sed -i "s/tldURI286/${tldURI}/g" sites-available/${SUBDOMAIN}.${tldURI}.conf
+sed -i "s/tld286/${TLD}/g" sites-available/${SUBDOMAIN}.${tldURI}.conf
+
+##### NEED TO PUT INKCERT CLI-INI FILES HERE
+echo "Incomplete, needs html and cli.ini files still. Read inst/makepreverbsub file"
+##### NEED TO PUT SITETLDSTATUS STATEMENT HERE
+
+

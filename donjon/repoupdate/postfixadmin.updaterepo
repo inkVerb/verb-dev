@@ -1,0 +1,51 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the PostfixAdmin repo package
+
+# How to use:
+## ./pfa.updaterepo
+
+
+CVAPPNAME=postfixadmin
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${postfixadmin}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the PostfixAdmin package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget https://sourceforge.net/projects/postfixadmin/files/postfixadmin/postfixadmin-${DISTVER}/postfixadmin-${DISTVER}.tar.gz
+if [ ! -f "postfixadmin-${DISTVER}.tar.gz" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(sha1sum postfixadmin-${DISTVER}.tar.gz)
+if [ "${CHECKSHA}" = "${postfixadminsha}  postfixadmin-${DISTVER}.tar.gz" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+tar -xvf postfixadmin-${DISTVER}.tar.gz
+/bin/rm postfixadmin-${DISTVER}.tar.gz
+/bin/mv postfixadmin-${DISTVER} ${CVAPPNAME}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has PostfixAdmin v${DISTVER}."
+

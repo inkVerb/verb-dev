@@ -1,0 +1,72 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This installs the inkCert SSL certificate service
+## Currently, inkCert uses letsencrypt for main websites with options for "inkCert proper", the non-standard inkVerb CA service.
+## To use letsencrypt for websites, run -le variants of inkcert- serfs, such as inkcertdole
+
+# How to use:
+## ./inkcertinstall
+
+
+# Include and check the config
+. /opt/verb/conf/inkcert/inkcertstatus
+
+if [ "${INKCERTINSTALLED}" = "DONE" ]; then
+/bin/echo "inkCert already installed."
+exit 0; fi
+
+if [ -z $1 ]; then
+  echo "You must include your DigitalOcean API key, otherwise -n"
+  exit 0
+else
+  cbdigocKey="$1"
+fi
+
+# Install
+## Letsencrypt - Currently, inkCert is largely powered by Letsencrypt, so it uses links. This will eventually change, but file paths won't.
+
+#/usr/bin/add-apt-repository -y ppa:certbot/certbot ## broken
+#/usr/bin/apt-get install -y python-certbot-apache ## broken
+
+apt-get install software-properties-common # may be redundant
+add-apt-repository universe # may be redundant
+add-apt-repository ppa:certbot/certbot
+apt-get install certbot python3-certbot-apache
+
+###DEV One or both of these is creating an error: pkg_resources.VersionConflict: (acme 0.31.0 (/usr/lib/python3/dist-packages), Requirement.parse('acme>=0.40.0'))
+### https://www.digitalocean.com/community/questions/new-error-this-week-certbot-dns-digitalocean-says-acme-0-31-0-usr-lib-python3-dist-packages-requirement-parse-acme-0-40-0
+### One or both of these was intended to use inkcert__cbdigoc
+## This may be redundant ::
+#/usr/bin/apt-get install -y python-pip
+#/usr/bin/pip install certbot-dns-digitalocean
+## May be redundant ::
+#/usr/bin/apt-get install -y python3-pip
+#/usr/bin/pip3 install certbot-dns-digitalocean
+###DEV
+
+## Certbot for DigitalOcean
+if [ $cbdigocKey != "-n" ]; then
+/opt/verb/serfs/setinkcertcbdigoc $cbdigocKey
+fi
+
+## inkCert proper
+/usr/bin/apt-get install -y openssl
+/bin/mkdir -p /etc/inkcert
+cd /etc/inkcert
+/bin/mkdir -p client live csr req
+/bin/cp /opt/verb/conf/inkcert/verber-openssl.cnf /etc/inkcert/client/openssl.cnf
+## Symlinks
+/bin/ln -sfn /etc/letsencrypt /etc/inkcert/le
+/bin/ln -sfn /etc/inkcert/req /opt/verb/
+/bin/ln -sfn /etc/inkcert/req /var/www/vip/
+
+# Set configs
+/bin/sed -i "s/INKCERTINSTALLED=\"NOT_YET\"/INKCERTINSTALLED=\"DONE\"/g" /opt/verb/conf/inkcert/inkcertstatus
+
+# Finish
+/bin/echo "
+inkCert is now installed and ready to make CSRs for SSL domains and SSH keys.
+
+The CA URLs have been set to defaults and can work now. But, if you want a different CA on the inkCert list, such as in a region closer to your Verber, run setinkcertsslca and setinkcertsshca before making any CSRs.
+"

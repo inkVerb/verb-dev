@@ -1,0 +1,17 @@
+#!/bin/sh
+## This is a config file for other verb scripts
+
+# Determine which site tlds are active on the server, all are on by default
+
+VERBemail=true
+VERBcity=true
+VERBone=true
+VERBink=true
+VERBblue=true
+VERBvip=true
+VERBkiwi=true
+VERBcash=true
+VERBpink=true
+VERBred=true
+VERBrocks=true
+

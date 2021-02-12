@@ -1,0 +1,55 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the Ampache repo package
+
+# How to use:
+## ./ampache.updaterepo
+
+
+CVAPPNAME=ampache
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${ampache}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the Ampache package to v${DISTVER}..."
+
+# Get the package
+## Ampache downloads slowly and won't work with curl, it needs wget
+/usr/bin/wget https://github.com/ampache/ampache/releases/download/${DISTVER}/ampache-${DISTVER}_all.zip
+if [ ! -f "ampache-${DISTVER}_all.zip" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(md5sum ampache-${DISTVER}_all.zip)
+if [ "${CHECKSHA}" = "${ampachesha}  ampache-${DISTVER}_all.zip" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "MD5 check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+mkdir ${CVAPPNAME}
+/bin/mv ampache-${DISTVER}_all.zip ${CVAPPNAME}
+cd ${CVAPPNAME}
+/usr/bin/unzip ampache-${DISTVER}_all.zip
+/bin/rm ampache-${DISTVER}_all.zip
+cd ..
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has Ampache v${DISTVER}."
+

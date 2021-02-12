@@ -1,0 +1,21 @@
+#!/bin/sh
+## This is a config file for other verb scripts
+
+SITENAME="name286"
+SITEHOST="host286"
+SITETLD="tld286"
+SITESERVE="tldserve286"
+SERVEDIR="servedir286"
+SERVEPATH="serveuri286/servedir286"
+SITEIP="ip286"
+SITEIPV4="ip286"
+SITEIPV6="ipv6286"
+SITEEXPIPV6="expip6286"
+SITEARPAIP4="arpaip286"
+SITEARPAIP6="arpaipv6286"
+SITETIMECITY="timecity286"
+SITEUPDATEREPO="updaterepo286"
+SITEINKERDNS="ns0.inkisaverb.com"
+SITESECONDDNS="ns1.inkisaverb.com"
+SITEINKERIP4="NOT_SET"
+SITEINKERIP6="NOT_SET"

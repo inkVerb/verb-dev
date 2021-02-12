@@ -1,0 +1,56 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the WordPress repo package
+
+# How to use:
+## ./wordpress.updaterepo
+
+
+CVAPPNAME=wp
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${wordpress}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the WordPress package to the latest version..."
+
+# Get the package
+/bin/rm -rf latest.tar.gz
+/usr/bin/wget https://wordpress.org/latest.tar.gz
+if [ ! -f "latest.tar.gz" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+/bin/rm -rf latest.tar.gz.sha1
+/usr/bin/wget https://wordpress.org/latest.tar.gz.sha1
+CHECKSHA=$(sha1sum latest.tar.gz)
+READSHA=$(cat latest.tar.gz.sha1)
+if [ "${CHECKSHA}" = "${READSHA}  latest.tar.gz" ]; then
+/bin/echo "Download checks out."
+/bin/rm latest.tar.gz.sha1
+else
+/bin/echo "SHA check failed. Dunno why."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+tar -xvf latest.tar.gz
+/bin/rm latest.tar.gz
+## Note: "wordpress" goes by the nickname "wp" here
+/bin/mv wordpress ${CVAPPNAME}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has the latest version of WordPress."

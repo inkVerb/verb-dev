@@ -1,0 +1,20 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This updates the basic DigitalOcean API key for inkCert Certbot use with DigitalOcean DNS
+
+# How to use:
+## ./setinkcertcbdigoc [ The long DigitalOcean key here ]
+
+if [ -z $1 ]; then
+  echo "You must include your DigitalOcean API key"
+  exit 0
+else
+  cbdigocKey="$1"
+fi
+
+/bin/mkdir -p /opt/verb/.certbotsecrets/
+echo "# DigitalOcean API credentials used by Certbot
+dns_digitalocean_token=$cbdigocKey
+" > /opt/verb/.certbotsecrets/inkcertcbdigoc.ini
+/bin/chmod 600 -R /opt/verb/.certbotsecrets

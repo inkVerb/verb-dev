@@ -1,0 +1,27 @@
+; PTR Domain
+hostarpaip286		IN  PTR  hostdomain286.
+hostarpaipv6286		IN  PTR  hostdomain286.
+
+; PTR Subdomain Defaults
+hostarpaip286		IN  PTR  kiwi.hostdomain286.
+hostarpaipv6286		IN  PTR  kiwi.hostdomain286.
+hostarpaip286		IN  PTR  ampache.hostdomain286.
+hostarpaipv6286		IN  PTR  ampache.hostdomain286.
+hostarpaip286		IN  PTR  art.hostdomain286.
+hostarpaipv6286		IN  PTR  art.hostdomain286.
+hostarpaip286		IN  PTR  ejabberd.hostdomain286.
+hostarpaipv6286		IN  PTR  ejabberd.hostdomain286.
+hostarpaip286		IN  PTR  gallery.hostdomain286.
+hostarpaipv6286		IN  PTR  gallery.hostdomain286.
+hostarpaip286		IN  PTR  media.hostdomain286.
+hostarpaipv6286		IN  PTR  media.hostdomain286.
+hostarpaip286		IN  PTR  podcast.hostdomain286.
+hostarpaipv6286		IN  PTR  podcast.hostdomain286.
+hostarpaip286		IN  PTR  prosody.hostdomain286.
+hostarpaipv6286		IN  PTR  prosody.hostdomain286.
+hostarpaip286		IN  PTR  studio.hostdomain286.
+hostarpaipv6286		IN  PTR  studio.hostdomain286.
+hostarpaip286		IN  PTR  voip.hostdomain286.
+hostarpaipv6286		IN  PTR  voip.hostdomain286.
+hostarpaip286		IN  PTR  webrtc.hostdomain286.
+hostarpaipv6286		IN  PTR  webrtc.hostdomain286.

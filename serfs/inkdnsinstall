@@ -1,0 +1,87 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This installs Bind DNS for managing DNS records in the inkDNS zone file on this Verber
+## This makes the server itself tha authoritative DNS server with a default/optional backup serfer
+## If the backup server is not specified, the default will be used, which should be used unless this is a domain mod
+
+# How to use:
+## ./inkdnsinstall [ns domain - optional]
+
+# Eg:
+## ./inkdnsinstall
+## ./inkdnsinstall ns3.inkisaverb.com
+## ./inkdnsinstall ns.poetryiscode.com
+
+
+# Check if installed
+if [ -f /opt/ink/conf/inkdns/inkdnsstatus ]; then
+. /opt/ink/conf/inkdns/inkdnsstatus
+ if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
+/bin/echo "inkDNS already installed."
+exit 2
+ fi
+fi
+
+# Include the configs
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/siteurilist
+
+# Set the Inker
+/opt/verb/serfs/inkdnssetinker
+
+# Install Bind
+/usr/bin/apt-get install -y net-tools bind9 bind9utils
+/usr/sbin/ufw allow bind9
+
+# Backup settings
+cd /etc/bind
+/bin/mv named.conf.options named.conf.options.original
+
+# Config
+/bin/cp -f /opt/verb/conf/inkdns/named.conf.options /etc/bind/
+/bin/chown bind:bind /etc/bind/named.conf.options
+/bin/chmod 644 /etc/bind/named.conf.options
+
+# Set the NS domains
+/bin/sed -i "s/DNSID286\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/zones/*
+/bin/sed -i "s/DNSID286\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/*
+/bin/sed -i "s/ns1\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/zones/*
+/bin/sed -i "s/ns1\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/*
+/bin/sed -i "s/ns2\.DNSDOMAIN286/${SITEINKERDNS}/g" /opt/verb/conf/inkdns/zones/*
+/bin/sed -i "s/ns2\.DNSDOMAIN286/${SITEINKERDNS}/g" /opt/verb/conf/inkdns/*
+/bin/sed -i "s/ns3\.DNSDOMAIN286/${SITE2INKERDNS}/g" /opt/verb/conf/inkdns/zones/*
+/bin/sed -i "s/ns3\.DNSDOMAIN286/${SITE2INKERDNS}/g" /opt/verb/conf/inkdns/*
+
+## DEV: FYI apparmor permissions are here: /etc/apparmor.d/usr.sbin.named
+
+# DNS serial number
+/bin/echo '0 0 * * * root /opt/verb/donjon/rmserial.sh > /dev/null 2>&1' > /etc/cron.d/dnsserial
+/bin/chmod 0644 /etc/cron.d/dnsserial
+/bin/echo '#!/bin/sh
+/bin/rm -f /opt/verb/conf/inkdns/serial' > /opt/verb/donjon/rmserial.sh
+/bin/chmod 750 /opt/verb/donjon/rmserial.sh
+
+# include the verb file
+/bin/echo '// Below added by #inkVerb-inkDNS' >> /etc/bind/named.conf.local
+/bin/echo 'include "/etc/bind/named.conf.rdns";' >> /etc/bind/named.conf.local
+/bin/echo 'include "/etc/bind/named.conf.verb";' >> /etc/bind/named.conf.local
+
+# Allow the port
+/usr/sbin/ufw allow 53
+/usr/sbin/ufw allow bind9
+
+# Restart
+/etc/init.d/bind9 restart
+
+# Config
+/bin/echo "#!/bin/sh
+
+INKDNSSTAT=INSTALLED
+" > /opt/verb/conf/inkdns/inkdnsstatus
+
+# Refresh all records
+/opt/verb/serfs/inkdnsrefreshbind
+
+# Finish
+/bin/echo "inkDNS installed."

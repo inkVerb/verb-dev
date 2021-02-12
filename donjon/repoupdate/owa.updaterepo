@@ -1,0 +1,51 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the SuiteCRM repo package
+
+# How to use:
+## ./owa.updaterepo
+
+
+CVAPPNAME=owa
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${owa}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the OWA package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget https://github.com/padams/Open-Web-Analytics/archive/${DISTVER}.tar.gz
+if [ ! -f "${DISTVER}.tar.gz" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(shasum -a 256 ${DISTVER}.tar.gz)
+if [ "${CHECKSHA}" = "${owasha}  ${DISTVER}.tar.gz" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+tar -xvf ${DISTVER}.tar.gz
+/bin/rm ${DISTVER}.tar.gz
+/bin/mv Open-Web-Analytics-${DISTVER} ${CVAPPNAME}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has OWA v${DISTVER}."
+

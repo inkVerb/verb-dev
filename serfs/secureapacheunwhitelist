@@ -1,0 +1,33 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This UN-whitelists an IP4 address mod_sec for Apache security
+
+# How to use:
+## ./secureapacheunwhitelist
+
+
+WLIP4="$1"
+InlineWLIP4="$(echo "$WLIP4" | /bin/sed "s/\./\\\\\\\\\./g")"
+EntryWLIP4="SecRule REMOTE_ADDR \"^$InlineWLIP4\" \"phase:1,nolog,allow,ctl:ruleEngine=off,id:20000221\""
+DeleteWLIP4="SecRule REMOTE_ADDR \"\^$InlineWLIP4\" \"phase:1,nolog,allow,ctl:ruleEngine=off,id:20000221\""
+# Check if done
+if [ -f /opt/verb/conf/secapache ]; then
+  . /opt/verb/conf/secapache
+
+if [ $SEC_APACHE != "done" ]; then
+  /bin/echo "secureapache not installed. Do that first"
+  exit 0
+fi
+
+else
+  /bin/echo "secureapache not installed. Do that first"
+  exit 0
+fi
+
+# Remove the entry
+/bin/sed -i "/$DeleteWLIP4/d" /etc/apache2/apache2.conf
+/bin/systemctl restart apache2
+
+# Finish
+/bin/echo "$WLIP4 no longer whitelisted for Apache secure."

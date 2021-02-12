@@ -1,0 +1,52 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the NextCloud repo package
+
+# How to use:
+## ./nextcloud.updaterepo
+
+
+CVAPPNAME=nextcloud
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${nextcloud}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the NextCloud package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget https://download.nextcloud.com/server/releases/nextcloud-${DISTVER}.tar.bz2
+if [ ! -f "nextcloud-${DISTVER}.tar.bz2" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+/usr/bin/wget https://download.nextcloud.com/server/releases/nextcloud-${DISTVER}.tar.bz2.sha256
+CHECKSHA=$(shasum -a 256 -c nextcloud-${DISTVER}.tar.bz2.sha256 < nextcloud-${DISTVER}.tar.bz2)
+if [ "${CHECKSHA}" = "nextcloud-${DISTVER}.tar.bz2: OK" ]; then
+/bin/echo "Download checks out."
+/bin/rm nextcloud-${DISTVER}.tar.bz2.sha256
+else
+/bin/echo "SHA check failed. Dunno why."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+tar -xvjf nextcloud-${DISTVER}.tar.bz2
+/bin/rm nextcloud-${DISTVER}.tar.bz2
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has NextCloud v${DISTVER}."
+

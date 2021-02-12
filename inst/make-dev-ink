@@ -1,0 +1,12 @@
+#!/bin/sh
+#inkVerbMaker! verb.ink
+
+# This sets the inkNet repo to ink.ink.verb.ink for dev purposes
+# How to use:
+## ./make-dev-ink
+
+
+/bin/sed -i "s/INKGET_METHOD=.*/INKGET_METHOD=\"USE_WGET\"/" /opt/verb/conf/siteinkget
+/bin/sed -i "s/INKGET_REPO=.*/INKGET_REPO=\"ink\.ink\.verb\.ink\"/" /opt/verb/conf/siteinkget
+/bin/rm -f make-dev-ink
+

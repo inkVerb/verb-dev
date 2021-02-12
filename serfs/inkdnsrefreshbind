@@ -1,0 +1,103 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This resets a complete list of local inkDNS domains in the Bind9 config file: /etc/bind/named.conf.verb after copying inkDNS db. files to /var/lib/bind/zones/db.*
+
+# How to use:
+## ./inkdnsrefreshbind
+
+
+# Include the configs
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/siteurilist
+
+if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
+. /opt/verb/conf/inkdns/inkdnsstatus
+  if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
+
+# Stop Bind
+/bin/systemctl stop bind9
+
+    # Create the directories and configs
+    rm -rf /var/lib/bind/zones
+    cp -rf /opt/verb/conf/inkdns/zones /var/lib/bind/
+    /bin/chown -R bind:bind /var/lib/bind/zones
+    /bin/chmod -R 755 /var/lib/bind/zones
+
+    # inkDNS domain list file
+    rm -f /etc/bind/named.conf.verb
+    /bin/echo '// inkVerb-inkDNS domain list file, managed automatically, edits will likely be deleted' > /etc/bind/named.conf.verb
+    /bin/chown bind:bind /etc/bind/named.conf.verb
+    /bin/chmod 644 /etc/bind/named.conf.verb
+    # Refresh global inkDNS rDNS config & zone files
+    ## rDNS config
+      rm -f /etc/bind/named.conf.rdns
+    ### If Tertiary DNS (Secondary Inker) is set
+      if [ "${SITE2INKERIP6}" != "NOT_SET" ] && [ "${SITE2INKERIP4}" != "NOT_SET" ]; then
+      /bin/echo "// Created by inkDNS, managed automatically, edits will likely be deleted
+zone \"${SITEARPAIP6}\" { type master; notify explicit; also-notify { ${SITE2INKERIP6}; }; allow-transfer { ${SITE2INKERIP6}; }; file \"/var/lib/bind/nv.verber\"; allow-query { any; }; };
+zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITE2INKERIP4}; }; allow-transfer { ${SITE2INKERIP4}; }; file \"/var/lib/bind/nv.verber\"; allow-query { any; }; };
+" > /etc/bind/named.conf.rdns
+    ### If Tertiary DNS (Secondary Inker) is NOT set
+      else
+      /bin/echo "// Created by inkDNS, managed automatically, edits will likely be deleted
+zone \"${SITEARPAIP6}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; }; allow-transfer { ${SITEINKERIP6}; }; file \"/var/lib/bind/nv.verber\"; allow-query { any; }; };
+zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP4}; }; file \"/var/lib/bind/nv.verber\"; allow-query { any; }; };
+" > /etc/bind/named.conf.rdns
+      fi
+    ### Permissions
+      /bin/chown bind:bind /etc/bind/named.conf.rdns
+      /bin/chmod 644 /etc/bind/named.conf.rdns
+    ## rDNS zone file
+      rm -f /var/lib/bind/nv.verber
+      /bin/echo "\$TTL    86400
+@		IN  SOA		${hostURI}. root.${nameURI}. (
+0000000001		; Serial No
+10800			; Refresh
+3600			; Retry
+604800			; Expire
+1800 )			; Minimum TTL
+
+; Nameserver Defaults
+@		IN  NS		${hostURI}.
+@		IN  NS		${SITEINKERDNS}.
+@		IN  NS		${SITE2INKERDNS}.
+
+; Hosted Domains" > /var/lib/bind/nv.verber
+      /bin/chown bind:bind /var/lib/bind/nv.verber
+      /bin/chmod 644 /var/lib/bind/nv.verber
+    ## rDNS zone file entries
+    cd /var/lib/bind/zones/
+    for inkZoneDB in db.*; do
+      inkZone="$(/bin/echo ${inkZoneDB} | sed 's/db\.//' )"
+      /bin/echo "zone \"${inkZone}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP6}; ${SITEINKERIP4}; }; file \"/var/lib/bind/zones/db.${inkZone}\"; };
+" >> /etc/bind/named.conf.verb
+      /bin/echo "\$INCLUDE \"/var/lib/bind/zones/nv.${inkZone}\";" >> /var/lib/bind/nv.verber
+    done
+    ## Set the new serial (code imported from inkdnsserial)
+    ### Create the datestamp
+    DATESTAMP="$(date '+%Y%m%d')"
+    ### Set the increment for today
+    touch /opt/verb/conf/inkdns/serial
+    OLDSERIAL="$(/bin/cat /opt/verb/conf/inkdns/serial)"
+    #### Keep it to two digits
+    if [ "${OLDSERIAL}" -gt "98" ]; then
+    OLDSERIAL="0"; fi
+    #### Keep the digits double
+    NEWSERIAL=$(expr ${OLDSERIAL} + 1)
+    if [ "${NEWSERIAL}" -le "9" ]; then
+    NEWSERIAL="0${NEWSERIAL}"; fi
+    #### Record the serial
+    /bin/echo "${NEWSERIAL}" > /opt/verb/conf/inkdns/serial
+    ### Create a datestamp-based serial number to the second (how inkVerb does it)
+    SERNO="${DATESTAMP}${NEWSERIAL}\t\t; Serial No"
+    ### Set it in the file
+    sed -i "/; Serial No/c ${SERNO}" /var/lib/bind/nv.verber
+
+  else /bin/echo "inkDNS not installed, run inkdnsinstall first."; exit 0
+  fi
+else /bin/echo "inkDNS not installed, run inkdnsinstall first."; exit 0
+fi
+
+# Restart Bind
+/bin/systemctl restart bind9

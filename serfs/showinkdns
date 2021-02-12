@@ -1,0 +1,17 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This displays the inkDNS DNS zone file for a specific domain on this Verber
+## inkDNS is the inkVerb method of handling DNS zone records for domains hosted on its server
+
+# How to use:
+## ./showinkdns [domain.tld]
+
+
+DOMAIN=$1
+
+/bin/echo "Zone file:"
+/bin/cat /opt/verb/conf/inkdns/zones/db.${DOMAIN}
+/bin/echo "#######"
+/bin/echo "Inverse lookup file:"
+/bin/cat /opt/verb/conf/inkdns/zones/nv.${DOMAIN}

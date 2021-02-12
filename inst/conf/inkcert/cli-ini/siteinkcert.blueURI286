@@ -1,0 +1,3 @@
+#!/bin/sh
+INKCERTED=NOT_YET
+

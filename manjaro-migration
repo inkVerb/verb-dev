@@ -1,0 +1,23 @@
+# Verb
+sed -i "s/apt-get install -y/pacman -S --noconfirm/g" *
+sed -i "s/apt-get autoremove -y/pacman -Qdt/g" *
+sed -i "s/apt-get upgrade -y/pacman -Syyu --noconfirm/g" *
+
+# To-do list
+## snakeoil done manually
+pacman -S --noconfirm ssl-cert # fail ## Read this: https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-on-arch-linux
+
+
+
+# WordPress on Nginx
+https://bbs.archlinux.org/viewtopic.php?id=218765
+
+# WordPress on Arch
+https://wiki.archlinux.org/index.php/Wordpress
+
+# Apache on Arch
+https://wiki.archlinux.org/index.php/Apache_HTTP_Server
+## Talk
+https://wiki.archlinux.org/index.php/Talk:Apache_HTTP_Server#User_Directories
+# No package
+

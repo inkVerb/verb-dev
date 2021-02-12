@@ -1,0 +1,53 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the OrangeHRM repo package
+
+# How to use:
+## ./mediawiki.updaterepo
+
+
+CVAPPNAME=mediawiki
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${mediawiki}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the MediaWiki package to v${DISTVER}..."
+
+# Get the package
+## Thanks StackOverflow (https://stackoverflow.com/questions/52455153/how-to-remove-after-second-period-in-a-string-using-sed)
+SHRTVER="$(/bin/echo "$DISTVER" | sed 's/\.[^.]\+$//')"
+/usr/bin/wget https://releases.wikimedia.org/mediawiki/${SHRTVER}/mediawiki-${DISTVER}.tar.gz
+if [ ! -f "mediawiki-${DISTVER}_all.tar.gz" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(sha1sum mediawiki-${DISTVER}.tar.gz)
+if [ "${CHECKSHA}" = "${mediawikisha}  mediawiki-${DISTVER}.tar.gz" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+tar xvf mediawiki-${DISTVER}.tar.gz
+/bin/rm mediawiki-${DISTVER}.tar.gz
+/bin/mv mediawiki-${DISTVER} ${CVAPPNAME}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has MediaWiki v${DISTVER}."
+

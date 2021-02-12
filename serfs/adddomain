@@ -1,0 +1,57 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This adds a new domain, complete with OpenDKIM profiles and keys and inkCert and Apache configs
+## This also creates a folder for the domain in www/domains which an ftpvip can access
+## This also creates an inkDNS zone file, complete with mail records
+
+# How to use:
+## ./adddomain [newdomain.tld]
+
+
+# Include settings
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/inkcert/inkcertstatus
+
+NEWDOMAIN=$1
+
+# Check the domain shell
+if [ ! -f /opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN} ]; then
+/bin/echo "The shell for ${NEWDOMAIN} does not exist yet. Creating it..."
+/opt/verb/serfs/newdomainshell ${NEWDOMAIN}; wait
+fi
+
+# Check if it already exists
+if [ -f /etc/apache2/sites-available/${NEWDOMAIN}.conf ]; then
+ if [ -f /etc/apache2/sites-enabled/${NEWDOMAIN}.conf ]; then
+ /bin/echo "That domain already exists."
+ exit 0
+ else
+ /bin/echo "That site's config exists, but it doesn't seem to be active on Apache. Something's not right."
+ exit 0
+ fi
+fi
+
+# Copy and prepare Apache server config files
+/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /etc/apache2/sites-available/${NEWDOMAIN}.conf
+/bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /etc/apache2/sites-available/${NEWDOMAIN}.conf
+if [ ! -d /var/www/domains/${NEWDOMAIN} ]; then
+/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /var/www/domains/${NEWDOMAIN}
+fi
+/bin/ln -sfn /var/www/domains/${NEWDOMAIN} /var/www/html/
+/bin/chown -R www-data:www-data /var/www/html/${NEWDOMAIN}
+/bin/chown -R www-data:www-data /var/www/domains/${NEWDOMAIN}
+/bin/chmod -R 750 /var/www/domains/${NEWDOMAIN}
+/opt/verb/serfs/nginxensite ${NEWDOMAIN}
+/usr/sbin/apache2ctl graceful
+## Just in case...
+/bin/systemctl start apache2
+
+# inkCert
+## Ensure that you don't get double entries
+/bin/sed -i "s/, ${NEWDOMAIN}/ /g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
+## Add it to the cli-ini
+/bin/sed -i "/^domains =/ s/$/, ${NEWDOMAIN}/" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
+
+# Finish
+/bin/echo "Great! With no error messages, you are ready to run inkCert for ${NEWDOMAIN}, unless you want to add subdomains."

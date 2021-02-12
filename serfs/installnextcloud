@@ -1,0 +1,120 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This downloads and installs Nextcloud manually from inkisaverb.com/repo and linnks it to ....verb.blue
+
+# All options are optional, but must are sequential, omit last options first.
+
+# How to use:
+## ./installnextcloud [latest/repo (optional, default latest, needed for following settings)] [dbase] [dbuser] [dbpassword]
+
+# Eg:
+## ./installnextcloud repo
+## ./installnextcloud latest bestdbase trump besteverpass
+
+
+CVAPPNAME=nextcloud
+
+# Include the configs
+. /opt/verb/conf/sitenameip
+. /opt/verb/conf/siteurilist
+. /opt/verb/conf/sitemailpath
+
+LATREP=$1
+DBASE=$2
+DBUSER=$3
+DBPASSWORD=$4
+CLEANNAME=$(/bin/echo $CVAPPNAME | sed -e 's/\.//g')
+
+# Check if already installed
+## Config
+if [ -f /opt/verb/conf/vapp.${CVAPPNAME} ]; then
+/bin/echo "This is already installed."
+exit 0; fi
+## Directory
+if [ -d /var/www/vapps/${CVAPPNAME} ]; then
+/bin/echo "Nextcloud already exists in the system. If it isn't working, look deeper on the server. For now, doing nothing."
+exit 8; fi
+
+# Do it
+cd /var/www/vapps
+## Get and unpack
+/bin/echo "Getting Nextcloud, this could take a minute or so..."
+### Repo version ('stable' inkVerb recommendation)
+if [ ${LATREP}="repo" ]; then
+/opt/verb/serfs/inkget ${CVAPPNAME}; wait
+### Check
+/opt/verb/serfs/inkget ${CVAPPNAME} check
+if [ "$?" = 4 ]; then
+/bin/echo "Repo failed to retrieve the file."
+exit 4; fi
+if [ ! -f ${CVAPPNAME}.vtxz ]; then
+/bin/echo "Failed to retrieve from the repo."
+exit 4; fi
+
+/bin/rm -rf ${CVAPPNAME}
+/opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
+### Latest Release Candidate version (default)
+elif [ -z ${1} ] || [ ${LATREP}="latest" ]; then
+/usr/bin/wget https://download.nextcloud.com/server/daily/latest.tar.bz2
+if [ ! -f latest.tar.bz2 ]; then
+/bin/echo "Can't download Nextcloud. I quit."
+exit 4; fi
+
+/bin/rm -rf nextcloud
+/bin/tar -xvjf latest.tar.bz2
+/bin/rm -f latest.tar.bz2
+fi
+## Install it
+/opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
+/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www-data:www-data /var/www/html/blue.nc; wait
+## Run the Nextcloud script
+/opt/verb/donjon/nextcloudprep.sh; wait
+## Verify ownership
+/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+
+## Set up cron for updates (manage the crontab files directly)
+/bin/echo '*/15 * * * *  www-data php -f /var/www/vapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
+/bin/chmod 0644 /etc/cron.d/nextcloud
+
+# Auto database
+if [ -z ${4} ]; then
+DBPASSWORD=$(/usr/bin/pwgen -s -1 10); fi
+if [ -z ${2} ]; then
+DBASE=${CLEANNAME}$(/usr/bin/pwgen -s -1 6); fi
+if [ -z ${3} ]; then
+DBUSER=${DBASE}; fi
+
+# Create the database and credentials
+/usr/bin/mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf -e "
+CREATE DATABASE  ${DBASE};
+GRANT ALL PRIVILEGES ON ${DBASE}.* TO '${DBUSER}'@'localhost' IDENTIFIED BY '${DBPASSWORD}';
+FLUSH PRIVILEGES;"
+
+# Write the config for backup
+/bin/echo "#!/bin/sh
+APPDBASE=${DBASE}
+APPDDBUSR=${DBUSER}
+APPDDBPAS=${DBPASSWORD}" > /opt/verb/conf/vapp.${CVAPPNAME}
+
+/bin/echo "These are setup:
+
+Database user: ${DBUSER}
+Database password: ${DBPASSWORD}
+Database name: ${DBASE}
+Host: localhost
+
+*Don't make any other changes during the install!
+
+Go to https://nc.${blueURI} to install.
+
+After installing, do important Admin settings at https://nc.${blueURI}/index.php/settings/admin
+1. Background jobs
+- Cron
+2. Email
+- Server address: smtp.${nameURI} Port: 25 (Send mode: SMTP)
+- From address: Use an email address you set up at https://pfa.${emailTLDURI}/${SITEPFAPATH}
+
+After, you may want to run setnextcloudbfdoff to disable brute force detection in order to allow some client apps to work. You can always turn it on again with setnextcloudbfdon
+"

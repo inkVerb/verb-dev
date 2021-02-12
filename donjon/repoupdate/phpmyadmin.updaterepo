@@ -1,0 +1,51 @@
+#!/bin/sh
+#inkVerb! repo donjon dragon, verb.ink
+#set -e
+
+# This updates the phpMyAdmin repo package
+
+# How to use:
+## ./phpmyadmin.updaterepo
+
+
+CVAPPNAME=phpmyadmin
+# Include the repo versions
+. /opt/verb/conf/inklists/repoverlist
+DISTVER="${phpmyadmin}"
+
+cd /opt/verb/repo
+
+# Announce
+/bin/echo "Updating the phpMyAdmin package to v${DISTVER}..."
+
+# Get the package
+/usr/bin/wget https://files.phpmyadmin.net/phpMyAdmin/${DISTVER}/phpMyAdmin-${DISTVER}-all-languages.zip
+if [ ! -f "phpMyAdmin-${DISTVER}-all-languages.zip" ]; then
+/bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
+exit 4; else
+/bin/rm -f ${CVAPPNAME}.failed; fi
+## Check the hash
+CHECKSHA=$(shasum -a 256 phpMyAdmin-${DISTVER}-all-languages.zip)
+if [ "${CHECKSHA}" = "${phpmyadminsha}  phpMyAdmin-${DISTVER}-all-languages.zip" ]; then
+/bin/echo "Download checks out."
+else
+/bin/echo "SHA check failed. The downloaded file is not what was expected."
+exit 4
+fi
+
+# Set it as the new package
+/bin/rm -f ${CVAPPNAME}.legacy.vtxz
+/usr/bin/touch ${CVAPPNAME}.vtxz
+/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/unzip phpMyAdmin-${DISTVER}-all-languages.zip
+/bin/rm phpMyAdmin-${DISTVER}-all-languages.zip
+/bin/mv phpMyAdmin-${DISTVER}-all-languages ${CVAPPNAME}
+/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+/bin/rm -rf ${CVAPPNAME}
+
+# Make a record of current version
+/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+
+# Finish
+/bin/echo "Done. This repo now has phpMyAdmin v${DISTVER}."
+

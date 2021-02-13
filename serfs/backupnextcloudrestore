@@ -24,18 +24,18 @@ FILENAME=$1
 # Backup whatever the original status is
 if [ -e "/opt/verb/conf/vapp.nextcloud" ]; then
 . /opt/verb/conf/vapp.nextcloud
-cd /var/www/vapps/nextcloud/data
+cd /srv/www/vapps/nextcloud/data
 /opt/verb/serfs/mysqlvappout vapp.nextcloud; wait
 /bin/cp /opt/verb/conf/vapp.nextcloud .
-cd /var/www/vapps/nextcloud
+cd /srv/www/vapps/nextcloud
 /opt/verb/serfs/vtxzin data
 /bin/mv data.vtxz verb.nextcloud.restore-originalbackedup.vbak
-/bin/mv verb.nextcloud.restore-originalbackedup.vbak /var/www/vip/
-/bin/rm -rf /var/www/vapps/nextcloud/data
+/bin/mv verb.nextcloud.restore-originalbackedup.vbak /srv/www/vip/
+/bin/rm -rf /srv/www/vapps/nextcloud/data
 fi
 
 # Unpack the file
-cd /var/www/vip
+cd /srv/www/vip
 /bin/mv ${FILENAME} data.vtxz
 /opt/verb/serfs/vtxzout data
 cd data
@@ -43,24 +43,24 @@ cd data
 /bin/rm -f nextcloud.log
 /bin/rm -rf updater-data
 cd ..
-/bin/cp /var/www/vapps/nextcloud/data/index.html data/
-/bin/cp /var/www/vapps/nextcloud/data/nextcloud.log data/
-/bin/rm -rf /var/www/vapps/nextcloud/data
-/bin/mv data /var/www/vapps/nextcloud/
+/bin/cp /srv/www/vapps/nextcloud/data/index.html data/
+/bin/cp /srv/www/vapps/nextcloud/data/nextcloud.log data/
+/bin/rm -rf /srv/www/vapps/nextcloud/data
+/bin/mv data /srv/www/vapps/nextcloud/
 
 # Restore and include the app config
-. /var/www/vapps/nextcloud/data/vapp.nextcloud
+. /srv/www/vapps/nextcloud/data/vapp.nextcloud
 OLDDBASE="${APPDBASE}"
 . /opt/verb/conf/vapp.nextcloud
 
 # Restore the database
-cd /var/www/vapps/nextcloud/data
+cd /srv/www/vapps/nextcloud/data
 /bin/mv ${OLDDBASE}.sql ${APPDBASE}.sql; wait
 /opt/verb/serfs/mysqlin ${APPDBASE}; wait
 /bin/rm -f ${APPDBASE}.sql
 
 # Own
-/bin/chown -R www-data:www-data /var/www/vapps/nextcloud
+/bin/chown -R www:www /srv/www/vapps/nextcloud
 
 # Finish
 /bin/echo "Owncloud's user data has been restored and all its backup files removed from this server.

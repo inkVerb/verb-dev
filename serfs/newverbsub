@@ -35,9 +35,9 @@ fi
 /bin/sed -i "/^domains =/ s/$/, ${SUBDOMAIN}.${tldURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${tldURI}.ini
 
 # Create the http dir
-cd /var/www/html
+cd /srv/www/html
 /bin/cp -R 0ne ${TLD}.${SUBDOMAIN}
-/bin/chown -R www-data:www-data /var/www/html/${TLD}.${SUBDOMAIN}
+/bin/chown -R www:www /srv/www/html/${TLD}.${SUBDOMAIN}
 
 # Apache
 ## If setupverb has already run

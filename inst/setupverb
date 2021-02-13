@@ -220,40 +220,40 @@ serveDIR="$(/usr/bin/pwgen -s -1 6)"
 /bin/chmod -R 750 /opt/verb/conf/site-files/newvipsubdir
 /bin/chmod -R 750 /opt/verb/conf/site-files/newonesubdir
 ## Replace
-/bin/cp /opt/verb/inst/root-config/etc/apache2/sites-available/* /etc/apache2/sites-available/
-/bin/sed -i "s/emailURI286/${emailURI}/g" /etc/apache2/sites-available/*.conf
-/bin/sed -i "s/oneURI286/${oneURI}/g" /etc/apache2/sites-available/*.conf
-/bin/sed -i "s/inkURI286/${inkURI}/g" /etc/apache2/sites-available/*.conf
-/bin/sed -i "s/blueURI286/${blueURI}/g" /etc/apache2/sites-available/*.conf
-/bin/sed -i "s/vipURI286/${vipURI}/g" /etc/apache2/sites-available/*.conf
-/bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /etc/apache2/sites-available/*.conf
-/bin/sed -i "s/redURI286/${redURI}/g" /etc/apache2/sites-available/*.conf
+/bin/cp /opt/verb/inst/root-config/etc/nginx/sites-available/* /etc/nginx/sites-available/
+/bin/sed -i "s/emailURI286/${emailURI}/g" /etc/nginx/sites-available/*.conf
+/bin/sed -i "s/oneURI286/${oneURI}/g" /etc/nginx/sites-available/*.conf
+/bin/sed -i "s/inkURI286/${inkURI}/g" /etc/nginx/sites-available/*.conf
+/bin/sed -i "s/blueURI286/${blueURI}/g" /etc/nginx/sites-available/*.conf
+/bin/sed -i "s/vipURI286/${vipURI}/g" /etc/nginx/sites-available/*.conf
+/bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /etc/nginx/sites-available/*.conf
+/bin/sed -i "s/redURI286/${redURI}/g" /etc/nginx/sites-available/*.conf
 ## Rename
-for cfg in /etc/apache2/sites-available/*emailURI286.conf
+for cfg in /etc/nginx/sites-available/*emailURI286.conf
 do
   mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
 done
-for cfg in /etc/apache2/sites-available/*oneURI286.conf
+for cfg in /etc/nginx/sites-available/*oneURI286.conf
 do
   mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
 done
-for cfg in /etc/apache2/sites-available/*inkURI286.conf
+for cfg in /etc/nginx/sites-available/*inkURI286.conf
 do
   mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
 done
-for cfg in /etc/apache2/sites-available/*blueURI286.conf
+for cfg in /etc/nginx/sites-available/*blueURI286.conf
 do
   mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
 done
-for cfg in /etc/apache2/sites-available/*vipURI286.conf
+for cfg in /etc/nginx/sites-available/*vipURI286.conf
 do
   mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
 done
-for cfg in /etc/apache2/sites-available/*kiwiURI286.conf
+for cfg in /etc/nginx/sites-available/*kiwiURI286.conf
 do
   mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
 done
-for cfg in /etc/apache2/sites-available/*redURI286.conf
+for cfg in /etc/nginx/sites-available/*redURI286.conf
 do
   mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
 done
@@ -350,12 +350,10 @@ fi
 if [ ${VERBkiwi}=true ]; then
 /opt/verb/serfs/nginxensite ${kiwiURI} kiwi.${kiwiURI} ampache.${kiwiURI} art.${kiwiURI} ejabberd.${kiwiURI} gallery.${kiwiURI} media.${kiwiURI} podcast.${kiwiURI} prosody.${kiwiURI} studio.${kiwiURI} voip.${kiwiURI} webrtc.${kiwiURI}
 fi
-if [ ${VERBpink}=true ]; then
-fi
 if [ ${VERBred}=true ]; then
 /opt/verb/serfs/nginxensite ${redURI} red.${redURI} act.${redURI} crm.${redURI} erp.${redURI} hrm.${redURI} odoo.${redURI} owa.${redURI} scm.${redURI}
 fi
-/bin/systemctl reload apache2
+/bin/systemctl reload nginx
 
 # Create the new boss user
 /usr/sbin/adduser ${NEWBOSS} --gecos ",,," --disabled-password

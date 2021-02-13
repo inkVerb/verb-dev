@@ -23,22 +23,22 @@ fi
 . /opt/verb/conf/siteurilist
 
 # Export the database
-cd /var/www/email/roundcube
+cd /srv/www/email/roundcube
 /opt/verb/serfs/mysqlex rcmail; wait
 
 # Copy the config
-/bin/cp /opt/verb/conf/sitemailpath /var/www/email/roundcube/sitemailpath-old
-/bin/cp /opt/verb/conf/sitemailpass /var/www/email/roundcube/sitemailpass-old
-/bin/cp /opt/verb/conf/sitenameip /var/www/email/roundcube/sitenameip-old
+/bin/cp /opt/verb/conf/sitemailpath /srv/www/email/roundcube/sitemailpath-old
+/bin/cp /opt/verb/conf/sitemailpass /srv/www/email/roundcube/sitemailpass-old
+/bin/cp /opt/verb/conf/sitenameip /srv/www/email/roundcube/sitenameip-old
 
 # Pack the directory
-cd /var/www/email
+cd /srv/www/email
 /opt/verb/serfs/vtxzin roundcube
 /bin/mv roundcube.vtxz verb.roundcube.${SECNAME}.vbak
 
 # Move to web-download area
-/bin/mv verb.roundcube.${SECNAME}.vbak /var/www/vip/
-/bin/chown -R www-data:www-data /var/www/html/${nameURI}/verb.roundcube.${SECNAME}.vbak
+/bin/mv verb.roundcube.${SECNAME}.vbak /srv/www/vip/
+/bin/chown -R www:www /srv/www/html/${nameURI}/verb.roundcube.${SECNAME}.vbak
 
 if [ "$2" = "-nl" ]; then
 /bin/echo "The email server data has been backed up to the 'vip' folder.
@@ -46,7 +46,7 @@ Note that the email server remains live."
 exit 0
 fi
 
-/bin/ln -sfn /var/www/vip/verb.roundcube.${SECNAME}.vbak /var/www/html/${SITESERVE}.serve/${SERVEDIR}/
+/bin/ln -sfn /srv/www/vip/verb.roundcube.${SECNAME}.vbak /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/
 /bin/echo "The email server data has been backed up to the 'vip' folder and can also be downloaded at
 
 http://${SERVEPATH}/verb.roundcube.${SECNAME}.vbak

@@ -15,7 +15,7 @@
 . /opt/verb/conf/siteurilist
 
 # Make the commute to where we will work
-cd /var/www/html
+cd /srv/www/html
 
 # Remove broken links
 find -L . -name . -o -type d -prune -o -type l -exec rm {} +
@@ -28,20 +28,20 @@ find -L . -name . -o -type d -prune -o -type l -exec rm {} +
 /bin/cp -r 0sitedefaultInProgress vsslsitedefault
 /bin/rm -rf 0ne
 /bin/mkdir 0ne
-/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /var/www/html/0ne/index.php
+/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /srv/www/html/0ne/index.php
 /bin/chmod -R 750 0ne
 
 # Block web folder listing
-/bin/echo "Options -Indexes" >> /var/www/html/.htaccess
-/bin/echo "Options -Indexes" >> /var/www/html/0ne/.htaccess
-/bin/echo "Options -Indexes" >> /var/www/html/0sitedefaultInProgress/.htaccess
+/bin/echo "Options -Indexes" >> /srv/www/html/.htaccess
+/bin/echo "Options -Indexes" >> /srv/www/html/0ne/.htaccess
+/bin/echo "Options -Indexes" >> /srv/www/html/0sitedefaultInProgress/.htaccess
 
 # Verb sites
 if [ ! -e ink ]; then cp -r 0sitedefaultInProgress ink; fi
 if [ ! -e email ]; then cp -r 0ne email; fi
 if [ ! -e one ]; then cp -r 0ne one
-/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /var/www/html/one/index-one.php
-/bin/echo "<?php header(\"Location: http://newonesub.${oneURI}\"); die(); ?>" > /var/www/html/one/index-newonesub.php
+/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /srv/www/html/one/index-one.php
+/bin/echo "<?php header(\"Location: http://newonesub.${oneURI}\"); die(); ?>" > /srv/www/html/one/index-newonesub.php
 fi
 if [ ! -e ink.ask ]; then cp -r 0ne ink.ask; fi
 if [ ! -e ink.bb ]; then cp -r 0ne ink.bb; fi
@@ -53,17 +53,17 @@ if [ ! -e ink.shop ]; then cp -r 0ne ink.shop; fi
 if [ ! -e ink.sn ]; then cp -r 0ne ink.sn; fi
 if [ ! -e ink.wiki ]; then cp -r 0ne ink.wiki; fi
 if [ ! -e blue ]; then cp -r 0ne blue
-/bin/echo "<?php header(\"Location: http://caldav.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-caldav.php
-/bin/echo "<?php header(\"Location: http://carddav.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-carddav.php
-/bin/echo "<?php header(\"Location: http://chat.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-chat.php
-/bin/echo "<?php header(\"Location: http://collabora.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-collabora.php
-/bin/echo "<?php header(\"Location: http://dav.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-dav.php
-/bin/echo "<?php header(\"Location: http://nc.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-nc.php
-/bin/echo "<?php header(\"Location: http://owncloud.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-owncloud.php
-/bin/echo "<?php header(\"Location: http://seafile.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-seafile.php
-/bin/echo "<?php header(\"Location: http://webdav.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-webdav.php
-/bin/echo "<?php header(\"Location: http://xmpp.${blueURI}\"); die(); ?>" > /var/www/html/blue/index-xmpp.php
-/bin/echo "<?php header(\"Location: http://${blueURI}\"); die(); ?>" > /var/www/html/blue/index-blue.php
+/bin/echo "<?php header(\"Location: http://caldav.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-caldav.php
+/bin/echo "<?php header(\"Location: http://carddav.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-carddav.php
+/bin/echo "<?php header(\"Location: http://chat.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-chat.php
+/bin/echo "<?php header(\"Location: http://collabora.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-collabora.php
+/bin/echo "<?php header(\"Location: http://dav.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-dav.php
+/bin/echo "<?php header(\"Location: http://nc.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-nc.php
+/bin/echo "<?php header(\"Location: http://owncloud.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-owncloud.php
+/bin/echo "<?php header(\"Location: http://seafile.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-seafile.php
+/bin/echo "<?php header(\"Location: http://webdav.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-webdav.php
+/bin/echo "<?php header(\"Location: http://xmpp.${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-xmpp.php
+/bin/echo "<?php header(\"Location: http://${blueURI}\"); die(); ?>" > /srv/www/html/blue/index-blue.php
 fi
 if [ ! -e blue.ccaldavalda ]; then cp -r 0ne blue.caldav; fi
 if [ ! -e blue.carddav ]; then cp -r 0ne blue.carddav; fi
@@ -76,16 +76,16 @@ if [ ! -e blue.seafile ]; then cp -r 0ne blue.seafile; fi
 if [ ! -e blue.webdav ]; then cp -r 0ne blue.webdav; fi
 if [ ! -e blue.xmpp ]; then cp -r 0ne blue.xmpp; fi
 if [ ! -e vip ]; then cp -r 0ne vip
-/bin/echo "<?php header(\"Location: http://hrm.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-vip.php
-/bin/echo "<?php header(\"Location: http://newvipsub.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-newvipsub.php
-/bin/echo "<?php header(\"Location: http://cgi.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-cgi.php
-/bin/echo "<?php header(\"Location: http://ftp.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-ftp.php
-/bin/echo "<?php header(\"Location: http://files.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-files.php
-/bin/echo "<?php header(\"Location: http://fossil.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-fossil.php
-/bin/echo "<?php header(\"Location: http://ldap.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-ldap.php
-/bin/echo "<?php header(\"Location: http://net2ftp.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-net2ftp.php
-/bin/echo "<?php header(\"Location: http://repo.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-repo.php
-/bin/echo "<?php header(\"Location: http://sql.${vipURI}\"); die(); ?>" > /var/www/html/vip/index-sql.php
+/bin/echo "<?php header(\"Location: http://hrm.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-vip.php
+/bin/echo "<?php header(\"Location: http://newvipsub.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-newvipsub.php
+/bin/echo "<?php header(\"Location: http://cgi.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-cgi.php
+/bin/echo "<?php header(\"Location: http://ftp.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-ftp.php
+/bin/echo "<?php header(\"Location: http://files.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-files.php
+/bin/echo "<?php header(\"Location: http://fossil.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-fossil.php
+/bin/echo "<?php header(\"Location: http://ldap.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-ldap.php
+/bin/echo "<?php header(\"Location: http://net2ftp.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-net2ftp.php
+/bin/echo "<?php header(\"Location: http://repo.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-repo.php
+/bin/echo "<?php header(\"Location: http://sql.${vipURI}\"); die(); ?>" > /srv/www/html/vip/index-sql.php
 fi
 if [ ! -e vip.cgi ]; then cp -r 0ne vip.cgi; fi
 if [ ! -e vip.ftp ]; then cp -r 0ne vip.ftp; fi
@@ -96,17 +96,17 @@ if [ ! -e vip.net2ftp ]; then cp -r 0ne vip.net2ftp; fi
 if [ ! -e vip.repo ]; then cp -r 0ne vip.repo; fi
 if [ ! -e vip.sql ]; then cp -r 0ne vip.sql; fi
 if [ ! -e kiwi ]; then cp -r 0ne kiwi
-/bin/echo "<?php header(\"Location: http://ampache.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-ampache.php
-/bin/echo "<?php header(\"Location: http://art.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-art.php
-/bin/echo "<?php header(\"Location: http://ejabberd.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-ejabberd.php
-/bin/echo "<?php header(\"Location: http://gallery.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-gallery.php
-/bin/echo "<?php header(\"Location: http://media.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-media.php
-/bin/echo "<?php header(\"Location: http://podcast.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-podcast.php
-/bin/echo "<?php header(\"Location: http://prosody.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-prosody.php
-/bin/echo "<?php header(\"Location: http://studio.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-studio.php
-/bin/echo "<?php header(\"Location: http://voip.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-voip.php
-/bin/echo "<?php header(\"Location: http://webrtc.${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi/index-webrtc.php
-/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /var/www/html/kiwi/index-kiwi.php
+/bin/echo "<?php header(\"Location: http://ampache.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-ampache.php
+/bin/echo "<?php header(\"Location: http://art.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-art.php
+/bin/echo "<?php header(\"Location: http://ejabberd.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-ejabberd.php
+/bin/echo "<?php header(\"Location: http://gallery.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-gallery.php
+/bin/echo "<?php header(\"Location: http://media.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-media.php
+/bin/echo "<?php header(\"Location: http://podcast.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-podcast.php
+/bin/echo "<?php header(\"Location: http://prosody.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-prosody.php
+/bin/echo "<?php header(\"Location: http://studio.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-studio.php
+/bin/echo "<?php header(\"Location: http://voip.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-voip.php
+/bin/echo "<?php header(\"Location: http://webrtc.${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi/index-webrtc.php
+/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /srv/www/html/kiwi/index-kiwi.php
 fi
 if [ ! -e kiwi.ampache ]; then cp -r 0ne kiwi.ampache; fi
 if [ ! -e kiwi.art ]; then cp -r 0ne kiwi.art; fi
@@ -119,14 +119,14 @@ if [ ! -e kiwi.studio ]; then cp -r 0ne kiwi.studio; fi
 if [ ! -e kiwi.voip ]; then cp -r 0ne kiwi.voip; fi
 if [ ! -e kiwi.webrtc ]; then cp -r 0ne kiwi.webrtc; fi
 if [ ! -e red ]; then cp -r 0ne red
-/bin/echo "<?php header(\"Location: http://act.${redURI}\"); die(); ?>" > /var/www/html/red/index-act.php
-/bin/echo "<?php header(\"Location: http://crm.${redURI}\"); die(); ?>" > /var/www/html/red/index-crm.php
-/bin/echo "<?php header(\"Location: http://erp.${redURI}\"); die(); ?>" > /var/www/html/red/index-erp.php
-/bin/echo "<?php header(\"Location: http://hrm.${redURI}\"); die(); ?>" > /var/www/html/red/index-hrm.php
-/bin/echo "<?php header(\"Location: http://odoo.${redURI}\"); die(); ?>" > /var/www/html/red/index-odoo.php
-/bin/echo "<?php header(\"Location: http://owa.${redURI}\"); die(); ?>" > /var/www/html/red/index-owa.php
-/bin/echo "<?php header(\"Location: http://scm.${redURI}\"); die(); ?>" > /var/www/html/red/index-scm.php
-/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /var/www/html/red/index-red.php
+/bin/echo "<?php header(\"Location: http://act.${redURI}\"); die(); ?>" > /srv/www/html/red/index-act.php
+/bin/echo "<?php header(\"Location: http://crm.${redURI}\"); die(); ?>" > /srv/www/html/red/index-crm.php
+/bin/echo "<?php header(\"Location: http://erp.${redURI}\"); die(); ?>" > /srv/www/html/red/index-erp.php
+/bin/echo "<?php header(\"Location: http://hrm.${redURI}\"); die(); ?>" > /srv/www/html/red/index-hrm.php
+/bin/echo "<?php header(\"Location: http://odoo.${redURI}\"); die(); ?>" > /srv/www/html/red/index-odoo.php
+/bin/echo "<?php header(\"Location: http://owa.${redURI}\"); die(); ?>" > /srv/www/html/red/index-owa.php
+/bin/echo "<?php header(\"Location: http://scm.${redURI}\"); die(); ?>" > /srv/www/html/red/index-scm.php
+/bin/echo "<?php header(\"Location: http://${inkURI}\"); die(); ?>" > /srv/www/html/red/index-red.php
 fi
 if [ ! -e red.act ]; then cp -r 0ne red.act; fi
 if [ ! -e red.crm ]; then cp -r 0ne red.crm; fi
@@ -140,40 +140,40 @@ if [ ! -e red.scm ]; then cp -r 0ne red.scm; fi
 # Verb point defaults
 if [ ! -e email.email ]; then
 /bin/mkdir email.email
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${emailURI}\"); die(); ?>" > /var/www/html/email.email/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${emailURI}\"); die(); ?>" > /srv/www/html/email.email/index.php
 fi
 if [ ! -e one.one ]; then
 /bin/mkdir one.one
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${oneURI}\"); die(); ?>" > /var/www/html/one.one/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${oneURI}\"); die(); ?>" > /srv/www/html/one.one/index.php
 fi
 if [ ! -e ink.ink ]; then
 /bin/mkdir ink.ink
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${inkURI}\"); die(); ?>" > /var/www/html/ink.ink/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${inkURI}\"); die(); ?>" > /srv/www/html/ink.ink/index.php
 fi
 if [ ! -e blue.blue ]; then
 /bin/mkdir blue.blue
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${blueURI}\"); die(); ?>" > /var/www/html/blue.blue/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${blueURI}\"); die(); ?>" > /srv/www/html/blue.blue/index.php
 fi
 if [ ! -e vip.vip ]; then
 /bin/mkdir vip.vip
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${vipURI}\"); die(); ?>" > /var/www/html/vip.vip/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${vipURI}\"); die(); ?>" > /srv/www/html/vip.vip/index.php
 fi
 if [ ! -e kiwi.kiwi ]; then
 /bin/mkdir kiwi.kiwi
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${kiwiURI}\"); die(); ?>" > /var/www/html/kiwi.kiwi/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${kiwiURI}\"); die(); ?>" > /srv/www/html/kiwi.kiwi/index.php
 fi
 if [ ! -e red.red ]; then
 /bin/mkdir red.red
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${redURI}\"); die(); ?>" > /var/www/html/red.red/index.php
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${redURI}\"); die(); ?>" > /srv/www/html/red.red/index.php
 fi
 
 # Serve URI
-/bin/rm -rf /var/www/html/${SITESERVE}.serve
-/bin/mkdir -p /var/www/html/${SITESERVE}.serve/${SERVEDIR}
-/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${nameURI}\"); die(); ?>" > /var/www/html/${SITESERVE}.serve/index.php
+/bin/rm -rf /srv/www/html/${SITESERVE}.serve
+/bin/mkdir -p /srv/www/html/${SITESERVE}.serve/${SERVEDIR}
+/bin/echo "<?php header(\"HTTP/1.1 301 Moved Permanently\"); header(\"Location: http://${nameURI}\"); die(); ?>" > /srv/www/html/${SITESERVE}.serve/index.php
 
 # Own
-/bin/chown -R www-data:www-data /var/www/html
+/bin/chown -R www:www /srv/www/html
 /bin/chmod -R 750 email*
 /bin/chmod -R 750 one*
 /bin/chmod -R 750 ink*

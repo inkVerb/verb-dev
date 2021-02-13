@@ -12,24 +12,24 @@
 FWDDOM=$1
 
 # Verify it was created by the pointdomain serf
-if [ ! -f /var/www/forwards/${FWDDOM}/config ]; then
+if [ ! -f /srv/www/forwards/${FWDDOM}/config ]; then
 /bin/echo "This domain's destination is not forwarded by pointdomain. Doing nothing."
 exit 0
 else
-. /var/www/forwards/${FWDDOM}/config
+. /srv/www/forwards/${FWDDOM}/config
 fi
 
 # Check for wild forwarding
-if [ "${FORWARD}" = "${OLD_DEST}" ] && [ -f "/var/www/forwards/${FORWARD}/.htaccess" ] && [ -f "/var/www/forwards/${FORWARD}/index.php" ]; then
-  /bin/rm -f /var/www/forwards/${FORWARD}/.htaccess
+if [ "${FORWARD}" = "${OLD_DEST}" ] && [ -f "/srv/www/forwards/${FORWARD}/.htaccess" ] && [ -f "/srv/www/forwards/${FORWARD}/index.php" ]; then
+  /bin/rm -f /srv/www/forwards/${FORWARD}/.htaccess
   /bin/echo "${FWDDOM} is no longer forwarding wildly to ${OLD_DEST}, back to normal forwarding to ${OLD_DEST}."
 else
 
 # Unset and own
-/bin/rm -f /var/www/html/${FWDDOM}
-/bin/ln -sfn "${OLD_DEST}" /var/www/html/${FWDDOM}
-/bin/chown -R www-data:www-data "${OLD_DEST}"
-/bin/rm -rf /var/www/forwards/${FWDDOM}
+/bin/rm -f /srv/www/html/${FWDDOM}
+/bin/ln -sfn "${OLD_DEST}" /srv/www/html/${FWDDOM}
+/bin/chown -R www:www "${OLD_DEST}"
+/bin/rm -rf /srv/www/forwards/${FWDDOM}
 
 # Finish
 /bin/echo "${FWDDOM} is no longer forwarding to ${FORWARD}, back to ${OLD_DEST}."

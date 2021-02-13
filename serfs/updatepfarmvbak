@@ -8,7 +8,7 @@
 ## ./updatepfarmvbak
 
 
-/bin/rm -rf /var/www/email/postfixadmin.vbak
+/bin/rm -rf /srv/www/email/postfixadmin.vbak
 
 /bin/echo "
 Postfix Admin update backup removed.

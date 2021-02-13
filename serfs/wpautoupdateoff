@@ -11,6 +11,6 @@
 
 DOMAIN=$1
 
-/bin/rm -f /var/www/html/${DOMAIN}/wp-content/mu-plugins/auto-update.php
+/bin/rm -f /srv/www/html/${DOMAIN}/wp-content/mu-plugins/auto-update.php
 
 /bin/echo "inkVerb Auto-Update removed from ${DOMAIN}. No further action is necessary."

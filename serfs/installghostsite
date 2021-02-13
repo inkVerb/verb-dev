@@ -3,7 +3,7 @@
 
 # This installs ghost as an app to permanently replace a pre-created domain, such as domain.com or sub.domain.com
 ## Each ghost installation needs a different port, blog...ink uses the 2368 default
-## Each additional /var/www/ghost/ghostsite-DOMAIN requires a port number higher than 2368, usually by one, such as 2369, 2370, etc
+## Each additional /srv/www/ghost/ghostsite-DOMAIN requires a port number higher than 2368, usually by one, such as 2369, 2370, etc
 
 # You MUST HAVE EMAIL SETUP with an email address. Once you set this password you can't change it. Probably ghost@your-name.verb.ink
 
@@ -36,17 +36,17 @@ fi
 /usr/bin/apt-get install -y nodejs
 
 # Install Ghost
-cd /var/www/ghost
+cd /srv/www/ghost
 /usr/bin/curl -L https://ghost.org/zip/ghost-latest.zip -o ghost.zip
 /usr/bin/unzip -uo ghost.zip -d ghostsite-${DOMAIN}
 /bin/rm -f ghost.zip
 
 ## Now install it with npm
-cd /var/www/ghost/ghostsite-${DOMAIN}
+cd /srv/www/ghost/ghostsite-${DOMAIN}
 npm install --production
 
 # Set up the Ghost config
-cd /var/www/ghost/ghostsite-${DOMAIN}
+cd /srv/www/ghost/ghostsite-${DOMAIN}
 /bin/cp config.example.js config.js
 /bin/sed -i "s/url: 'http:\/\/my-ghost-blog.com'/url: 'http:\/\/${DOMAIN}'/g" config.js
 /bin/sed -i "s/host: '127.0.0.1'/host: '${SITEIP}'/g" config.js
@@ -59,8 +59,8 @@ cd /var/www/ghost/ghostsite-${DOMAIN}
 # Apache
 ## Remove static-Apache newdomain config & html folder
 /bin/rm -f /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/rm -f /var/www/html/${DOMAIN}
-/bin/echo "Ghost Site" > /var/www/html/${DOMAIN}
+/bin/rm -f /srv/www/html/${DOMAIN}
+/bin/echo "Ghost Site" > /srv/www/html/${DOMAIN}
 ## Add the Apache config
 /bin/cp /opt/verb/conf/site-files/conf/newghostsite.conf /etc/apache2/sites-available/${DOMAIN}.conf
 /bin/sed -i "s/ghostsite286/${DOMAIN}/g" /etc/apache2/sites-available/${DOMAIN}.conf
@@ -104,15 +104,15 @@ GHOSTEMLPAS=\"${EMAILPASS}\"" > /opt/verb/conf/vapp.${CVAPPNAME}.${DOMAIN}
 # Run Ghost with Forever
 npm install -g forever
 ## Production forever
-cd /var/www/ghost/ghostsite-${DOMAIN} && NODE_ENV=production forever start index.js
+cd /srv/www/ghost/ghostsite-${DOMAIN} && NODE_ENV=production forever start index.js
 ## Non-production / developer forever
 #forever start index.js
 ## If you want, stop Forever with:
-### cd /var/www/ghost/ghostsite-${DOMAIN} && forever stop index.js
+### cd /srv/www/ghost/ghostsite-${DOMAIN} && forever stop index.js
 
 ##### Don't use this normally because it halts the current script and does not finish the rest of the jobs
 ## Start Ghost only for this server session
-#cd /var/www/ghost/ghostsite-${DOMAIN}
+#cd /srv/www/ghost/ghostsite-${DOMAIN}
 #npm start --production
 #####
 

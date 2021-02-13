@@ -28,10 +28,10 @@ KILLDOMAIN=$1
 /bin/rm -f /etc/apache2/sites-available/*${KILLDOMAIN}.conf
 /usr/sbin/apache2ctl graceful
 /opt/verb/serfs/killdomainshell ${KILLDOMAIN}; wait
-/bin/rm -f /var/www/html/${KILLDOMAIN}
-/bin/rm -f /var/www/html/*${KILLDOMAIN}
-/bin/rm -rf /var/www/domains/${KILLDOMAIN}
-/bin/rm -rf /var/www/domains/*${KILLDOMAIN}
+/bin/rm -f /srv/www/html/${KILLDOMAIN}
+/bin/rm -f /srv/www/html/*${KILLDOMAIN}
+/bin/rm -rf /srv/www/domains/${KILLDOMAIN}
+/bin/rm -rf /srv/www/domains/*${KILLDOMAIN}
 
 # Restart
 /etc/init.d/postfix reload

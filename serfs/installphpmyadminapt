@@ -37,8 +37,8 @@ exit 8; fi
 ##16 this was updated from php5enmod, it may not be an issue in Ubuntu 16.04
 #phpenmod mcrypt # Needs to be activated manually (that's an issue for Ubuntu 14.04)
 
-/bin/ln -s /usr/share/phpmyadmin /var/www/html/vip.mysql/${PHPMYADMIN_DIR}
-/bin/chown -R www-data:www-data vip.mysql
+/bin/ln -s /usr/share/phpmyadmin /srv/www/html/vip.mysql/${PHPMYADMIN_DIR}
+/bin/chown -R www:www vip.mysql
 
 /usr/sbin/apache2ctl graceful
 

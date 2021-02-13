@@ -24,10 +24,9 @@
 # Good housekeeping
 /bin/chmod 750 /opt/verb/serfs/*
 
-# Install tools
-/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make
-# These have some mirror troubles, do them separately
-/usr/bin/pacman -S --noconfirm gcc autoconf imagemagick
+# Prep for root convenience
+/bin/ln -s /opt/verb /root/
+/bin/ln -s /opt/verb/inst/make-verber /opt/verb/serfs/
 
 # swap sice
 if [ -z "$1" ]; then

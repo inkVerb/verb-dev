@@ -10,6 +10,6 @@
 # Include the configs
 . /opt/verb/conf/sitenameip
 
-/bin/rm -f /var/www/vip/*.vbak
-/bin/rm -f /var/www/html/${SITETLD}/*.vbak -f
+/bin/rm -f /srv/www/vip/*.vbak
+/bin/rm -f /srv/www/html/${SITETLD}/*.vbak -f
 

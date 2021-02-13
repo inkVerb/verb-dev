@@ -25,7 +25,7 @@ if [ -f /opt/verb/conf/vapp.${CVAPPNAME} ]; then
 /bin/echo "This is already installed."
 exit 0; fi
 ## Directory
-if [ -d /var/www/vapps/${CVAPPNAME} ]; then
+if [ -d /srv/www/vapps/${CVAPPNAME} ]; then
 /bin/echo "SuiteCRM already exists in the system. If it isn't working, look deeper on the server. For now, doing nothing."
 exit 8; fi
 
@@ -35,7 +35,7 @@ exit 8; fi
 # This does not create a database, only an administrator since suiteCRM will create that automatically
 
 # Download and unpack the latest checked version from inkisaverb.com/repo
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -47,10 +47,10 @@ if [ ! -f ${CVAPPNAME}.vtxz ]; then
 exit 4; fi
 
 /opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
-cd /var/www/html
+cd /srv/www/html
 /opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/html/red.crm; wait
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www:www /srv/www/html/red.crm; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
 
 # Auto database
 if [ -z ${3} ]; then

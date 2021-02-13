@@ -30,12 +30,12 @@ FILENAME=$1
 tbrSMPAPG=${SITEMAILPASSAPG}
 
 # Unpack the file
-cd /var/www/vip
+cd /srv/www/vip
 /bin/mv ${FILENAME} vmail.vtxz
 /opt/verb/serfs/vtxzout vmail
 
 # Restore and include RC settings in the sitemail config
-. /var/www/vip/vmail/sitemailpass-old
+. /srv/www/vip/vmail/sitemailpass-old
 /bin/sed -i "s/SITEMAILPASSAPG.*/SITEMAILPASSAPG=\"${SITEMAILPASSAPG}\"/g" /opt/verb/conf/sitemailpass
 . /opt/verb/conf/sitemailpass
 
@@ -67,8 +67,8 @@ cd ..
 /bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /etc/postfix/mysql_virtual_mailbox_maps.cf
 /bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /etc/postfix/mysql_virtual_sender_login_maps.cf
 ## If PFA is already installed
-if [ -e "/etc/apache2/sites-enabled/pfa.${emailTLDURI}.conf" ] && [ -f "/var/www/email/postfixadmin/config.local.php" ] && [ "${SITEPFAPATH}" != "PFA_NOT_INSTALLED" ] && [ ${SITEPFAPATH} != "PFA_NOT_ALLOWED" ]; then
-/bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /var/www/email/postfixadmin/config.local.php; fi
+if [ -e "/etc/apache2/sites-enabled/pfa.${emailTLDURI}.conf" ] && [ -f "/srv/www/email/postfixadmin/config.local.php" ] && [ "${SITEPFAPATH}" != "PFA_NOT_INSTALLED" ] && [ ${SITEPFAPATH} != "PFA_NOT_ALLOWED" ]; then
+/bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /srv/www/email/postfixadmin/config.local.php; fi
 
 # Restart stuff
 /bin/systemctl restart postfix

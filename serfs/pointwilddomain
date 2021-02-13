@@ -15,23 +15,23 @@
 
 FWDDOM=$1
 DEST=$2
-ORIG_DEST="$(find /var/www/html/${FWDDOM} -prune -printf "%l\n")"
+ORIG_DEST="$(find /srv/www/html/${FWDDOM} -prune -printf "%l\n")"
 
 # Prepare
-/bin/mkdir -p /var/www/forwards/${FWDDOM}
-/bin/rm -f /var/www/html/${FWDDOM}
-/bin/ln -sfn /var/www/forwards/${FWDDOM} /var/www/html/
+/bin/mkdir -p /srv/www/forwards/${FWDDOM}
+/bin/rm -f /srv/www/html/${FWDDOM}
+/bin/ln -sfn /srv/www/forwards/${FWDDOM} /srv/www/html/
 
 # Set and own
-/bin/cat <<EOF | cat > /var/www/forwards/${FWDDOM}/.htaccess
+/bin/cat <<EOF | cat > /srv/www/forwards/${FWDDOM}/.htaccess
 RewriteEngine On
 RewriteCond %{HTTP_HOST} ^(.+\.)?${FWDDOM}$ [NC]
 RewriteRule ^ http://%1${DEST}%{REQUEST_URI} [R=301,L]
 EOF
 
-/bin/echo "FORWARD=\"${DEST}\"" > /var/www/forwards/${FWDDOM}/config
-/bin/echo "OLD_DEST=\"${ORIG_DEST}\"" >> /var/www/forwards/${FWDDOM}/config
-/bin/chown -R www-data:www-data /var/www/forwards/${FWDDOM}
+/bin/echo "FORWARD=\"${DEST}\"" > /srv/www/forwards/${FWDDOM}/config
+/bin/echo "OLD_DEST=\"${ORIG_DEST}\"" >> /srv/www/forwards/${FWDDOM}/config
+/bin/chown -R www:www /srv/www/forwards/${FWDDOM}
 
 # Finish
 /bin/echo "${FWDDOM} now wildly forwarding subdomains and paths to *.${DEST}/*"

@@ -33,7 +33,7 @@ KILLDOMAIN=$1
 /bin/echo ";;; Root Site Defauls removed" >> /opt/verb/conf/inkdns/zones/db.${KILLDOMAIN}
 
 # Remove http folder symlinks
-/bin/rm -f /var/www/html/${KILLDOMAIN}
+/bin/rm -f /srv/www/html/${KILLDOMAIN}
 
 # Restart
 /etc/init.d/postfix reload

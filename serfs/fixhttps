@@ -29,11 +29,11 @@ exit 6
 /bin/sed -i 's/##inkHTTPstop/##inkHTTPremoved/' /etc/apache2/sites-available/${DOMAIN}.conf
 ### Add the new lines
 #### WordPress?
-if [ -d "/var/www/vapps/wp.${DOMAIN}" ]; then
-/bin/sed -i "/WP_SITEURL/d" /var/www/vapps/wp.${DOMAIN}/wp-config.php
-/bin/sed -i "/WP_HOME/d" /var/www/vapps/wp.${DOMAIN}/wp-config.php
+if [ -d "/srv/www/vapps/wp.${DOMAIN}" ]; then
+/bin/sed -i "/WP_SITEURL/d" /srv/www/vapps/wp.${DOMAIN}/wp-config.php
+/bin/sed -i "/WP_HOME/d" /srv/www/vapps/wp.${DOMAIN}/wp-config.php
 /bin/echo "define( 'WP_SITEURL', 'https://${DOMAIN}' );
-define( 'WP_HOME', 'https://${DOMAIN}' );" >> /var/www/vapps/wp.${DOMAIN}/wp-config.php
+define( 'WP_HOME', 'https://${DOMAIN}' );" >> /srv/www/vapps/wp.${DOMAIN}/wp-config.php
 fi
 
 #### Apache

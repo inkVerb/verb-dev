@@ -19,7 +19,7 @@ exit 8; fi
 . /opt/verb/conf/siteurilist
 
 # Download and establish Drupal in the server to pre-created domain
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -45,11 +45,11 @@ DBUSER=phpmy$(/usr/bin/pwgen -s -1 15); fi
 /opt/verb/serfs/mysqlnewboss "${DBUSER}" "${DBPASSWORD}"
 
 # Prepare the config and web directory
-/bin/cp /var/www/vapps/${CVAPPNAME}/config.sample.inc.php /var/www/vapps/${CVAPPNAME}/config.inc.php
+/bin/cp /srv/www/vapps/${CVAPPNAME}/config.sample.inc.php /srv/www/vapps/${CVAPPNAME}/config.inc.php
 BLOWFISH=$(/usr/bin/pwgen -c -1 32)
-/bin/sed -i "s/cfg\['blowfish_secret'\] = '';/cfg\['blowfish_secret'\] = '$BLOWFISH';" /var/www/vapps/${CVAPPNAME}/config.inc.php
-/bin/ln -sfn /var/www/vapps/${CVAPPNAME} /var/www/html/vip.sql/${DIRECTRY}; wait
-/bin/chown -R www-data:www-data /var/www/html/vip.mysql; wait
+/bin/sed -i "s/cfg\['blowfish_secret'\] = '';/cfg\['blowfish_secret'\] = '$BLOWFISH';" /srv/www/vapps/${CVAPPNAME}/config.inc.php
+/bin/ln -sfn /srv/www/vapps/${CVAPPNAME} /srv/www/html/vip.sql/${DIRECTRY}; wait
+/bin/chown -R www:www /srv/www/html/vip.mysql; wait
 
 /usr/sbin/apache2ctl graceful
 

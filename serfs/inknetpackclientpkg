@@ -76,9 +76,9 @@ fi
 cd ~/.ssh/inknet/
 /opt/verb/serfs/vtxzin ${VCNAME}
 /bin/rm -rf ${VCNAME}
-/bin/mkdir /var/www/html/${IAMCAHOST}/inknet/${SECPATH}
+/bin/mkdir /srv/www/html/${IAMCAHOST}/inknet/${SECPATH}
 /bin/mv ${VCNAME}.vtxz ${VCNAME}.ink
-/bin/mv ${VCNAME}.ink /var/www/html/${IAMCAHOST}/inknet/${SECPATH}
+/bin/mv ${VCNAME}.ink /srv/www/html/${IAMCAHOST}/inknet/${SECPATH}
 
 # For non-IP Vrk Stations
 if [ "${CLIENTIP}" = "NOT_SET" ]; then
@@ -89,10 +89,10 @@ if [ "${CLIENTIP}" = "NOT_SET" ]; then
  AuthUserFile .htpasswd
  Require valid-user
 </Files>
-" > /var/www/html/${IAMCAHOST}/inknet/${SECPATH}/.htaccess
+" > /srv/www/html/${IAMCAHOST}/inknet/${SECPATH}/.htaccess
 SECNAME=$(/usr/bin/pwgen -1 -s 15)
 SECPASS=$(/usr/bin/pwgen -1 -s 15)
-/bin/echo "${SECNAME}:${SECPASS}" > /var/www/html/${IAMCAHOST}/inknet/${SECPATH}/.htpasswd
+/bin/echo "${SECNAME}:${SECPASS}" > /srv/www/html/${IAMCAHOST}/inknet/${SECPATH}/.htpasswd
 /bin/echo "Great! Now, hurry up and get the file from this URL:
  https://${IAMCAHOST}/${SECPATH}/inknet/${VCNAME}.ink
 
@@ -110,8 +110,8 @@ else
  Deny from all
  Allow from ${CLIENTIP}
 </Files>
-" > /var/www/html/${IAMCAHOST}/inknet/${SECPATH}/.htaccess
-/bin/chown -R www-data:www-data /var/www/html/${IAMCAHOST}/inknet/${SECPATH}/
+" > /srv/www/html/${IAMCAHOST}/inknet/${SECPATH}/.htaccess
+/bin/chown -R www:www /srv/www/html/${IAMCAHOST}/inknet/${SECPATH}/
 /bin/echo "Great! Now, hurry up and enter this code with inknetaddcavpkg: ${SECPATH}
 
  It expires in about 30 minutes. Hurry!

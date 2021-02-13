@@ -20,7 +20,7 @@ DBUSER=$2
 DBPASSWORD=$3
 
 # Install
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -33,8 +33,8 @@ exit 4; fi
 
 /opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
 /opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/html/kiwi.ampache; wait
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www:www /srv/www/html/kiwi.ampache; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
 
 # Auto database
 if [ -z ${3} ]; then
@@ -52,12 +52,12 @@ FLUSH PRIVILEGES;"
 
 # Ampache config file
 ## All of this works, but fools the app into thinking it is fully installed
-#cp /var/www/vapps/ampache/config/ampache.cfg.php.dist /var/www/vapps/ampache/config/ampache.cfg.php
-#sed -i "s/database_name = ampache/database_name = ${DBASE}/g" /var/www/vapps/ampache/config/ampache.cfg.php
-#sed -i "s/database_username = username/database_username = ${DBUSER}/g" /var/www/vapps/ampache/config/ampache.cfg.php
-#sed -i "s/database_password = password/database_password = ${DBPASSWORD}/g" /var/www/vapps/ampache/config/ampache.cfg.php
+#cp /srv/www/vapps/ampache/config/ampache.cfg.php.dist /srv/www/vapps/ampache/config/ampache.cfg.php
+#sed -i "s/database_name = ampache/database_name = ${DBASE}/g" /srv/www/vapps/ampache/config/ampache.cfg.php
+#sed -i "s/database_username = username/database_username = ${DBUSER}/g" /srv/www/vapps/ampache/config/ampache.cfg.php
+#sed -i "s/database_password = password/database_password = ${DBPASSWORD}/g" /srv/www/vapps/ampache/config/ampache.cfg.php
 ## Add the tables to the database
-#mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf ${DBASE} < /var/www/vapps/ampache/sql/ampache.sql
+#mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf ${DBASE} < /srv/www/vapps/ampache/sql/ampache.sql
 
 # Write the config for backup
 /bin/echo "#!/bin/sh

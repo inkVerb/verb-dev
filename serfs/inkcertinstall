@@ -59,7 +59,7 @@ cd /etc/inkcert
 ## Symlinks
 /bin/ln -sfn /etc/letsencrypt /etc/inkcert/le
 /bin/ln -sfn /etc/inkcert/req /opt/verb/
-/bin/ln -sfn /etc/inkcert/req /var/www/vip/
+/bin/ln -sfn /etc/inkcert/req /srv/www/vip/
 
 # Set configs
 /bin/sed -i "s/INKCERTINSTALLED=\"NOT_YET\"/INKCERTINSTALLED=\"DONE\"/g" /opt/verb/conf/inkcert/inkcertstatus

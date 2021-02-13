@@ -50,7 +50,7 @@ if [ -f /opt/verb/conf/inknet/ca.verber.cnf ]; then
 "
 exit 0; fi
 ## Verify web directory doesn't exist
-if [ -d /var/www/html/${NEWCAHOST}/inknet ]; then
+if [ -d /srv/www/html/${NEWCAHOST}/inknet ]; then
 /bin/echo "Fascinating, Captain. This is not an Inker CA, but the web folder for it (${NEWCAHOST}/inknet) exists.
 There is no logical explanation. We must purge and begin anew.
 "
@@ -66,7 +66,7 @@ wait
 fi
 
 # Set based on web directory and Apache status
-if [ -e /var/www/html/${NEWCAHOST} ]; then
+if [ -e /srv/www/html/${NEWCAHOST} ]; then
  if [ -f /etc/apache2/sites-available/${NEWCAHOST}.conf ]; then
   if [ -e /etc/apache2/sites-enabled/${NEWCAHOST}.conf ]; then
   /bin/echo "Great, ${NEWCAHOST} already exists..."
@@ -81,7 +81,7 @@ if [ -e /var/www/html/${NEWCAHOST} ]; then
 else
 ## Add the full URI as a subdomain
 ### Make sure it the Inker has the repo properly setup
- if [ ! -e /var/www/domains/${NEWCAHOST} ]; then
+ if [ ! -e /srv/www/domains/${NEWCAHOST} ]; then
  /bin/echo "Creating ${NEWCAHOST}..."
 ## Remove any duplicate, because that can happen in the known plasmaverse and interwebverse.
   if [ -f /etc/apache2/sites-available/${NEWCAHOST}.conf ]; then
@@ -127,8 +127,8 @@ fi
 
 # Set up download directories
 ## For inkNet Certs
-/bin/mkdir -p /var/www/html/${NEWCAHOST}/inknet
-/bin/chown -R www-data:www-data /var/www/html/${NEWCAHOST}
+/bin/mkdir -p /srv/www/html/${NEWCAHOST}/inknet
+/bin/chown -R www:www /srv/www/html/${NEWCAHOST}
 
 # Make/verify the CA directories
 /bin/mkdir -p /opt/verb/conf/inknet/clients

@@ -41,17 +41,17 @@ fi
 /usr/bin/apt-get install -y nodejs
 
 # Install Ghost
-cd /var/www/ghost
+cd /srv/www/ghost
 /usr/bin/curl -L https://ghost.org/zip/ghost-latest.zip -o ghost.zip
 /usr/bin/unzip -uo ghost.zip -d ghostblog
 /bin/rm -f ghost.zip
 
 ## Now install it with npm
-cd /var/www/ghost/ghostblog
+cd /srv/www/ghost/ghostblog
 npm install --production
 
 # Set up the Ghost config
-cd /var/www/ghost/ghostblog
+cd /srv/www/ghost/ghostblog
 /bin/cp config.example.js config.js
 /bin/sed -i "s/url: 'http:\/\/my-ghost-blog.com'/url: 'http:\/\/blog.${inkURI}'/g" config.js
 /bin/sed -i "s/host: '127.0.0.1'/host: '${SITEIP}'/g" config.js
@@ -62,8 +62,8 @@ cd /var/www/ghost/ghostblog
 
 # Apache
 ## Remove static-Apache html folder
-/bin/rm -rf /var/www/html/ink.blog
-/bin/echo "Ghost" > /var/www/html/ink.blog
+/bin/rm -rf /srv/www/html/ink.blog
+/bin/echo "Ghost" > /srv/www/html/ink.blog
 ## Set the IP address in the Apache config file
 /bin/cp /opt/verb/conf/site-files/conf/ghost-blog.${inkURI}.conf /etc/apache2/sites-available/blog.${inkURI}.conf
 /bin/sed -i "s/ip286/${SITEIP}/g" /etc/apache2/sites-available/blog.${inkURI}.conf
@@ -101,15 +101,15 @@ GHOSTEMLPAS=\"${EMAILPASS}\"" > /opt/verb/conf/vapp.${CVAPPNAME}
 # Run Ghost with Forever
 npm install -g forever
 ## Production forever
-cd /var/www/ghost/ghostblog && NODE_ENV=production forever start index.js
+cd /srv/www/ghost/ghostblog && NODE_ENV=production forever start index.js
 ## Non-production / developer forever
 #forever start index.js
 ## If you want, stop Forever with:
-### cd /var/www/ghost/ghostblog && forever stop index.js
+### cd /srv/www/ghost/ghostblog && forever stop index.js
 
 ##### Don't use this normally because it halts the current script and does not finish the rest of the jobs
 ## Start Ghost only for this server session
-#cd /var/www/ghost/ghostblog
+#cd /srv/www/ghost/ghostblog
 #npm start --production
 #####
 

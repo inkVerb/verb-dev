@@ -62,7 +62,7 @@ RCPASSGEN=$(/usr/bin/pwgen -s -1 5)
 DESSALTGEN=$(/usr/bin/pwgen -s -1 24)
 
 # Get inkVerb's latest and install
-cd /var/www/email
+cd /srv/www/email
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -83,9 +83,9 @@ GRANT ALL PRIVILEGES ON rcmail.* TO 'rcmailusr'@'localhost' IDENTIFIED BY 'rcpas
 FLUSH PRIVILEGES;"
 
 # Set Apache
-/bin/cp -R /var/www/html/0ne /var/www/html/${SITEEMAILTLD}.rc
-/bin/ln -sfn /var/www/email/roundcube /var/www/html/${SITEEMAILTLD}.rc/${RCFOLDER}
-/bin/chown -R www-data:www-data /var/www/html/${SITEEMAILTLD}.rc
+/bin/cp -R /srv/www/html/0ne /srv/www/html/${SITEEMAILTLD}.rc
+/bin/ln -sfn /srv/www/email/roundcube /srv/www/html/${SITEEMAILTLD}.rc/${RCFOLDER}
+/bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.rc
 /bin/sed -i "s/; Webmail Defaults/; Webmail Defaults\nrc\.${emailTLDURI}\.\tIN  A\t\t${SITEIP}\nrc\.${emailTLDURI}\.\tIN  AAAA\t${SITEIPV6}/" /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
 /opt/verb/serfs/nginxensite rc.${emailTLDURI}
 /usr/sbin/apache2ctl graceful
@@ -116,49 +116,49 @@ phpenmod intl zip
 wait
 
 # Settings
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/mime.types /var/www/email/roundcube/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/config/roundcube286-config.inc.php /var/www/email/roundcube/config/config.inc.php
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/config/roundcube286-defaults.inc.php /var/www/email/roundcube/config/defaults.inc.php
-/bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /var/www/email/roundcube/config/config.inc.php
-/bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /var/www/email/roundcube/config/defaults.inc.php
-/bin/sed -i "s/nameURI286/${nameURI}/g" /var/www/email/roundcube/config/config.inc.php
-/bin/sed -i "s/nameURI286/${nameURI}/g" /var/www/email/roundcube/config/defaults.inc.php
-/bin/sed -i "s/rcpass286/rcpass${RCPASSGEN}/g" /var/www/email/roundcube/config/config.inc.php
-/bin/sed -i "s/rcpass286/rcpass${RCPASSGEN}/g" /var/www/email/roundcube/config/defaults.inc.php
-/bin/sed -i "s/rcemailconfdeskeysalt286/${DESSALTGEN}/g" /var/www/email/roundcube/config/config.inc.php
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/mime.types /srv/www/email/roundcube/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/config/roundcube286-config.inc.php /srv/www/email/roundcube/config/config.inc.php
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/config/roundcube286-defaults.inc.php /srv/www/email/roundcube/config/defaults.inc.php
+/bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /srv/www/email/roundcube/config/config.inc.php
+/bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /srv/www/email/roundcube/config/defaults.inc.php
+/bin/sed -i "s/nameURI286/${nameURI}/g" /srv/www/email/roundcube/config/config.inc.php
+/bin/sed -i "s/nameURI286/${nameURI}/g" /srv/www/email/roundcube/config/defaults.inc.php
+/bin/sed -i "s/rcpass286/rcpass${RCPASSGEN}/g" /srv/www/email/roundcube/config/config.inc.php
+/bin/sed -i "s/rcpass286/rcpass${RCPASSGEN}/g" /srv/www/email/roundcube/config/defaults.inc.php
+/bin/sed -i "s/rcemailconfdeskeysalt286/${DESSALTGEN}/g" /srv/www/email/roundcube/config/config.inc.php
 # In the event that installpfa was run first
-if [ -e "/var/www/email/postfixadmin/config.inc.php" ]; then
-/bin/sed  -i "s/rcfolder286/${RCFOLDER}/g" /var/www/email/postfixadmin/config.inc.php
+if [ -e "/srv/www/email/postfixadmin/config.inc.php" ]; then
+/bin/sed  -i "s/rcfolder286/${RCFOLDER}/g" /srv/www/email/postfixadmin/config.inc.php
 fi
 
 # Copy the branding files
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/verbink_logo.png /var/www/email/roundcube/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/logo.svg /var/www/email/roundcube/skins/elastic/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/favicon.ico /var/www/email/roundcube/skins/elastic/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/favicon.ico /var/www/email/roundcube/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/verbink_logo.png /var/www/email/roundcube/skins/larry/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/watermark.jpg /var/www/email/roundcube/skins/larry/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/favicon.ico /var/www/email/roundcube/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/verbink_logo.png /srv/www/email/roundcube/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/logo.svg /srv/www/email/roundcube/skins/elastic/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/favicon.ico /srv/www/email/roundcube/skins/elastic/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/favicon.ico /srv/www/email/roundcube/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/verbink_logo.png /srv/www/email/roundcube/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/watermark.jpg /srv/www/email/roundcube/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/favicon.ico /srv/www/email/roundcube/skins/larry/images/
 
 # Own
-/bin/chown -R www-data:www-data /var/www/email/roundcube
+/bin/chown -R www:www /srv/www/email/roundcube
 
 # Set the config for backup
 /bin/sed -i "s/SITERCPASSAPG.*/SITERCPASSAPG=\"${RCPASSGEN}\"/g" /opt/verb/conf/sitemailpass
 /bin/sed -i "s/SITERCPATH.*/SITERCPATH=\"${RCFOLDER}\"/g" /opt/verb/conf/sitemailpath
 
 # Set up plugins that Composer broke
-cd /var/www/email/roundcube/plugins/
-if [ ! -d "/var/www/email/roundcube/plugins/authres_status" ]; then
+cd /srv/www/email/roundcube/plugins/
+if [ ! -d "/srv/www/email/roundcube/plugins/authres_status" ]; then
 /bin/cp /opt/verb/conf/lab/vmail/roundcube/authres_status.vtxz .
 /opt/verb/serfs/vtxzout authres_status; wait; fi
-if [ ! -d "/var/www/email/roundcube/plugins/contextmenu" ]; then
+if [ ! -d "/srv/www/email/roundcube/plugins/contextmenu" ]; then
 /bin/cp /opt/verb/conf/lab/vmail/roundcube/contextmenu.vtxz .
 /opt/verb/serfs/vtxzout contextmenu; wait; fi
 
 # Sledgehammertime (Composer Plugins)
 ## This is excerpted from installrcinkplugins
-cd /var/www/email/roundcube
+cd /srv/www/email/roundcube
 /usr/bin/curl -s https://getcomposer.org/installer | php
 /bin/cp composer.json-dist composer.json
 ## Plugins

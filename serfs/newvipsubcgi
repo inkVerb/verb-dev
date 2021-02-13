@@ -18,12 +18,12 @@ NEWVIPSUB=$1
 /bin/cp /opt/verb/conf/site-files/conf/newvipsubcgi.conf /etc/apache2/sites-available/${NEWVIPSUB}.${vipURI}.conf 
 /bin/sed -i "s/newvipsub/${NEWVIPSUB}/g" /etc/apache2/sites-available/${NEWVIPSUB}.${vipURI}.conf
 /bin/sed -i "s/vipURI286/${vipURI}/g" /etc/apache2/sites-available/${NEWVIPSUB}.${vipURI}.conf
-/bin/cp -R /opt/verb/conf/site-files/newvipsubdir /var/www/vip/_subs.vip/${NEWVIPSUB}
-/bin/chown -R www-data:www-data /var/www/vip/_subs.vip/${NEWVIPSUB}
+/bin/cp -R /opt/verb/conf/site-files/newvipsubdir /srv/www/vip/_subs.vip/${NEWVIPSUB}
+/bin/chown -R www:www /srv/www/vip/_subs.vip/${NEWVIPSUB}
 /opt/verb/serfs/nginxensite ${NEWVIPSUB}.${vipURI}
 /usr/sbin/apache2ctl graceful
-/bin/cp /var/www/html/vip/index-newvipsub.php /var/www/html/vip/index-${NEWVIPSUB}.php
-/bin/chown -R www-data:www-data /var/www/html/vip
+/bin/cp /srv/www/html/vip/index-newvipsub.php /srv/www/html/vip/index-${NEWVIPSUB}.php
+/bin/chown -R www:www /srv/www/html/vip
 
 # inkCert, at end of the "domains =" line
 /bin/sed -i "/^domains =/ s/$/, ${NEWVIPSUB}.${vipURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${vipURI}.ini

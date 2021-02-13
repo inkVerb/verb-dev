@@ -16,16 +16,16 @@
 
 if [ "$1" = "on" ]
 then
-    /bin/rm -rf /var/www/html/vip.cgi
-    /bin/ln -sfn /var/www/vip/cgi /var/www/html/vip.cgi
+    /bin/rm -rf /srv/www/html/vip.cgi
+    /bin/ln -sfn /srv/www/vip/cgi /srv/www/html/vip.cgi
     /bin/echo "cgi on."
 exit 0
 fi
 
 if [ "$1" = "off" ]
 then
-    /bin/rm -f /var/www/html/vip.cgi
-    /bin/cp -R /var/www/html/0ne /var/www/html/vip.cgi
+    /bin/rm -f /srv/www/html/vip.cgi
+    /bin/cp -R /srv/www/html/0ne /srv/www/html/vip.cgi
     /bin/echo "cgi off."
 exit 0
 fi

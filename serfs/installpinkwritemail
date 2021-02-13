@@ -209,8 +209,8 @@ cd /etc/opendkim/keys/${nameURI}
 /bin/cp /etc/postgrey/whitelist_recipients /etc/postfix/postgrey_whitelist_recipients
 
 # Set Apache subdomains
-/bin/cp -R /var/www/html/0ne /var/www/html/${SITEEMAILTLD}.boxes
-/bin/chown -R www-data:www-data /var/www/html/${SITEEMAILTLD}.boxes
+/bin/cp -R /srv/www/html/0ne /srv/www/html/${SITEEMAILTLD}.boxes
+/bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.boxes
 /bin/echo "; Webmail Defaults
 boxes.${DNSDOMAIN}.	IN  A		${SITEIP}
 boxes.${DNSDOMAIN}.	IN  AAAA	${SITEIPV6}

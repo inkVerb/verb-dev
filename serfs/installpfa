@@ -53,7 +53,7 @@ fi
 PFAPASS=$2
 
 # Download from repo
-cd /var/www/email
+cd /srv/www/email
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -67,34 +67,34 @@ exit 4; fi
 /bin/rm -rf ${CVAPPNAME}
 /opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
 ## Fix a bug
-/bin/mkdir -p /var/www/email/postfixadmin/templates_c
+/bin/mkdir -p /srv/www/email/postfixadmin/templates_c
 
 # Settings
 ## Whether secure or standard password
 ### If using 'secure', you must set the hash via pfapass
 if [ "${PFAPASS}" != "secure" ]; then
-    cp /opt/verb/conf/lab/vmail/postfixadmin/postfixadmin286-config.inc.php /var/www/email/postfixadmin/config.local.php
+    cp /opt/verb/conf/lab/vmail/postfixadmin/postfixadmin286-config.inc.php /srv/www/email/postfixadmin/config.local.php
 fi
 
 if [ "${PFAPASS}" = "secure" ]; then
-    cp /opt/verb/conf/lab/vmail/postfixadmin/postfixadmin286-secure-config.inc.php /var/www/email/postfixadmin/config.local.php
+    cp /opt/verb/conf/lab/vmail/postfixadmin/postfixadmin286-secure-config.inc.php /srv/www/email/postfixadmin/config.local.php
 fi
 
 # Settings
-/bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /var/www/email/postfixadmin/config.local.php
-/bin/sed -i "s/nameURI286/${nameURI}/g" /var/www/email/postfixadmin/config.local.php
-/bin/sed -i "s/mailpassword/mailpass${SITEMAILPASSAPG}/g" /var/www/email/postfixadmin/config.local.php
-/bin/sed -i "s/rcfolder286/${SITERCPATH}/g" /var/www/email/postfixadmin/config.local.php
-/bin/sed -i "s/pfafolder286/${PFAFOLDER}/g" /var/www/email/postfixadmin/config.local.php
+/bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /srv/www/email/postfixadmin/config.local.php
+/bin/sed -i "s/nameURI286/${nameURI}/g" /srv/www/email/postfixadmin/config.local.php
+/bin/sed -i "s/mailpassword/mailpass${SITEMAILPASSAPG}/g" /srv/www/email/postfixadmin/config.local.php
+/bin/sed -i "s/rcfolder286/${SITERCPATH}/g" /srv/www/email/postfixadmin/config.local.php
+/bin/sed -i "s/pfafolder286/${PFAFOLDER}/g" /srv/www/email/postfixadmin/config.local.php
 
 # Copy the branding files
-/bin/cp /opt/verb/conf/lab/vmail/postfixadmin/pfapics/images/logo-ink.png /var/www/email/postfixadmin/public/images/
+/bin/cp /opt/verb/conf/lab/vmail/postfixadmin/pfapics/images/logo-ink.png /srv/www/email/postfixadmin/public/images/
 
 # Set Apache
-/bin/cp -R /var/www/html/0ne /var/www/html/${SITEEMAILTLD}.pfa; wait
-/bin/ln -sfn /var/www/email/postfixadmin/public /var/www/html/${SITEEMAILTLD}.pfa/${PFAFOLDER}; wait
-/bin/chown -R www-data:www-data /var/www/html/${SITEEMAILTLD}.pfa; wait
-/bin/chown -R www-data:www-data /var/www/email/postfixadmin; wait
+/bin/cp -R /srv/www/html/0ne /srv/www/html/${SITEEMAILTLD}.pfa; wait
+/bin/ln -sfn /srv/www/email/postfixadmin/public /srv/www/html/${SITEEMAILTLD}.pfa/${PFAFOLDER}; wait
+/bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.pfa; wait
+/bin/chown -R www:www /srv/www/email/postfixadmin; wait
 /bin/sed -i "s/; Webmail Defaults/; Webmail Defaults\npfa\.${emailTLDURI}\.\tIN  A\t\t${SITEIP}\npfa\.${emailTLDURI}\.\tIN  AAAA\t${SITEIPV6}/" /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
 /opt/verb/serfs/nginxensite pfa.${emailTLDURI}
 /usr/sbin/apache2ctl graceful

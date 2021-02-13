@@ -44,23 +44,23 @@ RCFRESH="YES"
 else
 cd /opt/verb/serfs
 /opt/verb/serfs/mysqlex rcmail; wait
-/bin/mv /opt/verb/serfs/rcmail.sql /var/www/email/roundcube/verb.rcmail.restore-originalbackedup.vbak.sql
-/bin/cp -f /opt/verb/conf/sitemailpass /var/www/email/roundcube/sitemailpass-old
-/bin/cp -f /opt/verb/conf/sitemailpath /var/www/email/roundcube/sitemailpath-old
-cd /var/www/email
+/bin/mv /opt/verb/serfs/rcmail.sql /srv/www/email/roundcube/verb.rcmail.restore-originalbackedup.vbak.sql
+/bin/cp -f /opt/verb/conf/sitemailpass /srv/www/email/roundcube/sitemailpass-old
+/bin/cp -f /opt/verb/conf/sitemailpath /srv/www/email/roundcube/sitemailpath-old
+cd /srv/www/email
 /opt/verb/serfs/vtxzin roundcube
 /bin/mv roundcube.vtxz verb.roundcube.restore-originalbackedup.vbak
-/bin/mv /var/www/email/verb.roundcube.restore-originalbackedup.vbak /var/www/vip/
+/bin/mv /srv/www/email/verb.roundcube.restore-originalbackedup.vbak /srv/www/vip/
 /opt/verb/serfs/mysqlkilldb rcmail; wait
 /opt/verb/serfs/mysqlkilluser rcmailusr; wait
 /bin/rm -rf roundcube
 fi
 
 # Unpack the file
-cd /var/www/vip
+cd /srv/www/vip
 /bin/mv ${FILENAME} roundcube.vtxz
 /opt/verb/serfs/vtxzout roundcube
-/bin/mv roundcube /var/www/email/
+/bin/mv roundcube /srv/www/email/
 
 # Activate the rc web server config settings
 if [ ${RCFRESH} = "YES" ]; then
@@ -77,8 +77,8 @@ if [ ${RCFRESH} = "YES" ]; then
 fi
 
 # Restore and include RC settings in the sitemail config
-. /var/www/email/roundcube/sitemailpass-old
-. /var/www/email/roundcube/sitemailpath-old
+. /srv/www/email/roundcube/sitemailpass-old
+. /srv/www/email/roundcube/sitemailpath-old
 /bin/sed -i "s/SITERCPASSAPG.*/SITERCPASSAPG=\"${SITERCPASSAPG}\"/g" /opt/verb/conf/sitemailpass
 /bin/sed -i "s/SITERCPATH.*/SITERCPATH=\"${SITERCPATH}\"/g" /opt/verb/conf/sitemailpath
 . /opt/verb/conf/sitemailpass
@@ -86,7 +86,7 @@ fi
 
 # Restore the database
 /opt/verb/serfs/mysqlnewdb rcmail rcmailusr rcpass${SITERCPASSAPG}; wait
-cd /var/www/email/roundcube
+cd /srv/www/email/roundcube
 /opt/verb/serfs/mysqlin rcmail; wait
 /bin/rm -f rcmail.sql
 /bin/rm -f sitenameip*
@@ -94,12 +94,12 @@ cd /var/www/email/roundcube
 /bin/rm -f sitemailpath*
 
 # Own
-/bin/chown -R www-data:www-data /var/www/email/roundcube
+/bin/chown -R www:www /srv/www/email/roundcube
 
 # Set the apache symlink
-/bin/cp -R /var/www/html/0ne /var/www/html/${SITEEMAILTLD}.rc
-/bin/ln -sfn /var/www/email/roundcube /var/www/html/${SITEEMAILTLD}.rc/${SITERCPATH}
-/bin/chown -R www-data:www-data /var/www/html/${SITEEMAILTLD}.rc
+/bin/cp -R /srv/www/html/0ne /srv/www/html/${SITEEMAILTLD}.rc
+/bin/ln -sfn /srv/www/email/roundcube /srv/www/html/${SITEEMAILTLD}.rc/${SITERCPATH}
+/bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.rc
 
 # Finish
 /bin/echo "Roundcube has been restored and all its backup files removed from this server.

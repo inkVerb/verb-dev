@@ -15,7 +15,7 @@ CVAPPNAME=net2ftp
 . /opt/verb/conf/siteurilist
 
 # Download and unpack
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -28,8 +28,8 @@ exit 4; fi
 
 /opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
 /opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/html/vip.net2ftp; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www:www /srv/www/html/vip.net2ftp; wait
 
 # Settings
 cd net2ftp

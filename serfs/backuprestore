@@ -31,29 +31,29 @@ FILENAME=$2
 # Backup and remove whatever the original status is
 if [ -e "/opt/verb/conf/vapp.${APPNAME}" ]; then
 . /opt/verb/conf/vapp.${APPNAME}
-cd /var/www/vapps/${APPNAME}/
+cd /srv/www/vapps/${APPNAME}/
 /opt/verb/serfs/mysqlvappout vapp.${APPNAME}; wait
 /bin/mv /opt/verb/conf/vapp.${APPNAME} .
-cd /var/www/vapps/
+cd /srv/www/vapps/
 /opt/verb/serfs/vtxzin ${APPNAME}
 /bin/mv ${APPNAME}.vtxz verb.${APPNAME}.restore-originalbackedup.vbak
-/bin/mv verb.${APPNAME}.restore-originalbackedup.vbak /var/www/vip/
+/bin/mv verb.${APPNAME}.restore-originalbackedup.vbak /srv/www/vip/
 /opt/verb/serfs/mysqlkilldb ${APPDBASE}; wait
 /opt/verb/serfs/mysqlkilluser ${APPDDBUSR}; wait
 /bin/rm -rf ${APPNAME}
 fi
 
 # Unpack the file
-cd /var/www/vip
+cd /srv/www/vip
 /bin/mv ${FILENAME} ${APPNAME}.vtxz
 /opt/verb/serfs/vtxzout ${APPNAME}; wait
-/bin/mv ${APPNAME} /var/www/vapps/
+/bin/mv ${APPNAME} /srv/www/vapps/
 
 # Set up the vapp symlink
 /opt/verb/serfs/setvapplinkon ${APPNAME}
 
 # Restore and include the app config
-/bin/mv /var/www/vapps/${APPNAME}/vapp.${APPNAME} /opt/verb/conf/
+/bin/mv /srv/www/vapps/${APPNAME}/vapp.${APPNAME} /opt/verb/conf/
 . /opt/verb/conf/vapp.${APPNAME}
 
 # Create the SQL database
@@ -63,13 +63,13 @@ GRANT ALL PRIVILEGES ON ${APPDBASE}.* TO '${APPDDBUSR}'@'localhost' IDENTIFIED B
 FLUSH PRIVILEGES;"
 
 # Restore the database
-cd /var/www/vapps/${APPNAME}
+cd /srv/www/vapps/${APPNAME}
 /usr/bin/mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf ${APPDBASE} < ${APPDBASE}.sql; wait
 /bin/rm -f ${APPDBASE}.sql
 /bin/rm -f sitenameip*
 
 # Own
-/bin/chown -R www-data:www-data /var/www/vapps/${APPNAME}
+/bin/chown -R www:www /srv/www/vapps/${APPNAME}
 
 # Finish
 /bin/echo "${APPNAME} has been restored and all its backup files removed from this server.

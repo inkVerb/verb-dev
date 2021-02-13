@@ -27,11 +27,11 @@ if /bin/grep -q "##INKHTTPSFIX=fixed" /etc/apache2/sites-available/${DOMAIN}.con
 /bin/rm /etc/apache2/sites-available/${DOMAIN}.conf.verbhttpsfixed
 /bin/echo "${DOMAIN} now accepts http traffic."
 ## WordPress?
-if [ -d "/var/www/vapps/wp.${DOMAIN}" ]; then
-/bin/sed -i "/WP_SITEURL/d" /var/www/vapps/wp.${DOMAIN}/wp-config.php
-/bin/sed -i "/WP_HOME/d" /var/www/vapps/wp.${DOMAIN}/wp-config.php
+if [ -d "/srv/www/vapps/wp.${DOMAIN}" ]; then
+/bin/sed -i "/WP_SITEURL/d" /srv/www/vapps/wp.${DOMAIN}/wp-config.php
+/bin/sed -i "/WP_HOME/d" /srv/www/vapps/wp.${DOMAIN}/wp-config.php
 /bin/echo "define( 'WP_SITEURL', 'http://${DOMAIN}' );
-define( 'WP_HOME', 'http://${DOMAIN}' );" >> /var/www/vapps/wp.${DOMAIN}/wp-config.php
+define( 'WP_HOME', 'http://${DOMAIN}' );" >> /srv/www/vapps/wp.${DOMAIN}/wp-config.php
 fi
 
 # If it's not already there, just exit

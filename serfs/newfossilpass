@@ -18,7 +18,7 @@ OLDFOSSIL=$1
 OLDUSER=$2
 NEWPASS=$3
 
-cd /var/www/vip/fossil
+cd /srv/www/vip/fossil
 
 # Change the password
 fossil user password ${OLDUSER} ${NEWPASS} --repository ${OLDFOSSIL}.fossil

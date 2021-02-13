@@ -31,11 +31,11 @@ fi
 # Copy and prepare Apache server config files
 /bin/cp /opt/verb/conf/site-files/conf/newdomaincgi.tld.conf /etc/apache2/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
 /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /etc/apache2/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
-/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /var/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
-/bin/ln -s /var/www/domains/${SUBDOMAIN}.${OLDDOMAIN} /var/www/html/
-/bin/chown -R www-data:www-data /var/www/html/${SUBDOMAIN}.${OLDDOMAIN}
-/bin/chown -R www-data:www-data /var/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
-/bin/chmod -R 750 /var/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+/bin/ln -s /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN} /srv/www/html/
+/bin/chown -R www:www /srv/www/html/${SUBDOMAIN}.${OLDDOMAIN}
+/bin/chown -R www:www /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+/bin/chmod -R 750 /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
 /opt/verb/serfs/nginxensite ${SUBDOMAIN}.${OLDDOMAIN}
 /usr/sbin/apache2ctl graceful
 

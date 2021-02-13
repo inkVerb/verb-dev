@@ -7,4 +7,4 @@
 ## ./showvapps
 
 
-ls -1 /var/www/vapps/
+ls -1 /srv/www/vapps/

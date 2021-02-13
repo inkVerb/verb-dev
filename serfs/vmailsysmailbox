@@ -41,7 +41,7 @@ user sys@$nameURI
 password $PASSWORD
 syslog LOG_MAIL" > /etc/msmtprc
 /bin/chmod 0600 /etc/msmtprc
-/bin/chown www-data:www-data /etc/msmtprc
+/bin/chown www:www /etc/msmtprc
 
 # Confirm the php.ini entry
 if ! /bin/grep -q '^sendmail_path = "/usr/bin/msmtp -C /etc/msmtprc -t"' /opt/verb/conf/php.$SITENAME.ini; then

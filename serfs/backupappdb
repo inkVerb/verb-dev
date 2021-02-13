@@ -29,9 +29,9 @@ fi
 . /opt/verb/conf/vapp.${APPNAME}
 
 # Export the database
-cd /var/www/vip
+cd /srv/www/vip
 /opt/verb/serfs/mysqlex ${APPDBASE}; wait
-/bin/mv /var/www/vip/sql/${APPDBASE}.sql /var/www/vip/sql/verb.${APPDBASE}.${SECNAME}.vbak.sql
+/bin/mv /srv/www/vip/sql/${APPDBASE}.sql /srv/www/vip/sql/verb.${APPDBASE}.${SECNAME}.vbak.sql
 
 # Finish
 if [ "$3" = "-nl" ] || [ "$2" = "-nl" ]; then
@@ -42,8 +42,8 @@ Note that the app remains live.
 exit 0
 fi
 
-/bin/ln -sfn /var/www/vip/sql/verb.${APPDBASE}.${SECNAME}.vbak.sql /var/www/html/${SITESERVE}.serve/${SERVEDIR}/
-/bin/chown -R www-data:www-data /var/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.${APPDBASE}.${SECNAME}.vbak.sql
+/bin/ln -sfn /srv/www/vip/sql/verb.${APPDBASE}.${SECNAME}.vbak.sql /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/
+/bin/chown -R www:www /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.${APPDBASE}.${SECNAME}.vbak.sql
 /bin/echo "The database for ${APPNAME} has been backed up and can be downloaded at:
 
 https://${SERVEPATH}/verb.${APPDBASE}.${SECNAME}.vbak.sql

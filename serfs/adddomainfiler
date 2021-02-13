@@ -11,5 +11,5 @@ z#!/bin/sh
 OLDDOMAIN=$1
 FILER=$2
 
-/bin/ln -s /var/www/domains/${OLDDOMAIN} /srv/vip/filers/${FILER}/_domains/${OLDDOMAIN}
+/bin/ln -s /srv/www/domains/${OLDDOMAIN} /srv/vip/filers/${FILER}/_domains/${OLDDOMAIN}
 

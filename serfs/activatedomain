@@ -16,16 +16,16 @@ VAPPNM=$2
 
 if [ -n ${2} ]; then
 then
-    /bin/rm -rf /var/www/html/${DOMAIN}
-    /bin/ln -sfn /var/www/vapps/${VAPPNM} /var/www/html/${DOMAIN}
+    /bin/rm -rf /srv/www/html/${DOMAIN}
+    /bin/ln -sfn /srv/www/vapps/${VAPPNM} /srv/www/html/${DOMAIN}
     /bin/echo "${VAPPNM} vapp active at ${DOMAIN}."
 exit 0
 fi
 
 if [ -z ${2} ]; then
 then
-    /bin/rm -rf /var/www/html/${DOMAIN}
-    /bin/ln -sfn /var/www/domains/${DOMAIN} /var/www/html/
+    /bin/rm -rf /srv/www/html/${DOMAIN}
+    /bin/ln -sfn /srv/www/domains/${DOMAIN} /srv/www/html/
     /bin/echo "${DOMAIN} domain active."
 exit 0
 fi

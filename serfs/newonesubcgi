@@ -17,12 +17,12 @@ NEWONESUB=$1
 /bin/cp /opt/verb/conf/site-files/conf/newonesubcgi.conf /etc/apache2/sites-available/${NEWONESUB}.${oneURI}.conf 
 /bin/sed -i "s/newonesub/${NEWONESUB}/g" /etc/apache2/sites-available/${NEWONESUB}.${oneURI}.conf
 /bin/sed -i "s/oneURI286/${oneURI}/g" /etc/apache2/sites-available/${NEWONESUB}.${oneURI}.conf
-/bin/cp -R /opt/verb/conf/site-files/newonesubdir /var/www/one/${NEWONESUB}
-/bin/chown -R www-data:www-data /var/www/one/${NEWONESUB}
+/bin/cp -R /opt/verb/conf/site-files/newonesubdir /srv/www/one/${NEWONESUB}
+/bin/chown -R www:www /srv/www/one/${NEWONESUB}
 /opt/verb/serfs/nginxensite ${NEWONESUB}.${oneURI}
 /usr/sbin/apache2ctl graceful
-/bin/cp /var/www/html/one/index-newonesub.php /var/www/html/one/index-${NEWONESUB}.php
-/bin/chown -R www-data:www-data /var/www/html/one
+/bin/cp /srv/www/html/one/index-newonesub.php /srv/www/html/one/index-${NEWONESUB}.php
+/bin/chown -R www:www /srv/www/html/one
 
 # inkCert, at end of the "domains =" line
 /bin/sed -i "/^domains =/ s/$/, ${NEWONESUB}.${oneURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${oneURI}.ini

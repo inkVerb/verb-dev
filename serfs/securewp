@@ -22,7 +22,7 @@ NONCE_SALT="$(/usr/bin/pwgen -s -1 27)"
 /bin/chmod -R 644 wp-config.php
 
 # Insert the random pwgen strings
-cd /var/www/html/${DOMAIN}/
+cd /srv/www/html/${DOMAIN}/
 /bin/sed -i "s/define( 'AUTH_KEY',         .*/define( 'AUTH_KEY',         '${AUTH_KEY}' );/g" wp-config.php
 /bin/sed -i "s/define( 'SECURE_AUTH_KEY',  .*/define( 'SECURE_AUTH_KEY',  '${SECURE_AUTH_KEY}' );/g" wp-config.php
 /bin/sed -i "s/define( 'LOGGED_IN_KEY',    .*/define( 'LOGGED_IN_KEY',    '${LOGGED_IN_KEY}' );/g" wp-config.php
@@ -34,6 +34,6 @@ cd /var/www/html/${DOMAIN}/
 
 # Reset all permissions
 /bin/chmod -R 440 wp-config.php
-/bin/chown -R www-data:www-data /var/www/html/${DOMAIN}/
+/bin/chown -R www:www /srv/www/html/${DOMAIN}/
 
 /bin/echo "${DOMAIN} now has secure strings and permissions."

@@ -47,7 +47,7 @@ cd /etc/inkcert/sc/cli
 
 ## Symlinks
 /bin/ln -sfn /etc/inkcert/req /opt/verb/
-/bin/ln -sfn /etc/inkcert/req /var/www/vip/
+/bin/ln -sfn /etc/inkcert/req /srv/www/vip/
 
 # Set configs
 /bin/echo "INKCERTSCINSTALLED=\"DONE\"" >> /opt/verb/conf/inkcert/inkcertstatus

@@ -13,14 +13,14 @@
 
 # Prepare the directories
 /bin/mkdir /srv/vip/cgi
-/bin/rm -rf /var/www/html/vip.cgi
-/bin/ln -s /srv/cgi /var/www/html/vip.cgi
-/bin/chown -R www-data:www-data /var/www
-/bin/chown -R www-data:www-data /srv/vip/cgi
+/bin/rm -rf /srv/www/html/vip.cgi
+/bin/ln -s /srv/cgi /srv/www/html/vip.cgi
+/bin/chown -R www:www /srv/www
+/bin/chown -R www:www /srv/vip/cgi
 
 # Write the first file
-/bin/cp -f /opt/verb/site-files/cgi-fossil/helloworld.cgi /var/www/vip/cgi/
-/bin/chmod 750 /var/www/vip/cgi/helloworld.cgi
+/bin/cp -f /opt/verb/site-files/cgi-fossil/helloworld.cgi /srv/www/vip/cgi/
+/bin/chmod 750 /srv/www/vip/cgi/helloworld.cgi
 
 /bin/echo "
 All done. Access CGI files in the cgi folder via ftp.

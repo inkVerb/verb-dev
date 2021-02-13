@@ -15,13 +15,13 @@
 WEBPATH=$1
 
 # If it doesn't exist
-if [ ! -d "/var/www/html/${WEBPATH}" ]; then
+if [ ! -d "/srv/www/html/${WEBPATH}" ]; then
 /bin/echo "This web folder does not exist. Doing nothing."
 exit 8
 fi
 
 # If another .htaccess already exists
-if [ -f "/var/www/html/${WEBPATH}/.htaccess" ]; then
+if [ -f "/srv/www/html/${WEBPATH}/.htaccess" ]; then
 /bin/echo "A .htaccess file already exists for this web path. Over-write it and alter the course of the known universe?
 Type \"yes\" to continue, anything else to quit."
 read YESANSWER
@@ -35,9 +35,9 @@ fi
 /bin/echo "allow from all
 Options +Indexes
 IndexOptions +FancyIndexing
-" > /var/www/html/${WEBPATH}/.htaccess
+" > /srv/www/html/${WEBPATH}/.htaccess
 
-/bin/chown -R www-data:www-data /var/www/html/${WEBPATH}
+/bin/chown -R www:www /srv/www/html/${WEBPATH}
 
 # Finish
 /bin/echo "The contents of ${WEBPATH} are now available to the public!"

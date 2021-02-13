@@ -34,13 +34,13 @@ fi
 # Copy and prepare Apache server config files
 /bin/cp /opt/verb/conf/site-files/conf/newdomaincgi.tld.conf /etc/apache2/sites-available/${NEWDOMAIN}.conf
 /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /etc/apache2/sites-available/${NEWDOMAIN}.conf
-if [ ! -d /var/www/domains/${NEWDOMAIN} ]; then
-/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /var/www/domains/${NEWDOMAIN}
+if [ ! -d /srv/www/domains/${NEWDOMAIN} ]; then
+/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${NEWDOMAIN}
 fi
-/bin/ln -sfn /var/www/domains/${NEWDOMAIN} /var/www/html/
-/bin/chown -R www-data:www-data /var/www/html/${NEWDOMAIN}
-/bin/chown -R www-data:www-data /var/www/domains/${NEWDOMAIN}
-/bin/chmod -R 750 /var/www/domains/${NEWDOMAIN}
+/bin/ln -sfn /srv/www/domains/${NEWDOMAIN} /srv/www/html/
+/bin/chown -R www:www /srv/www/html/${NEWDOMAIN}
+/bin/chown -R www:www /srv/www/domains/${NEWDOMAIN}
+/bin/chmod -R 750 /srv/www/domains/${NEWDOMAIN}
 /opt/verb/serfs/nginxensite ${NEWDOMAIN}
 /usr/sbin/apache2ctl graceful
 ## Just in case...

@@ -36,7 +36,7 @@ cd /var
 /bin/mv vmail.vtxz verb.vmail.${SECNAME}.vbak
 
 # Move to web-download area
-/bin/mv /var/verb.vmail.${SECNAME}.vbak /var/www/vip/
+/bin/mv /var/verb.vmail.${SECNAME}.vbak /srv/www/vip/
 
 if [ "$2" = "-nl" ]; then
 /bin/echo "The email server data has been backed up to the 'vip' folder.
@@ -44,8 +44,8 @@ Note that the email server remains live."
 exit 0
 fi
 
-/bin/ln -sfn /var/www/vip/verb.vmail.${SECNAME}.vbak /var/www/html/${SITESERVE}.serve/${SERVEDIR}/
-/bin/chown -R www-data:www-data /var/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.vmail.${SECNAME}.vbak
+/bin/ln -sfn /srv/www/vip/verb.vmail.${SECNAME}.vbak /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/
+/bin/chown -R www:www /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.vmail.${SECNAME}.vbak
 /bin/echo "The email server data has been backed up to the 'vip' folder and can also be downloaded at
 
 http://${SERVEPATH}/verb.vmail.${SECNAME}.vbak

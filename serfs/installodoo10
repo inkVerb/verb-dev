@@ -34,8 +34,8 @@ exit 0; fi
 
 # Apache
 ## Remove static-Apache html folder
-/bin/rm -rf /var/www/html/red.odoo
-/bin/echo "Odoo 10" > /var/www/html/red.odoo
+/bin/rm -rf /srv/www/html/red.odoo
+/bin/echo "Odoo 10" > /srv/www/html/red.odoo
 ## Set the IP address in the Apache config file
 /bin/cp -f /opt/verb/conf/site-files/conf/odoo-odoo.${redURI}.conf /etc/apache2/sites-available/odoo.${redURI}.conf
 /bin/sed -i "s/ip286/${SITEIP}/g" /etc/apache2/sites-available/odoo.${redURI}.conf

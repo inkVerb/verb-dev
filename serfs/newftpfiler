@@ -27,8 +27,8 @@ usermod -d /srv/vip/filers/${NEWFTPFILER} ${NEWFTPFILER}
 
 # Create the link to access the folder via web
 /bin/mkdir /srv/vip/filers/${NEWFTPFILER}/files.vip
-/bin/ln -s /srv/vip/filers/${NEWFTPFILER}/files.vip /var/www/vip/files/${NEWFTPFILER}
+/bin/ln -s /srv/vip/filers/${NEWFTPFILER}/files.vip /srv/www/vip/files/${NEWFTPFILER}
 
 # Own the user's web accessible symlink folder
-/bin/chown -R www-data:www-data /srv/vip/filers/${NEWFTPFILER}/files.vip
-/bin/chown -R www-data:www-data /var/www/vip/files/${NEWFTPFILER}
+/bin/chown -R www:www /srv/vip/filers/${NEWFTPFILER}/files.vip
+/bin/chown -R www:www /srv/www/vip/files/${NEWFTPFILER}

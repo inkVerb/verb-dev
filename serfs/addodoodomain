@@ -46,7 +46,7 @@ Run installodoo10 or a later version if it exists.
 exit 0; fi
 
 # Domain presence check
-if [ ! -d "/var/www/domains/${DOMAIN}" ]; then
+if [ ! -d "/srv/www/domains/${DOMAIN}" ]; then
 /opt/verb/serfs/adddomain ${DOMAIN}
 wait
 fi
@@ -54,8 +54,8 @@ fi
 # Apache
 ## Remove static-Apache newdomain config & html folder
 /bin/rm -f /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/rm -f /var/www/html/${DOMAIN}
-/bin/echo "Odoo Site" > /var/www/html/${DOMAIN}
+/bin/rm -f /srv/www/html/${DOMAIN}
+/bin/echo "Odoo Site" > /srv/www/html/${DOMAIN}
 ## Add the Apache config
 /bin/cp /opt/verb/conf/site-files/conf/newodoosite.conf /etc/apache2/sites-available/${DOMAIN}.conf
 /bin/sed -i "s/odoosite286/${DOMAIN}/g" /etc/apache2/sites-available/${DOMAIN}.conf

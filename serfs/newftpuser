@@ -21,7 +21,7 @@ usermod -d /srv/vsftpd/${NEWFTPUSER} ${NEWFTPUSER}
 restart vsftpd
 
 # Create the link to access the folder via web
-/bin/ln -s /srv/vsftpd/${NEWFTPUSER} /var/www/vip/files/
+/bin/ln -s /srv/vsftpd/${NEWFTPUSER} /srv/www/vip/files/
 
 # Own the user's web accessible symlink folder
-/bin/chown -R www-data:www-data /var/www/vip/files/${NEWFTPUSER}
+/bin/chown -R www:www /srv/www/vip/files/${NEWFTPUSER}

@@ -42,7 +42,7 @@ FLUSH PRIVILEGES;"
 
 # PFA
 if [ ${SITEPFAPATH} != "PFA_NOT_ALLOWED" ] && [ ${SITEPFAPATH} != "PFA_NOT_INSTALLED" ]; then
-/bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${NEWMAILPASSAPG}/" /var/www/email/postfixadmin/config.local.php; fi
+/bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${NEWMAILPASSAPG}/" /srv/www/email/postfixadmin/config.local.php; fi
 
 # The site-wide config
 /bin/sed -i "s/SITEMAILPASSAPG.*/SITEMAILPASSAPG=\"${NEWMAILPASSAPG}\"/g" /opt/verb/conf/sitemailpass

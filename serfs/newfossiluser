@@ -20,7 +20,7 @@ NEWUSER=$2
 NEWEMAIL=$3
 NEWPASS=$4
 
-cd /var/www/vip/fossil
+cd /srv/www/vip/fossil
 
 # Add the user
 fossil user new ${NEWUSER} ${NEWEMAIL} ${NEWPASS} --repository ${OLDFOSSIL}.fossil

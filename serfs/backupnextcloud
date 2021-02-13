@@ -31,17 +31,17 @@ exit 0; fi
 . /opt/verb/conf/vapp.nextcloud
 
 # Export the database
-cd /var/www/vapps/nextcloud/data
+cd /srv/www/vapps/nextcloud/data
 /opt/verb/serfs/mysqlvappout vapp.nextcloud; wait
 
 # Backup the config
-/bin/cp /opt/verb/conf/vapp.nextcloud /var/www/vapps/nextcloud/data/
+/bin/cp /opt/verb/conf/vapp.nextcloud /srv/www/vapps/nextcloud/data/
 
 # Pack the data directory
-cd /var/www/vapps/nextcloud
+cd /srv/www/vapps/nextcloud
 /opt/verb/serfs/vtxzin data
 /bin/mv data.vtxz verb.nextcloud.${SECNAME}.vbak
-/bin/mv verb.nextcloud.${SECNAME}.vbak /var/www/vip/
+/bin/mv verb.nextcloud.${SECNAME}.vbak /srv/www/vip/
 
 # Finish
 if [ "$2" = "-nl" ]; then
@@ -52,8 +52,8 @@ Note that the app remains live.
 exit 0
 fi
 
-/bin/ln -sfn /var/www/vip/verb.nextcloud.${SECNAME}.vbak /var/www/html/${SITESERVE}.serve/${SERVEDIR}/
-/bin/chown -R www-data:www-data /var/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.nextcloud.${SECNAME}.vbak
+/bin/ln -sfn /srv/www/vip/verb.nextcloud.${SECNAME}.vbak /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/
+/bin/chown -R www:www /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.nextcloud.${SECNAME}.vbak
 /bin/echo "Nextcloud has been backed up to the 'vip' folder and can also be downloaded at:
 
 http://${SERVEPATH}/verb.nextcloud.${SECNAME}.vbak

@@ -42,7 +42,7 @@ if [ -z ${3} ]; then
 DBUSER=${DBASE}; fi
 
 # Download and establish drupal in the server to the site inkblog
-cd /var/www/vapps
+cd /srv/www/vapps
 git clone https://github.com/octobercms/install
 if [ ! -d install ]; then
 /bin/echo "Can't download OctoberCMS. I quit."
@@ -127,9 +127,9 @@ cd ../themes
 /bin/rm -f master.zip
 ## Setup links
 /opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
-/bin/ln -sfn /var/www/html/ink.blog /srv/vip/_webapps/; wait
-/bin/chown -R www-data:www-data /var/www/html/ink.blog; wait
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+/bin/ln -sfn /srv/www/html/ink.blog /srv/vip/_webapps/; wait
+/bin/chown -R www:www /srv/www/html/ink.blog; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
 
 # Create the database and credentials
 /usr/bin/mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf -e "
@@ -146,7 +146,7 @@ APPDDBUSR=${DBUSER}
 APPDDBPAS=${DBPASSWORD}" > /opt/verb/conf/vapp.${CVAPPNAME}
 
 # Reset all permissions
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}
 
 # Set up the Apache config
 /bin/cp /opt/verb/conf/site-files/conf/blog.${inkURI}.conf-october /etc/apache2/sites-available/blog.${inkURI}.conf

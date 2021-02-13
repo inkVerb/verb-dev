@@ -3,7 +3,13 @@
 
 # This prepares the early settings for the name286.verb.ink or custom Domain Mod server necessary to make the Verber
 ## This currently takes no parameters
-## The basic purpose is to add the universe repo and configure locale in preparation for make-verber
+## This is intended as final prep for the "proper" snapshot image Verbers are created from
+### So, it should not be run on "proper" Verber install, but only if from a raw OS image
+### This still needs a fresh run of: cd /opt && git clone https://github.com/inkverb/verb
+## The basic purpose is to:
+### install tools
+### set bashrc style
+### configure locale
 
 # How to use:
 ## ./make-verber-preserver
@@ -13,10 +19,6 @@
 if [ ! -d "/opt/verb" ]; then
 /bin/echo "Put the verb directory at /opt/verb first, then try again."
 exit 8; fi
-
-# Since we're starting our work, give root the verb link now: save time right at the next login :-)
-/bin/ln -s /opt/verb /root/
-/bin/ln -s /opt/verb/inst/make-verber /opt/verb/serfs/
 
 # Local
 /usr/bin/locale-gen en_US en_US.UTF-8
@@ -35,6 +37,11 @@ LC_ADDRESS="en_US.UTF-8"
 LC_TELEPHONE="en_US.UTF-8"
 LC_MEASUREMENT="en_US.UTF-8"
 " > /etc/default/locale
+
+# Install tools
+/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make cronie
+# These may have mirror troubles, do them separately
+/usr/bin/pacman -S --noconfirm gcc autoconf imagemagick git
 
 ## Set the prompt style
 /opt/verb/serfs/setbashrc

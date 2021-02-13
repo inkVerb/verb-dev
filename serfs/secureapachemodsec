@@ -117,7 +117,7 @@ if ! /bin/grep -Fq '## inkVerb mod_sec' /etc/apache2/apache2.conf; then
   /bin/sed -i "/# vim: syntax=apache ts=4 sw=4 sts=4 sr noet/d" /etc/apache2/apache2.conf
   /bin/echo '
 ## Added by inkVerb
-<Directory "/var/www/html/blue.nc">
+<Directory "/srv/www/html/blue.nc">
   # VIDEOS
   SecRuleRemoveById 958291             # Range Header Checks
   SecRuleRemoveById 981203             # Correlated Attack Attempt

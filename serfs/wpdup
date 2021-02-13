@@ -17,19 +17,19 @@ oDOMAIN="$1"
 nDOMAIN="$2"
 
 # Check if the new WP site already exists
-if [ -e "/var/www/vapps/wp.${nDOMAIN}" ]; then
+if [ -e "/srv/www/vapps/wp.${nDOMAIN}" ]; then
 	/bin/echo "The to-be-created WordPress site already exists, doing nothing."
 exit 0; fi
 
 # Check if the old WP site exists
-if [ -z "/var/www/vapps/wp.${oDOMAIN}" ]; then
+if [ -z "/srv/www/vapps/wp.${oDOMAIN}" ]; then
 	/bin/echo "That original WordPress site does not exist, doing nothing."
 exit 0; fi
 
 # Create the new domain if it doesn't exist already
 ##DEV This needs to be expanded to check whether it includes a subdomain of an existing domain.
 ##DEV Currently, the way to do subdomains is to add the subdomain before running this
-if [ -z "/var/www/domains/${nDOMAIN}" ]; then
+if [ -z "/srv/www/domains/${nDOMAIN}" ]; then
 	/bin/echo "${nDOMAIN} does not yet exist, creating it..."
 /opt/verb/serfs/adddomain ${nDOMAIN}
 fi
@@ -43,12 +43,12 @@ fi
 
 # Setup the new WP site
 ## Set the vapp in its directory
-/bin/cp -r /var/www/vapps/wp.${oDOMAIN} /var/www/vapps/wp.${nDOMAIN}
-/bin/rm -f /var/www/html/${nDOMAIN}
-/bin/ln -sfn /var/www/vapps/wp.${nDOMAIN} /var/www/html/${nDOMAIN}
-/bin/ln -sfn /var/www/vapps/wp.${nDOMAIN} /srv/vip/_webapps/; wait
-/bin/chown -R www-data:www-data /var/www/html/${nDOMAIN}; wait
-/bin/chown -R www-data:www-data /var/www/vapps/wp.${nDOMAIN}; wait
+/bin/cp -r /srv/www/vapps/wp.${oDOMAIN} /srv/www/vapps/wp.${nDOMAIN}
+/bin/rm -f /srv/www/html/${nDOMAIN}
+/bin/ln -sfn /srv/www/vapps/wp.${nDOMAIN} /srv/www/html/${nDOMAIN}
+/bin/ln -sfn /srv/www/vapps/wp.${nDOMAIN} /srv/vip/_webapps/; wait
+/bin/chown -R www:www /srv/www/html/${nDOMAIN}; wait
+/bin/chown -R www:www /srv/www/vapps/wp.${nDOMAIN}; wait
 
 ## Auto database
 DBPASSWORD=$(/usr/bin/pwgen -s -1 10)
@@ -71,7 +71,7 @@ APPDDBUSR=${DBUSER}
 APPDDBPAS=${DBPASSWORD}" > /opt/verb/conf/vapp.wp.${nDOMAIN}
 
 ## Put the settings in the WordPress config file
-cd /var/www/vapps/wp.${nDOMAIN}
+cd /srv/www/vapps/wp.${nDOMAIN}
 /bin/cp wp-config-sample.php wp-config.php
 /bin/sed -i "s/database_name_here/${DBASE}/g" wp-config.php
 /bin/sed -i "s/username_here/${DBUSER}/g" wp-config.php
@@ -100,7 +100,7 @@ NONCE_SALT=$(/usr/bin/pwgen -s -1 27)
 /bin/sed -i "s/define('NONCE_SALT',       'put your unique phrase here');/define('NONCE_SALT',       '${NONCE_SALT}');/g" wp-config.php
 
 ## Reset all permissions and reload
-/bin/chown -R www-data:www-data /var/www/vapps/wp.${nDOMAIN}
+/bin/chown -R www:www /srv/www/vapps/wp.${nDOMAIN}
 /usr/sbin/apache2ctl graceful
 
 # Finish

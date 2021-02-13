@@ -8,7 +8,7 @@
 ## ./updatercrmvbak
 
 
-/bin/rm -rf /var/www/email/roundcube.vbak
+/bin/rm -rf /srv/www/email/roundcube.vbak
 
 /bin/echo "
 Roudcube update backup removed.

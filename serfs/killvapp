@@ -28,9 +28,9 @@ FLUSH PRIVILEGES;"
 /bin/rm -f /opt/verb/conf/vapp.${APPNAME}
 
 # Kill the directories
-/bin/rm -rf /var/www/vapps/${APPNAME}
+/bin/rm -rf /srv/www/vapps/${APPNAME}
 /bin/rm -rf /srv/vip/_webapps/${APPNAME}
-/bin/rm -rf /var/www/html/*.${APPNAME}
+/bin/rm -rf /srv/www/html/*.${APPNAME}
 /opt/verb/serfs/updatehtmlverbs
 
 # Finish

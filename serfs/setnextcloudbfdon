@@ -8,7 +8,7 @@
 
 
 # First remove any existing declaration for this setting
-/bin/sed -i "/  'auth\.bruteforce\.protection\.enabled.*/d" /var/www/vapps/nextcloud/config/config.php
+/bin/sed -i "/  'auth\.bruteforce\.protection\.enabled.*/d" /srv/www/vapps/nextcloud/config/config.php
 
 # Put the setting just before the close of the settings array
-/bin/sed -i "s/);/  'auth\.bruteforce\.protection\.enabled' => false,\n);/" /var/www/vapps/nextcloud/config/config.php
+/bin/sed -i "s/);/  'auth\.bruteforce\.protection\.enabled' => false,\n);/" /srv/www/vapps/nextcloud/config/config.php

@@ -15,4 +15,4 @@ userdel ${DELFTPUSER}
 # Remove directories and web symlink
 /bin/rm -rf /srv/vsftpd/${DELFTPUSER}
 /bin/rm -rf /home/${DELFTPUSER}
-/bin/rm -f /var/www/vip/files/${NEWFTPUSER}
+/bin/rm -f /srv/www/vip/files/${NEWFTPUSER}

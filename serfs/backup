@@ -35,17 +35,17 @@ exit 0; fi
 . /opt/verb/conf/vapp.${APPNAME}
 
 # Export the database
-cd /var/www/vapps/${APPNAME}/
+cd /srv/www/vapps/${APPNAME}/
 /opt/verb/serfs/mysqlvappout vapp.${APPNAME}; wait
 
 # Backup the config
-/bin/cp /opt/verb/conf/vapp.${APPNAME} /var/www/vapps/${APPNAME}/
+/bin/cp /opt/verb/conf/vapp.${APPNAME} /srv/www/vapps/${APPNAME}/
 
 # Pack the directory
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/vtxzin ${APPNAME}
 /bin/mv ${APPNAME}.vtxz verb.${APPNAME}.${SECNAME}.vbak
-/bin/mv verb.${APPNAME}.${SECNAME}.vbak /var/www/vip/
+/bin/mv verb.${APPNAME}.${SECNAME}.vbak /srv/www/vip/
 
 # Finish
 if [ "$3" = "-nl" ]; then
@@ -56,8 +56,8 @@ Note that the app remains live.
 exit 0
 fi
 
-/bin/ln -sfn /var/www/vip/verb.${APPNAME}.${SECNAME}.vbak /var/www/html/${SITESERVE}.serve/${SERVEDIR}/
-/bin/chown -R www-data:www-data /var/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.${APPNAME}.${SECNAME}.vbak
+/bin/ln -sfn /srv/www/vip/verb.${APPNAME}.${SECNAME}.vbak /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/
+/bin/chown -R www:www /srv/www/html/${SITESERVE}.serve/${SERVEDIR}/verb.${APPNAME}.${SECNAME}.vbak
 /bin/echo "${APPNAME} has been backed up to the 'vip' folder and can also be downloaded at:
 
 http://${SERVEPATH}/verb.${APPNAME}.${SECNAME}.vbak

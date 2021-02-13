@@ -21,7 +21,7 @@ NEWEMAIL=$3
 NEWPASS=$4
 
 # Create the fossil with user
-cd /var/www/vip/fossil
+cd /srv/www/vip/fossil
 fossil new ${NEWFOSSIL}.fossil --admin-user ${NEWUSER}
 
 # Change the user's password
@@ -33,7 +33,7 @@ repository: /fossil/${NEWFOSSIL}.fossil" > ${NEWFOSSIL}.cgi
 /bin/chmod 750 ${NEWFOSSIL}.cgi
 
 # Final chown to allow database to be writable
-/bin/chown -R www-data:www-data /var/www/vip/fossil
+/bin/chown -R www:www /srv/www/vip/fossil
 
 /bin/echo "${NEWFOSSIL}.fossil created.
 Available on web at fossil.${vipURI}/${NEWFOSSIL}.cgi"

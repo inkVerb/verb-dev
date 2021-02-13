@@ -32,12 +32,12 @@ if [ -f /opt/verb/conf/vapp.${CVAPPNAME} ]; then
 /bin/echo "This is already installed."
 exit 0; fi
 ## Directory
-if [ -d /var/www/vapps/${CVAPPNAME} ]; then
+if [ -d /srv/www/vapps/${CVAPPNAME} ]; then
 /bin/echo "Nextcloud already exists in the system. If it isn't working, look deeper on the server. For now, doing nothing."
 exit 8; fi
 
 # Do it
-cd /var/www/vapps
+cd /srv/www/vapps
 ## Get and unpack
 /bin/echo "Getting Nextcloud, this could take a minute or so..."
 ### Repo version ('stable' inkVerb recommendation)
@@ -67,15 +67,15 @@ exit 4; fi
 fi
 ## Install it
 /opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/html/blue.nc; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www:www /srv/www/html/blue.nc; wait
 ## Run the Nextcloud script
 /opt/verb/donjon/nextcloudprep.sh; wait
 ## Verify ownership
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
 
 ## Set up cron for updates (manage the crontab files directly)
-/bin/echo '*/15 * * * *  www-data php -f /var/www/vapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
+/bin/echo '*/15 * * * *  www-data php -f /srv/www/vapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
 /bin/chmod 0644 /etc/cron.d/nextcloud
 
 # Auto database

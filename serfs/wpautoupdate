@@ -12,10 +12,10 @@
 DOMAIN=$1
 
 # Copy the folder
-/bin/cp -R /opt/verb/conf/lab/mu-plugins /var/www/html/${DOMAIN}/wp-content
+/bin/cp -R /opt/verb/conf/lab/mu-plugins /srv/www/html/${DOMAIN}/wp-content
 
 # Own
-/bin/chown -R www-data:www-data /var/www/html/${DOMAIN}/wp-content/mu-plugins
+/bin/chown -R www:www /srv/www/html/${DOMAIN}/wp-content/mu-plugins
 
 # Finished
 /bin/echo "inkVerb Auto-Update added to ${DOMAIN}. No further action is necessary."

@@ -7,7 +7,7 @@
 ## ./wpvappbackupall
 
 
-cd /var/www/vapps
+cd /srv/www/vapps
 for vapp in wp.*; do
 /opt/verb/serfs/backup $vapp 123 -nl
 done

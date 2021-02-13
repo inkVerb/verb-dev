@@ -26,7 +26,7 @@ if [-f /opt/verb/conf/vapp.${CVAPPNAME} ]; then
 exit 0; fi
 
 # Download and establish mediawiki from the inkVerb repo
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/inkget ${CVAPPNAME}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -39,8 +39,8 @@ exit 4; fi
 
 /opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
 /opt/verb/serfs/setvapplinkon ${CVAPPNAME}; wait
-/bin/chown -R www-data:www-data /var/www/html/ink.wiki; wait
-/bin/chown -R www-data:www-data /var/www/vapps/${CVAPPNAME}; wait
+/bin/chown -R www:www /srv/www/html/ink.wiki; wait
+/bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
 
 # Auto database
 if [ -z ${3} ]; then

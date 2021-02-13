@@ -8,7 +8,7 @@
 
 
 # Set installer to false
-/bin/echo '*    *    *    *    *     cd /var/www/vapps/suitecrm; php -f cron.php > /dev/null 2>&1' > /etc/cron.d/suitecrm
+/bin/echo '*    *    *    *    *     cd /srv/www/vapps/suitecrm; php -f cron.php > /dev/null 2>&1' > /etc/cron.d/suitecrm
 /bin/chmod 0644 /etc/cron.d/suitecrm
 
 # Finish

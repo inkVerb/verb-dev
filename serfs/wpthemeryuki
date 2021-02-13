@@ -11,8 +11,8 @@ DOMAIN=$1
 
 
 # Check if installed
-if [ ! -d /var/www/html/${DOMAIN}/wp-content ]; then
- if [ ! -d /var/www/html/${DOMAIN} ]; then
+if [ ! -d /srv/www/html/${DOMAIN}/wp-content ]; then
+ if [ ! -d /srv/www/html/${DOMAIN} ]; then
  /bin/echo "${DOMAIN} is not even installed. That domain needs to be installed and have WordPress. Do those, then try again."
  exit 8
  else
@@ -22,7 +22,7 @@ if [ ! -d /var/www/html/${DOMAIN}/wp-content ]; then
 fi
 
 # Do the Git clone
-cd /var/www/html/${DOMAIN}/wp-content/themes
+cd /srv/www/html/${DOMAIN}/wp-content/themes
 git clone https://github.com/cfinke/Ryuki.git
 
 # Finish

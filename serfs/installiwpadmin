@@ -23,7 +23,7 @@ DBPASSWORD=$6
 CLEANNAME=$(/bin/echo $DOMAIN | sed -e 's/\.//g')
 
 # Check that the directory doesn't already exist
-if [ -d /var/www/html/${DOMAIN}/${DIRECTORY} ]; then
+if [ -d /srv/www/html/${DOMAIN}/${DIRECTORY} ]; then
 /bin/echo "That directory already exists for that domain. Choose a different directory."
 exit 8; fi
 
@@ -42,7 +42,7 @@ exit 8; fi
 . /opt/verb/conf/sitenameip
 
 # Download and establish IWPAdmin in the server to pre-created domain
-cd /var/www/vapps
+cd /srv/www/vapps
 /opt/verb/serfs/inkget ${CVAPPNAME} ${REMAIL}; wait
 ### Check
 /opt/verb/serfs/inkget ${CVAPPNAME} check
@@ -66,7 +66,7 @@ DBUSER=${DBASE}; fi
 /opt/verb/serfs/vtxzout ${CVAPPNAME}; wait
 /bin/mv ${CVAPPNAME} ${DOMAIN}
 /bin/mv ${CVAPPNAME} ${CVAPPNAME}.${DOMAIN}
-/bin/ln -sfn /var/www/vapps/${CVAPPNAME}.${DOMAIN} /var/www/html/${DOMAIN}/${DIRECTORY}
+/bin/ln -sfn /srv/www/vapps/${CVAPPNAME}.${DOMAIN} /srv/www/html/${DOMAIN}/${DIRECTORY}
 
 # Create the database and credentials
 /usr/bin/mysql --login-path=local -e "
@@ -82,7 +82,7 @@ APPDDBPAS=${DBPASSWORD}
 IWPADMIN_DIRECTORY=\"${DIRECTORY}\"" > /opt/verb/conf/vapp.${CVAPPNAME}.${DOMAIN}
 
 # Reset all permissions
-/bin/chown -R www-data:www-data /var/www/html/${DOMAIN}/${DIRECTORY}; wait
+/bin/chown -R www:www /srv/www/html/${DOMAIN}/${DIRECTORY}; wait
 
 /bin/echo "${DOMAIN} now has the InfiniteWP Admin Panel.
 These are setup:

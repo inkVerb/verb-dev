@@ -361,7 +361,7 @@ fi
 /usr/sbin/adduser ${NEWBOSS} --gecos ",,," --disabled-password
 /bin/echo "${NEWBOSS}:${NEWBOSSPASS}" | chpasswd
 /usr/sbin/usermod -a -G sudo ${NEWBOSS}
-/usr/sbin/usermod -a -G www-data ${NEWBOSS}
+/usr/sbin/usermod -a -G www ${NEWBOSS}
 /bin/ln -sfn /opt/verb/boss /home/${NEWBOSS}/
 ## User privilege specifi/bin/cation
 /bin/echo '# Added in inkVerb preserver setup' >> /etc/sudoers

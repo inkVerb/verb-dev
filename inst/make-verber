@@ -31,7 +31,7 @@
 
 # swap sice
 if [ -z "$1" ]; then
-SWAPSIZEMAKE="4"
+SWAPSIZEMAKE="2"
 else
 SWAPSIZEMAKE="$1"
 fi

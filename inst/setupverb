@@ -214,40 +214,40 @@ serveDIR="$(/usr/bin/pwgen -s -1 6)"
 /bin/chmod -R 750 /opt/verb/conf/site-files/newvipsubdir
 /bin/chmod -R 750 /opt/verb/conf/site-files/newonesubdir
 ## Replace
-/bin/cp /opt/verb/inst/root-config/etc/nginx/sites-available/* /etc/nginx/sites-available/
-/bin/sed -i "s/emailURI286/${emailURI}/g" /etc/nginx/sites-available/*.conf
-/bin/sed -i "s/oneURI286/${oneURI}/g" /etc/nginx/sites-available/*.conf
-/bin/sed -i "s/inkURI286/${inkURI}/g" /etc/nginx/sites-available/*.conf
-/bin/sed -i "s/blueURI286/${blueURI}/g" /etc/nginx/sites-available/*.conf
-/bin/sed -i "s/vipURI286/${vipURI}/g" /etc/nginx/sites-available/*.conf
-/bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /etc/nginx/sites-available/*.conf
-/bin/sed -i "s/redURI286/${redURI}/g" /etc/nginx/sites-available/*.conf
+/bin/cp /opt/verb/inst/root-config/etc/httpd/sites-available/* /etc/httpd/sites-available/
+/bin/sed -i "s/emailURI286/${emailURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/oneURI286/${oneURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/inkURI286/${inkURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/blueURI286/${blueURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/vipURI286/${vipURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/redURI286/${redURI}/g" /etc/httpd/sites-available/*.conf
 ## Rename
-for cfg in /etc/nginx/sites-available/*emailURI286.conf
+for cfg in /etc/httpd/sites-available/*emailURI286.conf
 do
   mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
 done
-for cfg in /etc/nginx/sites-available/*oneURI286.conf
+for cfg in /etc/httpd/sites-available/*oneURI286.conf
 do
   mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
 done
-for cfg in /etc/nginx/sites-available/*inkURI286.conf
+for cfg in /etc/httpd/sites-available/*inkURI286.conf
 do
   mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
 done
-for cfg in /etc/nginx/sites-available/*blueURI286.conf
+for cfg in /etc/httpd/sites-available/*blueURI286.conf
 do
   mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
 done
-for cfg in /etc/nginx/sites-available/*vipURI286.conf
+for cfg in /etc/httpd/sites-available/*vipURI286.conf
 do
   mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
 done
-for cfg in /etc/nginx/sites-available/*kiwiURI286.conf
+for cfg in /etc/httpd/sites-available/*kiwiURI286.conf
 do
   mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
 done
-for cfg in /etc/nginx/sites-available/*redURI286.conf
+for cfg in /etc/httpd/sites-available/*redURI286.conf
 do
   mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
 done
@@ -358,8 +358,7 @@ fi
 /usr/bin/mkdir -p /home/${NEWBOSS}
 /bin/ln -sfn /opt/verb/boss /home/${NEWBOSS}/
 ## User privilege specifi/bin/cation
-/bin/echo '# Added in inkVerb preserver setup' >> /etc/sudoers
-/bin/echo '${NEWBOSS}  ALL=(ALL:ALL) ALL' >> /etc/sudoers
+/bin/echo "${NEWBOSS}  ALL=(ALL:ALL) ALL" >> /etc/sudoers.d/${NEWBOSS}
 ## Vim preferences
 echo 'nnoremap <C-c> "+y
 vnoremap <C-c> "+y

@@ -57,16 +57,15 @@ fi
 /bin/echo "/var/swap.img    none    swap    sw    0    0" >> /etc/fstab
 
 # Slave user (for yay, etc)
+/usr/bin/groupadd www
 /usr/bin/groupadd slave
-/usr/sbin/useradd slave slave
+/usr/bin/useradd -g slave slave
 #/bin/echo "slave:${somenewpassword}" | chpasswd # May create a secure password later, such as for a web app to control
-/usr/sbin/usermod -a -G sudo slave
-/usr/sbin/usermod -a -G www slave
+/usr/bin/usermod -a -G wheel slave
+/usr/bin/usermod -a -G www slave
 /usr/bin/mkdir -p /home/slave
-/bin/ln -sfn /opt/verb/boss /home/slave/
 ## User privilege specifi/bin/cation
-/bin/echo '# Added in inkVerb preserver setup' >> /etc/sudoers
-/bin/echo 'slave  ALL=(ALL:ALL) ALL' >> /etc/sudoers
+/bin/echo 'slave  ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/slave
 
 # Link serfs & tools to boss box
 /bin/ln -sfn /opt/verb/serfs /opt/verb/boss/
@@ -97,7 +96,6 @@ fi
 
 ## Web directory
 /usr/bin/mkdir -p /srv/www/html
-/usr/bin/groupadd www
 /usr/bin/useradd -g www www
 /usr/bin/chmod u+w /srv/www/html
 /usr/bin/chown -R www:www /srv/www/html

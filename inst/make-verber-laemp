@@ -57,16 +57,15 @@ fi
 /bin/echo "/var/swap.img    none    swap    sw    0    0" >> /etc/fstab
 
 # Slave user (for yay, etc)
+/usr/bin/groupadd www
 /usr/bin/groupadd slave
-/usr/sbin/useradd slave slave
+/usr/bin/useradd -g slave slave
 #/bin/echo "slave:${somenewpassword}" | chpasswd # May create a secure password later, such as for a web app to control
-/usr/sbin/usermod -a -G sudo slave
-/usr/sbin/usermod -a -G www slave
+/usr/bin/usermod -a -G wheel slave
+/usr/bin/usermod -a -G www slave
 /usr/bin/mkdir -p /home/slave
-/bin/ln -sfn /opt/verb/boss /home/slave/
 ## User privilege specifi/bin/cation
-/bin/echo '# Added in inkVerb preserver setup' >> /etc/sudoers
-/bin/echo 'slave  ALL=(ALL:ALL) ALL' >> /etc/sudoers
+/bin/echo 'slave  ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/slave
 
 # Link serfs & tools to boss box
 /bin/ln -sfn /opt/verb/serfs /opt/verb/boss/
@@ -92,12 +91,11 @@ fi
 /usr/bin/pacman -S --noconfirm nginx
 /usr/bin/systemctl enable nginx
 /usr/bin/systemctl start nginx
-/usr/bin/mkdir /etc/nginx/sites-available
+/usr/bin/mkdir /etc/httpd/sites-available
 /usr/bin/mkdir /etc/nginx/sites-enabled
 
 ## Web directory
 /usr/bin/mkdir -p /srv/www/html
-/usr/bin/groupadd www
 /usr/bin/useradd -g www www
 /usr/bin/chmod u+w /srv/www/html
 /usr/bin/chown -R www:www /srv/www/html
@@ -204,7 +202,7 @@ server {
   server_name _;
 
   location / {
-    root /srv/www/html/default;
+    root /etc/nginx/default;
     index index.htm index.html;
   }
 
@@ -216,32 +214,36 @@ server {
 
 }
 EOF
-/bin/mkdir -p /srv/www/html/default
-/usr/bin/cat <<'EOF' > /srv/www/html/default/index.htm
+/bin/mkdir -p /etc/nginx/default
+/usr/bin/cat <<'EOF' > /etc/nginx/default/index.htm
 <!DOCTYPE html>
 <html>
 <head><title>Hey, Boo!</title></head>
 <body><h1 style="text-align:center">Hey, Boo!</h1><hr></body>
 </html>
 EOF
-/bin/chown -R www:www /srv/www/html/default
-/bin/cp /opt/verb/inst/root-config/etc/nginx/sites-available/* /etc/nginx/sites-available/
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
+/bin/chown -R www:www /etc/nginx/default
 /usr/bin/systemctl restart nginx
 
 # Apache
 /usr/bin/pacman -S --noconfirm apache
-/usr/bin/sed -s "s?^LoadModule mpm_event_module modules/mod_mpm_event.so?#LoadModule mpm_event_module modules/mod_mpm_event.so?" /etc/httpd/conf/httpd.conf
-/usr/bin/sed -s "s?#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so?LoadModule mpm_prefork_module modules/mod_mpm_prefork.so?" /etc/httpd/conf/httpd.conf
-/usr/bin/sed -s "s?#LoadModule http2_module modules/mod_http2.so?LoadModule http2_module modules/mod_http2.so?" /etc/httpd/conf/httpd.conf
-/usr/bin/sed -s "s?User http?User www?" /etc/httpd/conf/httpd.conf
-/usr/bin/sed -s "s?Group http?Group www?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?^LoadModule mpm_event_module modules/mod_mpm_event.so?#LoadModule mpm_event_module modules/mod_mpm_event.so?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so?LoadModule mpm_prefork_module modules/mod_mpm_prefork.so?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?#LoadModule http2_module modules/mod_http2.so?LoadModule http2_module modules/mod_http2.so?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?User http?User www?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?Group http?Group www?" /etc/httpd/conf/httpd.conf
 echo "LoadModule php_module modules/libphp.so
 AddHandler php-script .php
 Include conf/extra/php_module.conf
-Protocols h2 http/1.1" >> /etc/httpd/conf/httpd.conf
-/usr/bin/systemctl systemctl restart httpd
+Protocols h2 http/1.1
+# Include the virtual host configurations:
+IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
+/usr/bin/mkdir -p /etc/httpd/conf/sites-available
+/usr/bin/mkdir -p /etc/httpd/conf/sites-enabled
+/bin/cp /opt/verb/inst/root-config/etc/httpd/sites-available/* /etc/httpd/sites-available/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
+/usr/bin/systemctl restart httpd
 
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb

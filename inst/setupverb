@@ -86,12 +86,6 @@ LC_MEASUREMENT="en_US.UTF-8"
 # System timezone
 ln -sfn /usr/share/zoneinfo/${PHPCITY} /etc/localtime
 
-# Make Vim work correctly
-echo 'nnoremap <C-c> "+y
-vnoremap <C-c> "+y
-nnoremap <C-p> "+p
-vnoremap <C-p> "+p' > ~/.vimrc
-
 # Site settings
 ## Configs
 /bin/cp -R /opt/verb/inst/conf /opt/verb/conf
@@ -356,14 +350,25 @@ fi
 /bin/systemctl reload nginx
 
 # Create the new boss user
-/usr/sbin/adduser ${NEWBOSS} --gecos ",,," --disabled-password
+/usr/bin/groupadd ${NEWBOSS}
+/usr/sbin/useradd ${NEWBOSS} ${NEWBOSS}
 /bin/echo "${NEWBOSS}:${NEWBOSSPASS}" | chpasswd
 /usr/sbin/usermod -a -G sudo ${NEWBOSS}
 /usr/sbin/usermod -a -G www ${NEWBOSS}
+/usr/bin/mkdir -p /home/${NEWBOSS}
 /bin/ln -sfn /opt/verb/boss /home/${NEWBOSS}/
 ## User privilege specifi/bin/cation
 /bin/echo '# Added in inkVerb preserver setup' >> /etc/sudoers
 /bin/echo '${NEWBOSS}  ALL=(ALL:ALL) ALL' >> /etc/sudoers
+## Vim preferences
+echo 'nnoremap <C-c> "+y
+vnoremap <C-c> "+y
+nnoremap <C-p> "+p
+vnoremap <C-p> "+p' > /home/${NEWBOSS}/.vimrc
+## BASH settings
+/opt/verb/serfs/setbashrc ${NEWBOSS}
+## Own
+/usr/bin/chown -R ${NEWBOSS}:${NEWBOSS} /home/${NEWBOSS}
 
 # New Boss MySQL root password
 /usr/bin/mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf -e "

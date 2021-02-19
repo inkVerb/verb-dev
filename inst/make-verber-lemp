@@ -56,6 +56,18 @@ fi
 ## Enable swap at next startup
 /bin/echo "/var/swap.img    none    swap    sw    0    0" >> /etc/fstab
 
+# Slave user (for yay, etc)
+/usr/bin/groupadd slave
+/usr/sbin/useradd slave slave
+#/bin/echo "slave:${somenewpassword}" | chpasswd # May create a secure password later, such as for a web app to control
+/usr/sbin/usermod -a -G sudo slave
+/usr/sbin/usermod -a -G www slave
+/usr/bin/mkdir -p /home/slave
+/bin/ln -sfn /opt/verb/boss /home/slave/
+## User privilege specifi/bin/cation
+/bin/echo '# Added in inkVerb preserver setup' >> /etc/sudoers
+/bin/echo 'slave  ALL=(ALL:ALL) ALL' >> /etc/sudoers
+
 # Link serfs & tools to boss box
 /bin/ln -sfn /opt/verb/serfs /opt/verb/boss/
 /bin/ln -sfn /opt/verb/tools /opt/verb/boss/
@@ -87,12 +99,12 @@ fi
 /usr/bin/mkdir -p /srv/www/html
 /usr/bin/groupadd www
 /usr/bin/useradd -g www www
-/usr/bin/chmod +w /srv/www/html
+/usr/bin/chmod u+w /srv/www/html
 /usr/bin/chown -R www:www /srv/www/html
 
 # Snakeoil install
-/usr/bin/mkdir -p /etc/nginx/ssl
-cd /etc/nginx/ssl
+/usr/bin/mkdir -p /etc/ssl/server
+cd /etc/ssl/server
 /usr/bin/rm -f server.key
 /usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.key
 /usr/bin/chmod 400 server.key
@@ -100,9 +112,9 @@ cd /etc/nginx/ssl
     -subj "/C=/ST=/L=/O=/OU=/CN=/emailAddress=/unstructuredName=/"
 /usr/bin/openssl x509 -req -days 1095 -in server.csr -signkey server.key -out server.crt
 # Use OpenSSL to create a unique Diffie-Helman Group file (security)
-/bin/rm -f /etc/nginx/ssl/dhparams.pem
-/usr/bin/openssl dhparam -out /etc/nginx/ssl/dhparams.pem 2048
-/bin/chmod 600 /etc/nginx/ssl/dhparams.pem
+/bin/rm -f /etc/ssl/server/dhparams.pem
+/usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 2048
+/bin/chmod 600 /etc/ssl/server/dhparams.pem
 cd $OLDPWD
 
 ## Nginx Settings
@@ -181,6 +193,43 @@ echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/
 /usr/bin/systemctl restart nginx
 /usr/bin/systemctl restart php-fpm
 
+# Nginx site defaults
+/bin/mkdir -p /etc/nginx/conf.d
+/usr/bin/cat <<'EOF' > /etc/nginx/conf.d/default.conf
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  listen 443 ssl http2 default_server;
+  listen [::]:443 ssl http2 default_server;
+  server_name _;
+
+  location / {
+    root /srv/www/html/default;
+    index index.htm index.html;
+  }
+
+  ssl_certificate /etc/ssl/server/server.crt;
+  ssl_certificate_key /etc/ssl/server/server.key;
+  ssl_dhparam /etc/ssl/server/dhparams.pem;
+
+  #return 403;
+
+}
+EOF
+/bin/mkdir -p /srv/www/html/default
+/usr/bin/cat <<'EOF' > /srv/www/html/default/index.htm
+<!DOCTYPE html>
+<html>
+<head><title>Hey, Boo!</title></head>
+<body><h1 style="text-align:center">Hey, Boo!</h1><hr></body>
+</html>
+EOF
+/bin/chown -R www:www /srv/www/html/default
+/bin/cp /opt/verb/inst/root-config/etc/nginx/sites-available/* /etc/nginx/sites-available/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
+/usr/bin/systemctl restart nginx
+
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb
 /usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
@@ -201,7 +250,6 @@ EOF
 #/usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
 #/usr/bin/printf "${MYSQLPASS}\n n\n n\n n\n y\n y\n y\n" | /usr/bin/mysql_secure_installation
 
-
 # MySQL conf for Postfix Admin
 /bin/echo "##### Added by inkVerb ######
 # This removes NO_ZERO_IN_DATE and NO_ZERO_DATE, which cause problems for
@@ -216,44 +264,7 @@ sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AU
 /usr/bin/ufw allow 80/tcp
 /usr/bin/ufw allow 443/tcp
 
-# Nginx site defaults
-/bin/mkdir -p /etc/nginx/conf.d
-/usr/bin/cat <<'EOF' > /etc/nginx/conf.d/default.conf
-server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
-  listen 443 ssl http2 default_server;
-  listen [::]:443 ssl http2 default_server;
-  server_name _;
-
-  location / {
-    root /srv/www/html/default;
-    index index.htm index.html;
-  }
-
-  ssl_certificate /etc/nginx/ssl/server.crt;
-  ssl_certificate_key /etc/nginx/ssl/server.key;
-  ssl_dhparam /etc/nginx/ssl/dhparams.pem;
-
-  #return 403;
-
-}
-EOF
-/bin/mkdir -p /srv/www/html/default
-/usr/bin/cat <<'EOF' > /srv/www/html/default/index.htm
-<!DOCTYPE html>
-<html>
-<head><title>Hey, Boo!</title></head>
-<body><h1 style="text-align:center">Hey, Boo!</h1><hr></body>
-</html>
-EOF
-/bin/chown -R www:www /srv/www/html/default
-/bin/cp /opt/verb/inst/root-config/etc/nginx/sites-available/* /etc/nginx/sites-available/
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
-/usr/bin/systemctl restart nginx
-
-## tmp folder for a secure Apache & PHP
+## tmp folder for a secure PHP
 /bin/mkdir -p /srv/www/tmp
 /bin/chmod -R 777 /srv/www/tmp
 
@@ -313,9 +324,9 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /bin/systemctl start monit
 
 # Delete the snakeoil keys and Diffie-Helman Group security file to prevent security risks (keep this verber unique)
-/bin/rm -f /etc/nginx/ssl/dhparams.pem
-/bin/rm -f /etc/nginx/ssl/server.crt
-/bin/rm -f /etc/nginx/ssl/server.key
+/bin/rm -f /etc/ssl/server/dhparams.pem
+/bin/rm -f /etc/ssl/server/server.crt
+/bin/rm -f /etc/ssl/server/server.key
 
 # Restart Server and reconnect at the new port
 /bin/echo "

@@ -38,13 +38,21 @@ LC_TELEPHONE="en_US.UTF-8"
 LC_MEASUREMENT="en_US.UTF-8"
 " > /etc/default/locale
 
-# Install tools
-/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make cronie
-# These may have mirror troubles, do them separately
-/usr/bin/pacman -S --noconfirm gcc autoconf imagemagick git
+# Update
+/usr/bin/pacman -Syy
 
-## Set the prompt style
+# Install tools
+/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make cronie gcc autoconf imagemagick git
+
+# Set the prompt style
 /opt/verb/serfs/setbashrc
+/opt/verb/serfs/setbashrc root
+
+# Vim preferences for root
+echo 'nnoremap <C-c> "+y
+vnoremap <C-c> "+y
+nnoremap <C-p> "+p
+vnoremap <C-p> "+p' > /root/.vimrc
 
 # Restart Server and reconnect at the new port
 /bin/echo "

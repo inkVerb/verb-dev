@@ -86,7 +86,7 @@ fi
 # Record the MySQL root password
 /bin/echo "${MYSQLPASS}" > /opt/verb/inst/mysqlrootpassword
 
-#  LEMP Server
+#  LAMP Server
 ## Web directory
 /usr/bin/mkdir -p /srv/www/html
 /usr/bin/useradd -g www www
@@ -109,85 +109,41 @@ cd /etc/ssl/server
 /bin/chmod 600 /etc/ssl/server/dhparams.pem
 cd $OLDPWD
 
-## Nginx
-/usr/bin/pacman -S --noconfirm nginx
-/usr/bin/systemctl enable nginx
-/usr/bin/systemctl start nginx
-/usr/bin/mkdir /etc/nginx/sites-available
-/usr/bin/mkdir /etc/nginx/sites-enabled
-
-## Nginx Settings
-/usr/bin/cat <<'EOF' > /etc/nginx/nginx.conf
-user http;
-worker_processes auto;
-worker_cpu_affinity auto;
-
-events {
-    multi_accept on;
-    worker_connections 1024;
-}
-
-http {
-    charset utf-8;
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    server_tokens off;
-    log_not_found off;
-    types_hash_max_size 4096;
-    client_max_body_size 16M;
-
-    # SSL
-    ssl_prefer_server_ciphers on;
-    ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
-
-    # MIME
-    include mime.types;
-    default_type application/octet-stream;
-
-    # logging
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log warn;
-
-    # load configs
-    include /etc/nginx/conf.d/*.conf;
-    include /etc/nginx/sites-enabled/*;
-}
+## Apache
+/usr/bin/pacman -S --noconfirm apache
+/usr/bin/sed -i "s?#LoadModule proxy_module modules/mod_proxy.so?LoadModule proxy_module modules/mod_proxy.so?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?#LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so?LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?#LoadModule http2_module modules/mod_http2.so?LoadModule http2_module modules/mod_http2.so?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?User http?User www?" /etc/httpd/conf/httpd.conf
+/usr/bin/sed -i "s?Group http?Group www?" /etc/httpd/conf/httpd.conf
+/usr/bin/cat <<'EOF' > /etc/httpd/conf/extra/php-fpm.conf
+DirectoryIndex index.htm index.html index.php
+<FilesMatch \.php$>
+  SetHandler "proxy:unix:/run/php-fpm/php-fpm.sock|fcgi://localhost/"
+</FilesMatch>
 EOF
+echo "
+# Added by inkVerb Verber #
+Include conf/extra/php-fpm.conf
+Protocols h2 http/1.1
 
-## Nginx site defaults
-/bin/mkdir -p /etc/nginx/conf.d
-/usr/bin/cat <<'EOF' > /etc/nginx/conf.d/default.conf
-server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
-  listen 443 ssl http2 default_server;
-  listen [::]:443 ssl http2 default_server;
-  server_name _;
-
-  location / {
-    root /srv/www/html/default;
-    index index.htm index.html;
-  }
-
-  ssl_certificate /etc/ssl/server/server.crt;
-  ssl_certificate_key /etc/ssl/server/server.key;
-  ssl_dhparam /etc/ssl/server/dhparams.pem;
-
-  #return 403;
-
-}
-EOF
-/bin/mkdir -p /srv/www/html/default
-/usr/bin/cat <<'EOF' > /srv/www/html/default/index.htm
+# Include the virtual host configurations:
+IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
+/usr/bin/mkdir -p /etc/httpd/conf/sites-available
+/usr/bin/mkdir -p /etc/httpd/conf/sites-enabled
+/usr/bin/cat <<'EOF' > /srv/http/index.htm
 <!DOCTYPE html>
 <html>
 <head><title>Hey, Boo!</title></head>
 <body><h1 style="text-align:center">Hey, Boo!</h1><hr></body>
 </html>
 EOF
-/bin/chown -R www:www /srv/www/html/default
+
+## Verber Apache site configs
+/bin/cp /opt/verb/inst/root-config/etc/httpd/sites-available/* /etc/httpd/sites-available/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
+/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
+/usr/bin/chown -R www:www /srv/http
 
 ## PHP
 /usr/bin/pacman -S --noconfirm php php-fpm
@@ -195,26 +151,6 @@ EOF
 /usr/bin/systemctl start php-fpm
 
 ## PHP-FPM
-/usr/bin/cat <<'EOF' > /etc/nginx/php_fastcgi.conf
-
-# 404
-  try_files $fastcgi_script_name =404;
-
-# default fastcgi_params
-  include fastcgi_params;
-
-# fastcgi settings
-  fastcgi_pass                    unix:/run/php-fpm/php-fpm.sock;
-  fastcgi_index                   index.php;
-  fastcgi_buffers                 8 16k;
-  fastcgi_buffer_size             32k;
-
-# fastcgi params
-  fastcgi_param DOCUMENT_ROOT     $realpath_root;
-  fastcgi_param SCRIPT_FILENAME   $realpath_root$fastcgi_script_name;
-  #fastcgi_param PHP_ADMIN_VALUE  "open_basedir=$base/:/usr/lib/php/:/tmp/";
-
-EOF
 ### Security extensions
 echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/www.conf
 ### Web user
@@ -227,7 +163,7 @@ echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/
 /usr/bin/pacman -S --noconfirm pkg-config php-gd php-apcu nginx-mod-headers-more fcgiwrap php-imagick php-intl
 
 ## Restart
-/usr/bin/systemctl restart nginx
+/usr/bin/systemctl restart httpd
 /usr/bin/systemctl restart php-fpm
 
 # MySQL (viz MariaDB)

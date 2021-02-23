@@ -100,7 +100,7 @@ NONCE_SALT=$(/usr/bin/pwgen -s -1 27)
 /bin/sed -i "s/define( 'NONCE_SALT',       .*/define( 'NONCE_SALT',       '${NONCE_SALT}' );/g" wp-config.php
 
 #### fixhttps already done?
-if /bin/grep -q '##INKHTTPSFIX=fixed' /etc/apache2/sites-available/${DOMAIN}.conf; then
+if /bin/grep -q '##INKHTTPSFIX=fixed' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
 /bin/sed -i "/WP_SITEURL/d" /srv/www/vapps/wp.${DOMAIN}/wp-config.php
 /bin/sed -i "/WP_HOME/d" /srv/www/vapps/wp.${DOMAIN}/wp-config.php
 /bin/echo "define( 'WP_SITEURL', 'https://${DOMAIN}' );
@@ -112,7 +112,7 @@ fi
 /bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}
 
 # Set up the Apache config
-/bin/cp /opt/verb/conf/site-files/conf/wpblg-blog.${inkURI}.conf /etc/apache2/sites-available/blog.${inkURI}.conf
+/bin/cp /opt/verb/conf/site-files/conf/wpblg-blog.${inkURI}.conf /opt/verb/conf/webserver/httpd/sites-available/blog.${inkURI}.conf
 /usr/sbin/apache2ctl graceful
 ## inkCert SSL certs
 ### Not setup

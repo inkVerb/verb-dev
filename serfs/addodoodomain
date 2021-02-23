@@ -53,13 +53,13 @@ fi
 
 # Apache
 ## Remove static-Apache newdomain config & html folder
-/bin/rm -f /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /bin/rm -f /srv/www/html/${DOMAIN}
 /bin/echo "Odoo Site" > /srv/www/html/${DOMAIN}
 ## Add the Apache config
-/bin/cp /opt/verb/conf/site-files/conf/newodoosite.conf /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i "s/odoosite286/${DOMAIN}/g" /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i "s/ip286/${SITEIP}/g" /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/cp /opt/verb/conf/site-files/conf/newodoosite.conf /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i "s/odoosite286/${DOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i "s/ip286/${SITEIP}/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /usr/sbin/apache2ctl graceful
 ## inkCert SSL certs
 ### Not setup

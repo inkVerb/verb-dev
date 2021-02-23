@@ -67,7 +67,7 @@ cd ..
 /bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /etc/postfix/mysql_virtual_mailbox_maps.cf
 /bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /etc/postfix/mysql_virtual_sender_login_maps.cf
 ## If PFA is already installed
-if [ -e "/etc/apache2/sites-enabled/pfa.${emailTLDURI}.conf" ] && [ -f "/srv/www/email/postfixadmin/config.local.php" ] && [ "${SITEPFAPATH}" != "PFA_NOT_INSTALLED" ] && [ ${SITEPFAPATH} != "PFA_NOT_ALLOWED" ]; then
+if [ -e "/etc/httpd/sites-enabled/pfa.${emailTLDURI}.conf" ] && [ -f "/srv/www/email/postfixadmin/config.local.php" ] && [ "${SITEPFAPATH}" != "PFA_NOT_INSTALLED" ] && [ ${SITEPFAPATH} != "PFA_NOT_ALLOWED" ]; then
 /bin/sed -i "s/mailpass${tbrSMPAPG}/mailpass${SITEMAILPASSAPG}/" /srv/www/email/postfixadmin/config.local.php; fi
 
 # Restart stuff

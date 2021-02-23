@@ -65,8 +65,8 @@ cd /srv/www/ghost/ghostblog
 /bin/rm -rf /srv/www/html/ink.blog
 /bin/echo "Ghost" > /srv/www/html/ink.blog
 ## Set the IP address in the Apache config file
-/bin/cp /opt/verb/conf/site-files/conf/ghost-blog.${inkURI}.conf /etc/apache2/sites-available/blog.${inkURI}.conf
-/bin/sed -i "s/ip286/${SITEIP}/g" /etc/apache2/sites-available/blog.${inkURI}.conf
+/bin/cp /opt/verb/conf/site-files/conf/ghost-blog.${inkURI}.conf /opt/verb/conf/webserver/httpd/sites-available/blog.${inkURI}.conf
+/bin/sed -i "s/ip286/${SITEIP}/g" /opt/verb/conf/webserver/httpd/sites-available/blog.${inkURI}.conf
 /usr/sbin/apache2ctl graceful
 ## inkCert SSL certs
 ### Not setup

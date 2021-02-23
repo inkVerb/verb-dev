@@ -67,8 +67,8 @@ fi
 
 # Set based on web directory and Apache status
 if [ -e /srv/www/html/${NEWCAHOST} ]; then
- if [ -f /etc/apache2/sites-available/${NEWCAHOST}.conf ]; then
-  if [ -e /etc/apache2/sites-enabled/${NEWCAHOST}.conf ]; then
+ if [ -f /opt/verb/conf/webserver/httpd/sites-available/${NEWCAHOST}.conf ]; then
+  if [ -e /etc/httpd/sites-enabled/${NEWCAHOST}.conf ]; then
   /bin/echo "Great, ${NEWCAHOST} already exists..."
   else
   /bin/echo "Enabling ${NEWCAHOST}..."
@@ -84,10 +84,10 @@ else
  if [ ! -e /srv/www/domains/${NEWCAHOST} ]; then
  /bin/echo "Creating ${NEWCAHOST}..."
 ## Remove any duplicate, because that can happen in the known plasmaverse and interwebverse.
-  if [ -f /etc/apache2/sites-available/${NEWCAHOST}.conf ]; then
-  rm -f /etc/apache2/sites-available/${NEWCAHOST}.conf; fi
-  if [ -e /etc/apache2/sites-enabled/${NEWCAHOST}.conf ]; then
-  rm -f /etc/apache2/sites-enabled/${NEWCAHOST}.conf; fi
+  if [ -f /opt/verb/conf/webserver/httpd/sites-available/${NEWCAHOST}.conf ]; then
+  rm -f /opt/verb/conf/webserver/httpd/sites-available/${NEWCAHOST}.conf; fi
+  if [ -e /etc/httpd/sites-enabled/${NEWCAHOST}.conf ]; then
+  rm -f /etc/httpd/sites-enabled/${NEWCAHOST}.conf; fi
   /opt/verb/serfs/addsubdomain ${SITEHOST} ${nameURI}
   wait
 ### Set up SSL certs based on situation

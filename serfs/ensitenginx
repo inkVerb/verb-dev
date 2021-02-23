@@ -11,6 +11,9 @@
 for DOMAIN in $@
 do
 
-  /usr/bin/ln -sfn /etc/nginx/sites-available/${DOMAIN}.conf /etc/nginx/sites-enabled/${DOMAIN}.conf
+  /usr/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/nginx/sites-enabled/${DOMAIN}.conf
 
 done
+
+# Reload
+/usr/bin/systemctl reload nginx

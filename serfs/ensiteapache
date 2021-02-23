@@ -11,6 +11,9 @@
 for DOMAIN in $@
 do
 
-  /usr/bin/ln -sfn /etc/httpd/sites-available/${DOMAIN}.conf /etc/httpd/sites-enabled/${DOMAIN}.conf
+  /usr/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/httpd/sites-enabled/${DOMAIN}.conf
 
 done
+
+# Reload
+/usr/bin/systemctl reload httpd

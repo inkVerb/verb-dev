@@ -51,21 +51,21 @@ exit 8
 fi
 
 # Check Apache config status
-if /bin/grep -Fq "#INKVERB-INKCERT=INK_NO" /etc/apache2/sites-available/${SITEDOMAIN}.conf ; then
+if /bin/grep -Fq "#INKVERB-INKCERT=INK_NO" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf ; then
  /bin/echo "Setting inkCert configs for ${SITEDOMAIN}..."
-elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CB" /etc/apache2/sites-available/${SITEDOMAIN}.conf ; then
+elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CB" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf ; then
  /bin/echo "Already certified by inkCert-CB: ${SITEDOMAIN}. Moving on..."
  exit 0
-elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBDIGOC" /etc/apache2/sites-available/${SITEDOMAIN}.conf ; then
+elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBDIGOC" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf ; then
  /bin/echo "Already certified by inkCert-CBDIGOC: ${SITEDOMAIN}. Moving on..."
  exit 0
-elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_LE" /etc/apache2/sites-available/${SITEDOMAIN}.conf ; then
+elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_LE" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf ; then
  /bin/echo "Already certified by inkCert-LE: ${SITEDOMAIN}. Moving on..."
  exit 0
-elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_SC" /etc/apache2/sites-available/${SITEDOMAIN}.conf ; then
+elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_SC" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf ; then
  /bin/echo "Already certified by inkCert-SC: ${SITEDOMAIN}. Moving on..."
  exit 0
-elif /bin/grep -Fq "#INKVERB-INKCERT=NA" /etc/apache2/sites-available/${SITEDOMAIN}.conf ; then
+elif /bin/grep -Fq "#INKVERB-INKCERT=NA" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf ; then
  /bin/echo "inkCert certs do not apply here: ${SITEDOMAIN}. Moving on..."
  exit 0
 else
@@ -74,11 +74,11 @@ else
 fi
 
 # Comment the Snakeoil certs
-/bin/sed -i "s/SSLCertificateFile/#INKVERB-INKCERT-COMMENT-SSLCertificateFile/g" /etc/apache2/sites-available/${SITEDOMAIN}.conf
-/bin/sed -i "s/SSLCertificateKeyFile/#INKVERB-INKCERT-COMMENT-SSLCertificateKeyFile/g" /etc/apache2/sites-available/${SITEDOMAIN}.conf
+/bin/sed -i "s/SSLCertificateFile/#INKVERB-INKCERT-COMMENT-SSLCertificateFile/g" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf
+/bin/sed -i "s/SSLCertificateKeyFile/#INKVERB-INKCERT-COMMENT-SSLCertificateKeyFile/g" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf
 
 # Insert the inkCert certs
-/bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_IC\n\t\tSSLCertificateFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.cert\.pem\n\t\tSSLCertificateKeyFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.key\.pem\n\t\tSSLCertificateChainFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.ca-chain\.cert\.pem\n\t\t#INKVERB-INKCERT-stop/" /etc/apache2/sites-available/${SITEDOMAIN}.conf
+/bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_IC\n\t\tSSLCertificateFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.cert\.pem\n\t\tSSLCertificateKeyFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.key\.pem\n\t\tSSLCertificateChainFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.ca-chain\.cert\.pem\n\t\t#INKVERB-INKCERT-stop/" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf
 /usr/sbin/apache2ctl start
 
 # Create the inkCert-DOMAIN config file

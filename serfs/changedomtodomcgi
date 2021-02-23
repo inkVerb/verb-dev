@@ -14,7 +14,7 @@
 
 DOMAIN=$1
 
-/bin/rm -f /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i "s/newdomain.tld/${DOMAIN}/g" /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i "s/newdomain.tld/${DOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /usr/sbin/apache2ctl graceful

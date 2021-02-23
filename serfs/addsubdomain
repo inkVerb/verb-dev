@@ -19,8 +19,8 @@ wait
 fi
 
 # Check if it already exists
-if [ -f /etc/apache2/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf ]; then
- if [ -f /etc/apache2/sites-enabled/${SUBDOMAIN}.${OLDDOMAIN}.conf ]; then
+if [ -f /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf ]; then
+ if [ -f /etc/httpd/sites-enabled/${SUBDOMAIN}.${OLDDOMAIN}.conf ]; then
  /bin/echo "That subdomain already exists."
  exit 7
  else
@@ -30,8 +30,8 @@ if [ -f /etc/apache2/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf ]; then
 fi
 
 # Copy and prepare Apache server config files
-/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /etc/apache2/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
-/bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /etc/apache2/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+/bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
 /bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
 /bin/ln -s /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN} /srv/www/html/
 /bin/chown -R www:www /srv/www/html/${SUBDOMAIN}.${OLDDOMAIN}

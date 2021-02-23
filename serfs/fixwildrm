@@ -11,13 +11,13 @@ DOMAIN=$1
 
 
 # Verify that the "fixwildcard" has been added
-if ! /bin/grep -q "INKWILDFIX=fixed" /etc/apache2/sites-available/${DOMAIN}.conf; then
+if ! /bin/grep -q "INKWILDFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
 	/bin/echo "${DOMAIN} doesn't have the wildcard subdomain fix. Nothing to do."
 else
 
 # Remove the old settings
-/bin/sed -i "/ServerAlias *.${DOMAIN}/d" /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##INKWILDFIX/d' /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i "/ServerAlias *.${DOMAIN}/d" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i '/##INKWILDFIX/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 
 /usr/sbin/apache2ctl graceful
 /bin/echo "${DOMAIN} the wildcard subdomain fix has been removed."

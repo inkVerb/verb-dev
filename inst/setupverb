@@ -88,13 +88,13 @@ LC_MEASUREMENT="en_US.UTF-8"
 " > /etc/default/locale
 
 # System timezone
-ln -sfn /usr/share/zoneinfo/${PHPCITY} /etc/localtime
+/bin/ln -sfn /usr/share/zoneinfo/${PHPCITY} /etc/localtime
 
 # Site settings
 ## Configs
-/bin/cp -R /opt/verb/inst/conf /opt/verb/conf
+/usr/bin/mkdir -p /opt/verb/conf/localtime
+/usr/bin/touch /opt/verb/conf/localtime/${PHPCITY}
 /bin/mv /opt/verb/inst/mysqlrootpassword /opt/verb/conf/
-/bin/mv /opt/verb/inst/mysqlboss.cnf /opt/verb/conf/
 /bin/mv /opt/verb/conf/sitenameip286 /opt/verb/conf/sitenameip
 /bin/mv /opt/verb/conf/siteport286 /opt/verb/conf/siteport
 /bin/mv /opt/verb/conf/siteinkget286 /opt/verb/conf/siteinkget
@@ -202,8 +202,6 @@ serveDIR="$(/usr/bin/pwgen -s -1 6)"
 if [ -f "/etc/httpd/conf/rpaf.conf" ]; then
   /bin/sed -i "s/ip286/${SERVERIPV4}/g" /etc/httpd/conf/rpaf.conf
   /bin/sed -i "s/ipv6286/${SERVERIPV6}/g" /etc/httpd/conf/rpaf.conf
-  if
-
 fi
 
 # PHP ini file
@@ -227,40 +225,39 @@ fi
 /bin/chmod -R 750 /opt/verb/conf/site-files/newvipsubdir
 /bin/chmod -R 750 /opt/verb/conf/site-files/newonesubdir
 ## Replace
-/bin/cp /opt/verb/inst/root-config/etc/httpd/sites-available/* /etc/httpd/sites-available/
-/bin/sed -i "s/emailURI286/${emailURI}/g" /etc/httpd/sites-available/*.conf
-/bin/sed -i "s/oneURI286/${oneURI}/g" /etc/httpd/sites-available/*.conf
-/bin/sed -i "s/inkURI286/${inkURI}/g" /etc/httpd/sites-available/*.conf
-/bin/sed -i "s/blueURI286/${blueURI}/g" /etc/httpd/sites-available/*.conf
-/bin/sed -i "s/vipURI286/${vipURI}/g" /etc/httpd/sites-available/*.conf
-/bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /etc/httpd/sites-available/*.conf
-/bin/sed -i "s/redURI286/${redURI}/g" /etc/httpd/sites-available/*.conf
+/bin/sed -i "s/emailURI286/${emailURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+/bin/sed -i "s/oneURI286/${oneURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+/bin/sed -i "s/inkURI286/${inkURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+/bin/sed -i "s/blueURI286/${blueURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+/bin/sed -i "s/vipURI286/${vipURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+/bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+/bin/sed -i "s/redURI286/${redURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
 ## Rename
-for cfg in /etc/httpd/sites-available/*emailURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailURI286.conf
 do
   mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
 done
-for cfg in /etc/httpd/sites-available/*oneURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*oneURI286.conf
 do
   mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
 done
-for cfg in /etc/httpd/sites-available/*inkURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*inkURI286.conf
 do
   mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
 done
-for cfg in /etc/httpd/sites-available/*blueURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*blueURI286.conf
 do
   mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
 done
-for cfg in /etc/httpd/sites-available/*vipURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*vipURI286.conf
 do
   mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
 done
-for cfg in /etc/httpd/sites-available/*kiwiURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*kiwiURI286.conf
 do
   mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
 done
-for cfg in /etc/httpd/sites-available/*redURI286.conf
+for cfg in /opt/verb/conf/webserver/httpd/sites-available/*redURI286.conf
 do
   mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
 done
@@ -535,10 +532,7 @@ login using: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
 "
 
 # Cleanup
-/bin/rm -f /opt/verb/serfs/setupverb
-/bin/rm -f /opt/verb/inst/setupverb
-/bin/rm -f /opt/verb/inst/preverboff
-/bin/rm -f /opt/verb/inst/preverbon
-/bin/rm -f /opt/verb/inst/make-dommod
 /usr/sbin/ufw --force enable
 /bin/systemctl restart sshd
+/bin/rm -f /opt/verb/serfs/setupverb
+/bin/rm -f /opt/verb/inst

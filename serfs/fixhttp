@@ -10,21 +10,21 @@
 DOMAIN=$1
 
 # Verify that it has been fixed
-if /bin/grep -q "##INKHTTPSFIX=fixed" /etc/apache2/sites-available/${DOMAIN}.conf; then
+if /bin/grep -q "##INKHTTPSFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
 
 # Replace it with the original file
 ## From the original file
-/bin/sed -i "/##inkHTTPremoved/r /etc/apache2/sites-available/${DOMAIN}.conf.verbhttpsfixed" /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i "/##inkHTTPremoved/r /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 ## Remove the old marker
-/bin/sed -i '/##inkHTTPremoved/d' /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i '/##inkHTTPremoved/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 ## Remove the old settings
-/bin/sed -i '/^##INKHTTPSFIX=fixed/,/^##verbFIXhttps/{/^##INKHTTPSFIX=fixed/!{/^##verbFIXhttps/!d}}' /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##INKHTTPSFIX=fixed/d' /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##verbFIXhttps/d' /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i '/^##INKHTTPSFIX=fixed/,/^##verbFIXhttps/{/^##INKHTTPSFIX=fixed/!{/^##verbFIXhttps/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i '/##INKHTTPSFIX=fixed/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i '/##verbFIXhttps/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 ## Put the original settings back
-/bin/cat /etc/apache2/sites-available/${DOMAIN}.conf.verbhttpsfixed >> /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/cat /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /usr/sbin/apache2ctl graceful
-/bin/rm /etc/apache2/sites-available/${DOMAIN}.conf.verbhttpsfixed
+/bin/rm /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed
 /bin/echo "${DOMAIN} now accepts http traffic."
 ## WordPress?
 if [ -d "/srv/www/vapps/wp.${DOMAIN}" ]; then

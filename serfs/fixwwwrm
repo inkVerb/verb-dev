@@ -15,14 +15,14 @@ DOMAIN=$1
 
 
 # Verify that the "fixwww" has been added
-if ! /bin/grep -q "##INKWWWFIX=fixed" /etc/apache2/sites-available/${DOMAIN}.conf; then
+if ! /bin/grep -q "##INKWWWFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
 	/bin/echo "${DOMAIN} doesn't have the www subdomain fix. Nothing to do."
 fi
 
 ## Remove the old settings
-/bin/sed -i '/^##INKWWWFIX=fixed/,/^##verbFIXwww/{/^##INKWWWFIX=fixed/!{/^##verbFIXwww/!d}}' /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##INKWWWFIX=fixed/d' /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##verbFIXwww/d' /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i '/^##INKWWWFIX=fixed/,/^##verbFIXwww/{/^##INKWWWFIX=fixed/!{/^##verbFIXwww/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i '/##INKWWWFIX=fixed/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i '/##verbFIXwww/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 
 /usr/sbin/apache2ctl graceful
 /bin/echo "${DOMAIN} the www subdomain fix has been removed."

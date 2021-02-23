@@ -149,7 +149,7 @@ APPDDBPAS=${DBPASSWORD}" > /opt/verb/conf/vapp.${CVAPPNAME}
 /bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}
 
 # Set up the Apache config
-/bin/cp /opt/verb/conf/site-files/conf/blog.${inkURI}.conf-october /etc/apache2/sites-available/blog.${inkURI}.conf
+/bin/cp /opt/verb/conf/site-files/conf/blog.${inkURI}.conf-october /opt/verb/conf/webserver/httpd/sites-available/blog.${inkURI}.conf
 /usr/sbin/apache2ctl graceful
 ## inkCert SSL certs
 ### Not setup

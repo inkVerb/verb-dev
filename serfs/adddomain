@@ -22,8 +22,8 @@ if [ ! -f /opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN} ]; then
 fi
 
 # Check if it already exists
-if [ -f /etc/apache2/sites-available/${NEWDOMAIN}.conf ]; then
- if [ -f /etc/apache2/sites-enabled/${NEWDOMAIN}.conf ]; then
+if [ -f /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf ]; then
+ if [ -f /etc/httpd/sites-enabled/${NEWDOMAIN}.conf ]; then
  /bin/echo "That domain already exists."
  exit 0
  else
@@ -33,8 +33,8 @@ if [ -f /etc/apache2/sites-available/${NEWDOMAIN}.conf ]; then
 fi
 
 # Copy and prepare Apache server config files
-/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /etc/apache2/sites-available/${NEWDOMAIN}.conf
-/bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /etc/apache2/sites-available/${NEWDOMAIN}.conf
+/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+/bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
 if [ ! -d /srv/www/domains/${NEWDOMAIN} ]; then
 /bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${NEWDOMAIN}
 fi

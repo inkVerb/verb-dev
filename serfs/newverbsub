@@ -24,12 +24,12 @@ tldURI="${SITENAME}.verb.${TLD}"
 fi
 
 # Copy the file
-/bin/cp /opt/verb/conf/site-files/conf/sub286.tldURI286.conf /etc/apache2/sites-available/${SUBDOMAIN}.${tldURI}.conf
+/bin/cp /opt/verb/conf/site-files/conf/sub286.tldURI286.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${tldURI}.conf
 
 # Replace
-/bin/sed -i "s/sub286/${SUBDOMAIN}/g" /etc/apache2/sites-available/${SUBDOMAIN}.${tldURI}.conf
-/bin/sed -i "s/tldURI286/${tldURI}/g" /etc/apache2/sites-available/${SUBDOMAIN}.${tldURI}.conf
-/bin/sed -i "s/tld286/${TLD}/g" /etc/apache2/sites-available/${SUBDOMAIN}.${tldURI}.conf
+/bin/sed -i "s/sub286/${SUBDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${tldURI}.conf
+/bin/sed -i "s/tldURI286/${tldURI}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${tldURI}.conf
+/bin/sed -i "s/tld286/${TLD}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${tldURI}.conf
 
 # inkCert, at end of the "domains =" line
 /bin/sed -i "/^domains =/ s/$/, ${SUBDOMAIN}.${tldURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${tldURI}.ini

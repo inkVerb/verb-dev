@@ -17,22 +17,22 @@
 DOMAIN=$1
 
 # Check Apache config status
-if /bin/grep -Fq "#INKVERB-INKCERT=DONE_LE" /etc/apache2/sites-available/${DOMAIN}.conf ; then
+if /bin/grep -Fq "#INKVERB-INKCERT=DONE_LE" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
 /bin/echo "Removing inkCert-LE configs from ${DOMAIN}..."
 else
- if /bin/grep -Fq "#INKVERB-INKCERT=DONE_IC" /etc/apache2/sites-available/${DOMAIN}.conf ; then
+ if /bin/grep -Fq "#INKVERB-INKCERT=DONE_IC" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
   /bin/echo "Apache configs use inkCert Proper. Use: inkcertremove"
   exit 8
- elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CB" /etc/apache2/sites-available/${DOMAIN}.conf ; then
+ elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CB" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
   /bin/echo "Apache configs use inkCert-Certbot. Use: inkcertremovecb"
   exit 8
- elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBDIGOC" /etc/apache2/sites-available/${DOMAIN}.conf ; then
+ elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBDIGOC" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
   /bin/echo "Apache configs use inkCert Proper. Use: inkcertremovecbdigoc"
   exit 8
- elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_SC" /etc/apache2/sites-available/${DOMAIN}.conf ; then
+ elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_SC" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
   /bin/echo "Apache configs use inkCert Self-Cert. Use: inkcertremovesc"
   exit 8
- elif /bin/grep -Fq "#INKVERB-INKCERT=NO" /etc/apache2/sites-available/${DOMAIN}.conf ; then
+ elif /bin/grep -Fq "#INKVERB-INKCERT=NO" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
   /bin/echo "inkCert certs aren't setup. Nothing to do."
   exit 0
  else
@@ -66,12 +66,12 @@ fi
 ## Check that the certs are no longer live
 if [ ! -d /etc/inkcert/le/live/${DOMAIN} ]; then
 ## Uncomment the Snakeoil cert configs
-/bin/sed -i "s/#INKVERB-INKCERT-COMMENT-SSLCertificateFile/SSLCertificateFile/g" /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i "s/#INKVERB-INKCERT-COMMENT-SSLCertificateKeyFile/SSLCertificateKeyFile/g" /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i "s/#INKVERB-INKCERT-COMMENT-SSLCertificateFile/SSLCertificateFile/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i "s/#INKVERB-INKCERT-COMMENT-SSLCertificateKeyFile/SSLCertificateKeyFile/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 ## Remove the inkCert cert liness
-/bin/sed -i '/#INKVERB-INKCERT=DONE_LE/,/#INKVERB-INKCERT-stop/{/#INKVERB-INKCERT=DONE_LE/!{/#INKVERB-INKCERT-stop/!d}}' /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i 's/#INKVERB-INKCERT=DONE_LE/#INKVERB-INKCERT=INK_NO_REMOVED/' /etc/apache2/sites-available/${DOMAIN}.conf
-/bin/sed -i '/#INKVERB-INKCERT-stop/d' /etc/apache2/sites-available/${DOMAIN}.conf
+/bin/sed -i '/#INKVERB-INKCERT=DONE_LE/,/#INKVERB-INKCERT-stop/{/#INKVERB-INKCERT=DONE_LE/!{/#INKVERB-INKCERT-stop/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i 's/#INKVERB-INKCERT=DONE_LE/#INKVERB-INKCERT=INK_NO_REMOVED/' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+/bin/sed -i '/#INKVERB-INKCERT-stop/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /usr/sbin/apache2ctl graceful
 ## Note to the config
 /bin/sed -i "s/INKCERTED=DONE_LE/INKCERTED=NO_REMOVED_LE/" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${DOMAIN}

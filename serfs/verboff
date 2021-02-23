@@ -13,7 +13,7 @@
 
 SITEOFF=$1
 
-/bin/rm -f /etc/apache2/sites-enabled/*.verb.${SITEOFF}.conf
+/bin/rm -f /etc/httpd/sites-enabled/*.verb.${SITEOFF}.conf
 /bin/sed -i "s/VERB${SITEOFF}=.*/VERB${SITEOFF}=false/g" /opt/verb/conf/sitetldstatus
 /usr/sbin/apache2ctl graceful
 

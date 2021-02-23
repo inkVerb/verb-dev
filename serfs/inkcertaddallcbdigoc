@@ -40,7 +40,7 @@ fi
 wait
 
 # For any/all sub-domains
-cd /etc/apache2/sites-available
+cd /opt/verb/conf/webserver/httpd/sites-available
 ## Get the name of each subdomain .conf file available
 find . -name "*.${SITEDOMAIN}.conf"|while read findsitesubdomain; do
 ## Strip the .conf extension

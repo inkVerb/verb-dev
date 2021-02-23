@@ -26,9 +26,8 @@
 
 # Prep for root convenience
 /bin/ln -s /opt/verb /root/
-/bin/ln -s /opt/verb/inst/make-verber /opt/verb/serfs/
 
-# swap sice
+# swap size
 if [ -z "$1" ]; then
 SWAPSIZEMAKE="2"
 else
@@ -121,8 +120,9 @@ cd $OLDPWD
 
 ## Nginx
 /usr/bin/pacman -S --noconfirm nginx
-/usr/bin/mkdir /etc/nginx/sites-available
-/usr/bin/mkdir /etc/nginx/sites-enabled
+/usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
+/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
+/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 
 ## Nginx Settings
 /usr/bin/cat <<'EOF' > /etc/nginx/nginx.conf
@@ -175,7 +175,7 @@ server {
   server_name _;
 
   location / {
-    root /srv/www/html/default;
+    root /etc/nginx/default;
     index index.htm index.html;
   }
 
@@ -187,15 +187,15 @@ server {
 
 }
 EOF
-/bin/mkdir -p /srv/www/html/default
-/usr/bin/cat <<'EOF' > /srv/www/html/default/index.htm
+/bin/mkdir -p /etc/nginx/default
+/usr/bin/cat <<'EOF' > /etc/nginx/default/index.htm
 <!DOCTYPE html>
 <html>
 <head><title>Hey, Boo!</title></head>
 <body><h1 style="text-align:center">Hey, Boo!</h1><hr></body>
 </html>
 EOF
-/bin/chown -R www:www /srv/www/html/default
+/bin/chown -R www:www /etc/nginx/default
 
 ## PHP
 /usr/bin/pacman -S --noconfirm php php-fpm
@@ -260,7 +260,7 @@ EOF
 /bin/echo "##### Added by inkVerb ######
 # This removes NO_ZERO_IN_DATE and NO_ZERO_DATE, which cause problems for
 # Postfix Admin code, from strict mode.
-sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+#sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ##### End inkVerb #####
 " >> /etc/my.cnf
 /usr/bin/systemctl enable mariadb
@@ -314,7 +314,7 @@ FLUSH PRIVILEGES;"
 /bin/echo "[client]
 user = mysqlboss
 password = ${MYSQLBOSSPASS}
-host = localhost" > /opt/verb/inst/mysqlboss.cnf
+host = localhost" > /opt/verb/conf/mysqlboss.cnf
 
 # Monit
 /usr/bin/pacman -S --noconfirm monit
@@ -329,6 +329,9 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/sshd /etc/monit/monitrc.d/
 /bin/systemctl enable monit
 /bin/systemctl start monit
+
+# Server type
+/bin/echo 'SERVERTYPE="lemp"' > /opt/verb/conf/servertype
 
 # Delete the snakeoil keys and Diffie-Helman Group security file to prevent security risks (keep this verber unique)
 /bin/rm -f /etc/ssl/server/dhparams.pem
@@ -346,5 +349,4 @@ At this point, there is no urgent need to restart the server.
 "
 
 # Delete this one-time script
-/bin/rm -f /opt/verb/serfs/make-verber
-/bin/rm -f /opt/verb/inst/make-verber
+/bin/rm -f /opt/verb/inst/make-verber-*

@@ -22,10 +22,10 @@
 KILLDOMAIN=$1
 
 # Remove all config files, symlinks, and directories
-/bin/rm -f /etc/apache2/sites-enabled/${KILLDOMAIN}.conf
-/bin/rm -f /etc/apache2/sites-enabled/*${KILLDOMAIN}.conf
-/bin/rm -f /etc/apache2/sites-available/${KILLDOMAIN}.conf
-/bin/rm -f /etc/apache2/sites-available/*${KILLDOMAIN}.conf
+/bin/rm -f /etc/httpd/sites-enabled/${KILLDOMAIN}.conf
+/bin/rm -f /etc/httpd/sites-enabled/*${KILLDOMAIN}.conf
+/bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${KILLDOMAIN}.conf
+/bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/*${KILLDOMAIN}.conf
 /usr/sbin/apache2ctl graceful
 /opt/verb/serfs/killdomainshell ${KILLDOMAIN}; wait
 /bin/rm -f /srv/www/html/${KILLDOMAIN}

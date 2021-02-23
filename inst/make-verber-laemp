@@ -26,9 +26,8 @@
 
 # Prep for root convenience
 /bin/ln -s /opt/verb /root/
-/bin/ln -s /opt/verb/inst/make-verber /opt/verb/serfs/
 
-# swap sice
+# swap size
 if [ -z "$1" ]; then
 SWAPSIZEMAKE="2"
 else
@@ -138,8 +137,9 @@ Protocols h2 http/1.1
 
 # Include the virtual host configurations:
 IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
-/usr/bin/mkdir -p /etc/httpd/sites-available
-/usr/bin/mkdir -p /etc/httpd/sites-enabled
+/usr/bin/mkdir -p /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd
+/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available /etc/httpd/
+/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd/
 /usr/bin/cat <<'EOF' > /srv/http/index.htm
 <!DOCTYPE html>
 <html>
@@ -149,15 +149,15 @@ IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
 EOF
 
 ## Verber Apache site configs
-/bin/cp /opt/verb/inst/root-config/etc/httpd/sites-available/* /etc/httpd/sites-available/
 /bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
 /bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
-/usr/bin/chown -R www:www /srv/http
+/usr/bin/chown -R www:www /srv/www/html
 
 ## Nginx
 /usr/bin/pacman -S --noconfirm nginx
-/usr/bin/mkdir /etc/nginx/sites-available
-/usr/bin/mkdir /etc/nginx/sites-enabled
+/usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
+/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
+/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 
 ## Nginx Settings
 /usr/bin/cat <<'EOF' > /etc/nginx/nginx.conf
@@ -292,7 +292,8 @@ EOF
 /usr/bin/systemctl start nginx
 /usr/bin/systemctl enable php-fpm
 /usr/bin/systemctl start php-fpm
-/usr/bin/systemctl restart httpd
+/usr/bin/systemctl enable httpd
+/usr/bin/systemctl start httpd
 
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb
@@ -316,7 +317,7 @@ EOF
 /bin/echo "##### Added by inkVerb ######
 # This removes NO_ZERO_IN_DATE and NO_ZERO_DATE, which cause problems for
 # Postfix Admin code, from strict mode.
-sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+#sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ##### End inkVerb #####
 " >> /etc/my.cnf
 /usr/bin/systemctl enable mariadb
@@ -370,7 +371,7 @@ FLUSH PRIVILEGES;"
 /bin/echo "[client]
 user = mysqlboss
 password = ${MYSQLBOSSPASS}
-host = localhost" > /opt/verb/inst/mysqlboss.cnf
+host = localhost" > /opt/verb/conf/mysqlboss.cnf
 
 # Monit
 /usr/bin/pacman -S --noconfirm monit
@@ -385,6 +386,9 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/sshd /etc/monit/monitrc.d/
 /bin/systemctl enable monit
 /bin/systemctl start monit
+
+# Server type
+/bin/echo 'SERVERTYPE="laemp"' > /opt/verb/conf/servertype
 
 # Delete the snakeoil keys and Diffie-Helman Group security file to prevent security risks (keep this verber unique)
 /bin/rm -f /etc/ssl/server/dhparams.pem
@@ -402,5 +406,4 @@ At this point, there is no urgent need to restart the server.
 "
 
 # Delete this one-time script
-/bin/rm -f /opt/verb/serfs/make-verber
-/bin/rm -f /opt/verb/inst/make-verber
+/bin/rm -f /opt/verb/inst/make-verber-*

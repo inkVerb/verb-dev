@@ -36,7 +36,7 @@ if [ "${!CHECKtld}" != true ]; then
 /bin/echo "Not an acceptable TLD, chose a valid TLD."; exit 0; fi
 
 # Remove the old settings
-/bin/rm -f /etc/apache2/sites-available/${serveURI}.conf
+/bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
 /bin/sed -i "s/ ${serveURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.*
 
 /bin/sed -i "s/SITESERVE=.*/SITESERVE=\"${vTLD}\"/" /opt/verb/conf/sitenameip
@@ -47,9 +47,9 @@ if [ "${!CHECKtld}" != true ]; then
 . /opt/verb/conf/siteurilist
 
 # Apache
-/bin/cp /opt/verb/conf/site-files/conf/serve.conf /etc/apache2/sites-available/${serveURI}.conf
-/bin/sed -i "s/serveURI286/${serveURI}/g" /etc/apache2/sites-available/${serveURI}.conf
-/bin/sed -i "s/serveTLD286/${vTLD}/g" /etc/apache2/sites-available/${serveURI}.conf
+/bin/cp /opt/verb/conf/site-files/conf/serve.conf /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
+/bin/sed -i "s/serveURI286/${serveURI}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
+/bin/sed -i "s/serveTLD286/${vTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
 /opt/verb/serfs/nginxensite ${serveURI}
 /bin/systemctl reload apache2
 

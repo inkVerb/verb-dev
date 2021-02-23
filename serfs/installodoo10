@@ -37,8 +37,8 @@ exit 0; fi
 /bin/rm -rf /srv/www/html/red.odoo
 /bin/echo "Odoo 10" > /srv/www/html/red.odoo
 ## Set the IP address in the Apache config file
-/bin/cp -f /opt/verb/conf/site-files/conf/odoo-odoo.${redURI}.conf /etc/apache2/sites-available/odoo.${redURI}.conf
-/bin/sed -i "s/ip286/${SITEIP}/g" /etc/apache2/sites-available/odoo.${redURI}.conf
+/bin/cp -f /opt/verb/conf/site-files/conf/odoo-odoo.${redURI}.conf /opt/verb/conf/webserver/httpd/sites-available/odoo.${redURI}.conf
+/bin/sed -i "s/ip286/${SITEIP}/g" /opt/verb/conf/webserver/httpd/sites-available/odoo.${redURI}.conf
 /usr/sbin/apache2ctl graceful
 ## inkCert SSL certs
 ### Not setup

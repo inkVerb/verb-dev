@@ -104,6 +104,3 @@ free
 
 # Set to enable it at next startup
 /bin/echo "/var/swap.img    none    swap    sw    0    0" >> /etc/fstab
-## And turn off this above /bin/echo so it doesn't add it for future changes.
-/bin/sed -i "s//bin/echo \"\/var\/swap\.img    none    swap    sw    0    0\" >> \/etc\/fstab/#echo \"\/var\/swap\.img    none    swap    sw    0    0\" >> \/etc\/fstab/g" /opt/verb/serfs/setswapsize
-

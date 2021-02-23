@@ -15,7 +15,7 @@ DOMAIN=$1
 
 
 # Check to see if "fixwww" has already been added
-if /bin/grep -q "##INKWWWFIX=fixed" /etc/apache2/sites-available/${DOMAIN}.conf; then
+if /bin/grep -q "##INKWWWFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
 	/usr/sbin/apache2ctl graceful
 	/bin/echo "${DOMAIN} already has the www subdomain fix. The server was just reloaded so the site should work."
 else
@@ -36,7 +36,7 @@ else
         </VirtualHost>
 </IfModule>
 
-##verbFIXwww" >> /etc/apache2/sites-available/${DOMAIN}.conf
+##verbFIXwww" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /usr/sbin/apache2ctl graceful
 	/bin/echo "${DOMAIN} now has the www subdomain fix and is ready to go."
 fi

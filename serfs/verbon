@@ -2,7 +2,7 @@
 #inkVerbSerf! verb.ink
 
 # This turns on a tld of the verb sites, such as verb.red, but not the other verb.tld sites, all are on until turned off via verboff
-## This is done through nginxensite
+## This is done through ensiteapache
 ## For *.verb.one or custom *.verb.vip, this only turns on NAME.verb.one and one.NAME.verb.one
 ## All other custom verb.one and custom verb.vip sites must be turned on again via newonesub
 
@@ -23,7 +23,7 @@ SITEON=$1
 
 if [ "${SITEON}" = "email" ]
 then
-    /opt/verb/serfs/nginxensite ${emailURI} email.${emailURI} pfa.${emailURI} mail.${emailURI} rc.${emailURI}
+    /opt/verb/serfs/ensiteapache ${emailURI} email.${emailURI} pfa.${emailURI} mail.${emailURI} rc.${emailURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -31,7 +31,7 @@ fi
 
 if [ "${SITEON}" = "city" ]
 then
-    /opt/verb/serfs/nginxensite ${cityURI} city.${cityURI} center.${cityURI}
+    /opt/verb/serfs/ensiteapache ${cityURI} city.${cityURI} center.${cityURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -39,7 +39,7 @@ fi
 
 if [ "${SITEON}" = "one" ]
 then
-    /opt/verb/serfs/nginxensite ${oneURI} one.${oneURI}
+    /opt/verb/serfs/ensiteapache ${oneURI} one.${oneURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -48,7 +48,7 @@ fi
 
 if [ "${SITEON}" = "ink" ]
 then
-    /opt/verb/serfs/nginxensite ${inkURI} ink.${inkURI} ask.${inkURI} bb.${inkURI} blog.${inkURI} code.${inkURI} home.${inkURI} shop.${inkURI} sn.${inkURI} wiki.${inkURI}
+    /opt/verb/serfs/ensiteapache ${inkURI} ink.${inkURI} ask.${inkURI} bb.${inkURI} blog.${inkURI} code.${inkURI} home.${inkURI} shop.${inkURI} sn.${inkURI} wiki.${inkURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -57,7 +57,7 @@ fi
 
 if [ "${SITEON}" = "blue" ]
 then
-    /opt/verb/serfs/nginxensite ${blueURI} blue.${blueURI} nc.${blueURI} owncloud.${blueURI} seafile.${blueURI}
+    /opt/verb/serfs/ensiteapache ${blueURI} blue.${blueURI} nc.${blueURI} owncloud.${blueURI} seafile.${blueURI}
     /bin/echo "Done."
 exit 0
 fi
@@ -65,7 +65,7 @@ fi
 
 if [ "${SITEON}" = "vip" ]
 then
-    /opt/verb/serfs/nginxensite ${vipURI} vip.${vipURI} cgi.${vipURI} ftp.${vipURI} files.${vipURI} fossil.${vipURI} mysql.${vipURI} net2ftp.${vipURI} repo.${vipURI}
+    /opt/verb/serfs/ensiteapache ${vipURI} vip.${vipURI} cgi.${vipURI} ftp.${vipURI} files.${vipURI} fossil.${vipURI} mysql.${vipURI} net2ftp.${vipURI} repo.${vipURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -74,7 +74,7 @@ fi
 
 if [ "${SITEON}" = "kiwi" ]
 then
-    /opt/verb/serfs/nginxensite ${kiwiURI} kiwi.${kiwiURI} ampache.${kiwiURI} art.${kiwiURI} gallery.${kiwiURI} media.${kiwiURI} podcast.${kiwiURI} studio.${kiwiURI}
+    /opt/verb/serfs/ensiteapache ${kiwiURI} kiwi.${kiwiURI} ampache.${kiwiURI} art.${kiwiURI} gallery.${kiwiURI} media.${kiwiURI} podcast.${kiwiURI} studio.${kiwiURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -83,7 +83,7 @@ fi
 
 if [ "${SITEON}" = "pink" ]
 then
-    /opt/verb/serfs/nginxensite ${pinkURI} pink.${pinkURI}
+    /opt/verb/serfs/ensiteapache ${pinkURI} pink.${pinkURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -92,7 +92,7 @@ fi
 
 if [ "${SITEON}" = "red" ]
 then
-    /opt/verb/serfs/nginxensite ${redURI} red.${redURI} act.${redURI} crm.${redURI} erp.${redURI} hrm.${redURI} odoo.${redURI} scm.${redURI}
+    /opt/verb/serfs/ensiteapache ${redURI} red.${redURI} act.${redURI} crm.${redURI} erp.${redURI} hrm.${redURI} odoo.${redURI} scm.${redURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0
@@ -101,7 +101,7 @@ fi
 
 if [ "${SITEON}" = "rocks" ]
 then
-    /opt/verb/serfs/nginxensite ${rocksURI} rocks.${rocksURI}
+    /opt/verb/serfs/ensiteapache ${rocksURI} rocks.${rocksURI}
     /usr/sbin/apache2ctl graceful
     /bin/echo "Done."
 exit 0

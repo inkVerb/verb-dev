@@ -50,8 +50,8 @@ if [ "${!CHECKtld}" != true ]; then
 /bin/cp /opt/verb/conf/site-files/conf/serve.conf /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
 /bin/sed -i "s/serveURI286/${serveURI}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
 /bin/sed -i "s/serveTLD286/${vTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
-/opt/verb/serfs/nginxensite ${serveURI}
-/bin/systemctl reload apache2
+/opt/verb/serfs/ensiteapache ${serveURI}
+/bin/systemctl reload httpd
 
 # inkCert
 ## Ensure that you don't get double entries

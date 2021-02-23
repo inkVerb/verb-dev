@@ -42,7 +42,7 @@ fi
 /bin/chown -R www:www /srv/www/html/${NEWDOMAIN}
 /bin/chown -R www:www /srv/www/domains/${NEWDOMAIN}
 /bin/chmod -R 750 /srv/www/domains/${NEWDOMAIN}
-/opt/verb/serfs/nginxensite ${NEWDOMAIN}
+/opt/verb/serfs/ensiteapache ${NEWDOMAIN}
 /usr/sbin/apache2ctl graceful
 ## Just in case...
 /bin/systemctl start apache2

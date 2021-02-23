@@ -314,12 +314,12 @@ done
 /bin/sed -i "s/redURI286/${redURI}/g" /opt/verb/conf/inkcert/cli-ini/*
 ## Rename
 /usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.emailURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${emailURI}.ini
-/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.oneURI286.ini  /opt/verb/conf/inkcert/cli-ini/cli.${oneURI}.ini
-/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.inkURI286.ini  /opt/verb/conf/inkcert/cli-ini/cli.${inkURI}.ini
-/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.blueURI286.ini  /opt/verb/conf/inkcert/cli-ini/cli.${blueURI}.ini
-/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.vipURI286.ini  /opt/verb/conf/inkcert/cli-ini/cli.${vipURI}.ini
-/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.kiwiURI286.ini  /opt/verb/conf/inkcert/cli-ini/cli.${kiwiURI}.ini
-/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.redURI286.ini  /opt/verb/conf/inkcert/cli-ini/cli.${redURI}.ini
+/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.oneURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${oneURI}.ini
+/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.inkURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${inkURI}.ini
+/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.blueURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${blueURI}.ini
+/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.vipURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${vipURI}.ini
+/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.kiwiURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${kiwiURI}.ini
+/usr/bin/mv /opt/verb/conf/inkcert/cli-ini/cli.redURI286.ini /opt/verb/conf/inkcert/cli-ini/cli.${redURI}.ini
 /usr/bin/mv /opt/verb/conf/inkcert/cli-ini/siteinkcert.emailURI286 /opt/verb/conf/inkcert/cli-ini/siteinkcert.${emailURI}
 /usr/bin/mv /opt/verb/conf/inkcert/cli-ini/siteinkcert.oneURI286 /opt/verb/conf/inkcert/cli-ini/siteinkcert.${oneURI}
 /usr/bin/mv /opt/verb/conf/inkcert/cli-ini/siteinkcert.inkURI286 /opt/verb/conf/inkcert/cli-ini/siteinkcert.${inkURI}
@@ -336,28 +336,55 @@ done
 
 # Enable sites
 . /opt/verb/conf/sitetldstatus
-if [ ${VERBemail}=true ]; then
-/opt/verb/serfs/nginxensite ${emailURI} email.${emailURI}
+. /opt/verb/conf/servertype
+if [ ${VERBemail}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${emailURI}
 fi
-if [ ${VERBone}=true ]; then
-/opt/verb/serfs/nginxensite ${oneURI} one.${oneURI}
+if [ ${VERBone}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${oneURI}
 fi
-if [ ${VERBink}=true ]; then
-/opt/verb/serfs/nginxensite ${inkURI} ink.${inkURI} ask.${inkURI} bb.${inkURI} blog.${inkURI} code.${inkURI} home.${inkURI} pen.${inkURI} shop.${inkURI} sn.${inkURI} wiki.${inkURI}
+if [ ${VERBink}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${inkURI}
 fi
-if [ ${VERBblue}=true ]; then
-/opt/verb/serfs/nginxensite ${blueURI} blue.${blueURI} caldav.${blueURI} carddav.${blueURI} chat.${blueURI} collabora.${blueURI} dav.${blueURI} nc.${blueURI} owncloud.${blueURI} seafile.${blueURI} webdav.${blueURI} xmpp.${blueURI}
+if [ ${VERBblue}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${blueURI}
 fi
-if [ ${VERBvip}=true ]; then
-/opt/verb/serfs/nginxensite ${vipURI} vip.${vipURI} cgi.${vipURI} ftp.${vipURI} files.${vipURI} fossil.${vipURI} ldap.${vipURI} net2ftp.${vipURI} repo.${vipURI} sql.${vipURI}
+if [ ${VERBvip}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${vipURI}
 fi
-if [ ${VERBkiwi}=true ]; then
-/opt/verb/serfs/nginxensite ${kiwiURI} kiwi.${kiwiURI} ampache.${kiwiURI} art.${kiwiURI} ejabberd.${kiwiURI} gallery.${kiwiURI} media.${kiwiURI} podcast.${kiwiURI} prosody.${kiwiURI} studio.${kiwiURI} voip.${kiwiURI} webrtc.${kiwiURI}
+if [ ${VERBkiwi}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${kiwiURI}
 fi
-if [ ${VERBred}=true ]; then
-/opt/verb/serfs/nginxensite ${redURI} red.${redURI} act.${redURI} crm.${redURI} erp.${redURI} hrm.${redURI} odoo.${redURI} owa.${redURI} scm.${redURI}
+if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+/opt/verb/serfs/ensitenginx ${redURI}
 fi
+if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /bin/systemctl reload nginx
+fi
+if [ ${VERBemail}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${emailURI}
+fi
+if [ ${VERBone}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${oneURI}
+fi
+if [ ${VERBink}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${inkURI}
+fi
+if [ ${VERBblue}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${blueURI}
+fi
+if [ ${VERBvip}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${vipURI}
+fi
+if [ ${VERBkiwi}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${kiwiURI}
+fi
+if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/opt/verb/serfs/ensiteapache ${redURI}
+fi
+if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+/bin/systemctl reload httpd
+fi
 
 # Create the new boss user
 /usr/bin/groupadd ${NEWBOSS}

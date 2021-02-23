@@ -18,30 +18,6 @@ $ORIGIN hostdomain286.
 ;; End Root Site Defaults
 
 ; Hostname Record Defaults
-blue.hostdomain286.		IN  A		hostip286
-blue.hostdomain286.		IN  AAAA	hostipv6286
-caldav.hostdomain286.		IN  A		hostip286
-caldav.hostdomain286.		IN  AAAA	hostipv6286
-carddav.hostdomain286.		IN  A		hostip286
-carddav.hostdomain286.		IN  AAAA	hostipv6286
-chat.hostdomain286.		IN  A		hostip286
-chat.hostdomain286.		IN  AAAA	hostipv6286
-collabora.hostdomain286.		IN  A		hostip286
-collabora.hostdomain286.		IN  AAAA	hostipv6286
-dav.hostdomain286.		IN  A		hostip286
-dav.hostdomain286.		IN  AAAA	hostipv6286
-nc.hostdomain286.		IN  A		hostip286
-nc.hostdomain286.		IN  AAAA	hostipv6286
-owncloud.hostdomain286.		IN  A		hostip286
-owncloud.hostdomain286.		IN  AAAA	hostipv6286
-pydio.hostdomain286.		IN  A		hostip286
-pydio.hostdomain286.		IN  AAAA	hostipv6286
-seafile.hostdomain286.		IN  A		hostip286
-seafile.hostdomain286.		IN  AAAA	hostipv6286
-webdav.hostdomain286.		IN  A		hostip286
-webdav.hostdomain286.		IN  AAAA	hostipv6286
-xmpp.hostdomain286.		IN  A		hostip286
-xmpp.hostdomain286.		IN  AAAA	hostipv6286
 
 ; Aliase Default
 www.hostdomain286.		IN  CNAME	hostdomain286.

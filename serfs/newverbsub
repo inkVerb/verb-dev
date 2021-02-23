@@ -43,7 +43,7 @@ cd /srv/www/html
 ## If setupverb has already run
 if [ ! -f "/opt/verb/inst/setupverb" ]; then
 /bin/echo "...reloading Apache..."
-/opt/verb/serfs/nginxensite ${SUBDOMAIN}.${tldURI}
+/opt/verb/serfs/ensiteapache ${SUBDOMAIN}.${tldURI}
 /usr/sbin/apache2ctl graceful
 
 # inkCert

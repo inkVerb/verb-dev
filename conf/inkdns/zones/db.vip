@@ -18,24 +18,6 @@ $ORIGIN hostdomain286.
 ;; End Root Site Defaults
 
 ; Hostname Record Defaults
-vip.hostdomain286.		IN  A		hostip286
-vip.hostdomain286.		IN  AAAA	hostipv6286
-cgi.hostdomain286.		IN  A		hostip286
-cgi.hostdomain286.		IN  AAAA	hostipv6286
-ftp.hostdomain286.		IN  A		hostip286
-ftp.hostdomain286.		IN  AAAA	hostipv6286
-files.hostdomain286.		IN  A		hostip286
-files.hostdomain286.		IN  AAAA	hostipv6286
-fossil.hostdomain286.		IN  A		hostip286
-fossil.hostdomain286.		IN  AAAA	hostipv6286
-ldap.hostdomain286.		IN  A		hostip286
-ldap.hostdomain286.		IN  AAAA	hostipv6286
-net2ftp.hostdomain286.		IN  A		hostip286
-net2ftp.hostdomain286.		IN  AAAA	hostipv6286
-repo.hostdomain286.		IN  A		hostip286
-repo.hostdomain286.		IN  AAAA	hostipv6286
-sql.hostdomain286.		IN  A		hostip286
-sql.hostdomain286.		IN  AAAA	hostipv6286
 
 ; Aliase Default
 www.hostdomain286.		IN  CNAME	hostdomain286.

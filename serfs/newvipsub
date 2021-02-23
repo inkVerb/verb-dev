@@ -20,7 +20,7 @@ NEWVIPSUB=$1
 /bin/sed -i "s/vipURI286/${vipURI}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWVIPSUB}.${vipURI}.conf
 /bin/cp -R /opt/verb/conf/site-files/newvipsubdir /srv/www/vip/_subs.vip/${NEWVIPSUB}
 /bin/chown -R www:www /srv/www/vip/_subs.vip/${NEWVIPSUB}
-/opt/verb/serfs/nginxensite ${NEWVIPSUB}.${vipURI}
+/opt/verb/serfs/ensiteapache ${NEWVIPSUB}.${vipURI}
 /usr/sbin/apache2ctl graceful
 /bin/cp /srv/www/html/vip/index-newvipsub.php /srv/www/html/vip/index-${NEWVIPSUB}.php
 /bin/chown -R www:www /srv/www/html/vip

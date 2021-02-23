@@ -72,7 +72,7 @@ if [ -e /srv/www/html/${NEWCAHOST} ]; then
   /bin/echo "Great, ${NEWCAHOST} already exists..."
   else
   /bin/echo "Enabling ${NEWCAHOST}..."
-  /opt/verb/serfs/nginxensite ${NEWCAHOST}
+  /opt/verb/serfs/ensiteapache ${NEWCAHOST}
   fi
  else
  /bin/echo "Cute. The Apache config for ${NEWCAHOST} does not exist, but the web directory does. Fix this how you want and start over, Tiger."

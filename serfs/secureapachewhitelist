@@ -33,7 +33,7 @@ fi
 if ! /bin/grep -Fq "$EntryWLIP4" /etc/apache2/apache2.conf; then
   /bin/sed -i "s/## inkVerb whitelist/## inkVerb whitelist\n$EntryWLIP4/" /etc/apache2/apache2.conf
 fi
-/bin/systemctl restart apache2
+/bin/systemctl restart httpd
 
 # Finish
 /bin/echo "$WLIP4 whitelisted for Apache secure."

@@ -27,7 +27,7 @@ fi
 
 # Remove the entry
 /bin/sed -i "/$DeleteWLIP4/d" /etc/apache2/apache2.conf
-/bin/systemctl restart apache2
+/bin/systemctl restart httpd
 
 # Finish
 /bin/echo "$WLIP4 no longer whitelisted for Apache secure."

@@ -215,7 +215,7 @@ cd /etc/opendkim/keys/${nameURI}
 boxes.${DNSDOMAIN}.	IN  A		${SITEIP}
 boxes.${DNSDOMAIN}.	IN  AAAA	${SITEIPV6}
 " >> /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
-/opt/verb/serfs/nginxensite boxes.${emailTLDURI}
+/opt/verb/serfs/ensiteapache boxes.${emailTLDURI}
 /usr/sbin/apache2ctl graceful
 
 # DNS MX and TXT mail records for this server

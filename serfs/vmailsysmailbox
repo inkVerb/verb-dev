@@ -51,5 +51,5 @@ if ! /bin/grep -q '^sendmail_path = "/usr/bin/msmtp -C /etc/msmtprc -t"' /opt/ve
   else
     /bin/echo "sendmail_path = \"/usr/bin/msmtp -C /etc/msmtprc -t\"" >> /opt/verb/conf/php.$SITENAME.ini
   fi
-  systemctl restart apache2
+  systemctl restart httpd
 fi

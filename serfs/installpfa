@@ -96,7 +96,7 @@ fi
 /bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.pfa; wait
 /bin/chown -R www:www /srv/www/email/postfixadmin; wait
 /bin/sed -i "s/; Webmail Defaults/; Webmail Defaults\npfa\.${emailTLDURI}\.\tIN  A\t\t${SITEIP}\npfa\.${emailTLDURI}\.\tIN  AAAA\t${SITEIPV6}/" /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
-/opt/verb/serfs/nginxensite pfa.${emailTLDURI}
+/opt/verb/serfs/ensiteapache pfa.${emailTLDURI}
 /usr/sbin/apache2ctl graceful
 
 # Write the config

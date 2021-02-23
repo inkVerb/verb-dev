@@ -36,7 +36,7 @@ if [ $security2_module = "done" ]; then
 else
 
 /usr/bin/apt-get install -y libapache2-mod-security2
-/bin/systemctl restart apache2
+/bin/systemctl restart httpd
 if [ "$(/usr/sbin/apachectl -M | /bin/grep security2_module)" = " security2_module (shared)" ]; then
   /bin/echo "security2_module=\"done\"" > /opt/verb/conf/secapache
 else
@@ -56,7 +56,7 @@ else
 /bin/sed -i "s/^SecRequestBodyInMemoryLimit 131072/SecRequestBodyInMemoryLimit 5242880/" /etc/modsecurity/modsecurity.conf
 /bin/sed -i "s/^SecRequestBodyLimit 13107200/SecRequestBodyLimit 8589934592/" /etc/modsecurity/modsecurity.conf
 /bin/sed -i "s/^SecRequestBodyNoFilesLimit 131072/SecRequestBodyNoFilesLimit 5242880/" /etc/modsecurity/modsecurity.conf
-/bin/systemctl restart apache2
+/bin/systemctl restart httpd
 if /bin/grep -q "SecRuleEngine On" /etc/modsecurity/modsecurity.conf; then
   /bin/echo "SecRuleEngine=\"done\"" >> /opt/verb/conf/secapache
 else
@@ -149,7 +149,7 @@ if ! /bin/grep -Fq '## inkVerb mod_sec' /etc/apache2/apache2.conf; then
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet' >> /etc/apache2/apache2.conf
 fi
 
-/bin/systemctl restart apache2
+/bin/systemctl restart httpd
 if /bin/grep -Fq 'IncludeOptional /usr/share/modsecurity-crs/*.conf' /etc/apache2/mods-enabled/security2.conf; then
   /bin/echo "IncludeOptional=\"done\"" >> /opt/verb/conf/secapache
 else

@@ -18,28 +18,6 @@ $ORIGIN hostdomain286.
 ;; End Root Site Defaults
 
 ; Hostname Record Defaults
-kiwi.hostdomain286.		IN  A		hostip286
-kiwi.hostdomain286.		IN  AAAA	hostipv6286
-ampache.hostdomain286.		IN  A		hostip286
-ampache.hostdomain286.		IN  AAAA	hostipv6286
-art.hostdomain286.		IN  A		hostip286
-art.hostdomain286.		IN  AAAA	hostipv6286
-ejabberd.hostdomain286.		IN  A		hostip286
-ejabberd.hostdomain286.		IN  AAAA	hostipv6286
-gallery.hostdomain286.		IN  A		hostip286
-gallery.hostdomain286.		IN  AAAA	hostipv6286
-media.hostdomain286.		IN  A		hostip286
-media.hostdomain286.		IN  AAAA	hostipv6286
-podcast.hostdomain286.		IN  A		hostip286
-podcast.hostdomain286.		IN  AAAA	hostipv6286
-prosody.hostdomain286.		IN  A		hostip286
-prosody.hostdomain286.		IN  AAAA	hostipv6286
-studio.hostdomain286.		IN  A		hostip286
-studio.hostdomain286.		IN  AAAA	hostipv6286
-voip.hostdomain286.		IN  A		hostip286
-voip.hostdomain286.		IN  AAAA	hostipv6286
-webrtc.hostdomain286.		IN  A		hostip286
-webrtc.hostdomain286.		IN  AAAA	hostipv6286
 
 ; Aliase Default
 www.hostdomain286.		IN  CNAME	hostdomain286.

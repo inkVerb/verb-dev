@@ -18,20 +18,6 @@ $ORIGIN hostdomain286.
 ;; End Root Site Defaults
 
 ; Hostname Record Defaults
-red.hostdomain286.		IN  A		hostip286
-red.hostdomain286.		IN  AAAA	hostipv6286
-act.hostdomain286.		IN  A		hostip286
-act.hostdomain286.		IN  AAAA	hostipv6286
-crm.hostdomain286.		IN  A		hostip286
-crm.hostdomain286.		IN  AAAA	hostipv6286
-erp.hostdomain286.		IN  A		hostip286
-erp.hostdomain286.		IN  AAAA	hostipv6286
-hrm.hostdomain286.		IN  A		hostip286
-hrm.hostdomain286.		IN  AAAA	hostipv6286
-odoo.hostdomain286.		IN  A		hostip286
-odoo.hostdomain286.		IN  AAAA	hostipv6286
-scm.hostdomain286.		IN  A		hostip286
-scm.hostdomain286.		IN  AAAA	hostipv6286
 
 ; Aliase Default
 www.hostdomain286.		IN  CNAME	hostdomain286.

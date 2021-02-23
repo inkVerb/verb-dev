@@ -120,7 +120,8 @@ cd $OLDPWD
 
 ## Nginx
 /usr/bin/pacman -S --noconfirm nginx
-/usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
+/usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-available /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
+/bin/cp /opt/verb/inst/webserver/lemp-sites-available/*.conf /opt/verb/conf/webserver/nginx/sites-available/
 /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
 /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 

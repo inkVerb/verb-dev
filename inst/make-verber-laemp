@@ -137,7 +137,8 @@ Protocols h2 http/1.1
 
 # Include the virtual host configurations:
 IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
-/usr/bin/mkdir -p /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd
+/usr/bin/mkdir -p /opt/verb/conf/webserver/httpd/sites-available /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd
+/bin/cp /opt/verb/inst/webserver/laemp-httpd-sites-available/*.conf /opt/verb/conf/webserver/httpd/sites-available/
 /bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available /etc/httpd/
 /bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd/
 /usr/bin/cat <<'EOF' > /srv/http/index.htm
@@ -155,7 +156,8 @@ EOF
 
 ## Nginx
 /usr/bin/pacman -S --noconfirm nginx
-/usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
+/usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-available /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
+/bin/cp /opt/verb/inst/webserver/laemp-nginx-sites-available/*.conf /opt/verb/conf/webserver/nginx/sites-available/
 /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
 /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 

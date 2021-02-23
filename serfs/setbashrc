@@ -155,7 +155,9 @@ ex ()
 }
 EOF
 elif [ "$1" = "root" ]; then
-/usr/bin/cp /root/.bashrc /root/.bashrc-verb
+if [ -f "/root/.bashrc" ]; then
+  /usr/bin/cp /root/.bashrc /root/.bashrc-verb
+fi
 /usr/bin/cat <<'EOF' > /root/.bashrc
 #
 # ~/.bashrc
@@ -299,8 +301,9 @@ ex ()
 EOF
 else
 bashuser=$1
-
-/usr/bin/cp /home/${bashuser}/.bashrc /home/${bashuser}/.bashrc-verb
+if [ -f "/home/${bashuser}/.bashrc" ]; then
+  /usr/bin/cp /home/${bashuser}/.bashrc /home/${bashuser}/.bashrc-verb
+fi
 /usr/bin/cat <<'EOF' > /home/${bashuser}/.bashrc
 #
 # ~/.bashrc

@@ -4,7 +4,7 @@
 # This enables an nginx site by creating a symlink.
 
 # How to use:
-## ./nginxensite [domain.tld or subdomain.domain.tld]
+## ./ensitenginx [domain.tld or subdomain.domain.tld]
 
 
 # Run as a loop so multiple sites can be enabled in one command, just like a2ensite

@@ -39,17 +39,20 @@ LC_MEASUREMENT="en_US.UTF-8"
 " > /etc/default/locale
 
 # Update
-/usr/bin/pacman -Syy
+/usr/bin/pacman -Syyu --noconfirm
 
 # Install tools
-/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make cronie gcc autoconf imagemagick git
+/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make cronie gcc autoconf imagemagick git net-tools
+
+# Remove unneeded packages
+/usr/bin/pacman -Qdt --noconfirm
 
 # Set the prompt style
 /opt/verb/serfs/setbashrc
 /opt/verb/serfs/setbashrc root
 
 # Vim preferences for root
-echo 'nnoremap <C-c> "+y
+/bin/echo 'nnoremap <C-c> "+y
 vnoremap <C-c> "+y
 nnoremap <C-p> "+p
 vnoremap <C-p> "+p' > /root/.vimrc

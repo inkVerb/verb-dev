@@ -1,0 +1,16 @@
+#!/bin/sh
+#inkVerbSerf! verb.ink
+
+# This enables an httpd site by creating a symlink.
+
+# How to use:
+## ./ensiteapache [domain.tld or subdomain.domain.tld]
+
+
+# Run as a loop so multiple sites can be enabled in one command, just like a2ensite
+for DOMAIN in $@
+do
+
+  /usr/bin/ln -sfn /etc/httpd/sites-available/${DOMAIN}.conf /etc/httpd/sites-enabled/${DOMAIN}.conf
+
+done

@@ -349,52 +349,52 @@ fi
 # Enable sites
 . /opt/verb/conf/sitetldstatus
 . /opt/verb/conf/servertype
-if [ ${VERBemail}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${emailURI} e.${emailURI}
 fi
-if [ ${VERBone}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBone} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${oneURI} o.${oneURI}
 fi
-if [ ${VERBink}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBink} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${inkURI} i.${inkURI}
 fi
-if [ ${VERBblue}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBblue} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${blueURI} b.${blueURI}
 fi
-if [ ${VERBvip}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBvip} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${vipURI} v.${vipURI}
 fi
-if [ ${VERBkiwi}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBkiwi} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${kiwiURI} k.${kiwiURI}
 fi
-if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${redURI} r.${redURI}
 fi
-if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /bin/systemctl reload nginx
 fi
-if [ ${VERBemail}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${emailURI} e.${emailURI}
 fi
-if [ ${VERBone}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBone} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${oneURI} o.${oneURI}
 fi
-if [ ${VERBink}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBink} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${inkURI} i.${inkURI}
 fi
-if [ ${VERBblue}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBblue} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${blueURI} b.${blueURI}
 fi
-if [ ${VERBvip}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBvip} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${vipURI} v.${vipURI}
 fi
-if [ ${VERBkiwi}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBkiwi} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${kiwiURI} k.${kiwiURI}
 fi
-if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${redURI} r.${redURI}
 fi
-if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /bin/systemctl reload httpd
 fi
 

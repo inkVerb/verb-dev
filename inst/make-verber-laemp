@@ -300,7 +300,7 @@ EOF
 /usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
 ## Secure
 /usr/bin/mysql_secure_installation <<EOF
-${MYSQLPASS}
+$MYSQLPASS
 y
 n
 y

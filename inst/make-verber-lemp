@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #inkVerbMaker! verb.ink
 
 # This makes the initial inkVerb Verber server with a "boss" sudoer user, new SSH login port, the name286 namespace for setupverb
@@ -240,6 +240,9 @@ echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb
 /usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+## Start it now so it works when we run the secure installation
+/usr/bin/systemctl enable mariadb
+/usr/bin/systemctl start mariadb
 ## Set password before securing
 /usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
 ## Secure
@@ -256,14 +259,13 @@ EOF
 #/usr/bin/printf "${MYSQLPASS}\n y\n n\n y\n y\n y\n y\n" | /usr/bin/mysql_secure_installation
 
 ## MySQL conf for Postfix Admin
-/bin/echo "##### Added by inkVerb ######
+#/bin/echo "##### Added by inkVerb ######
 # This removes NO_ZERO_IN_DATE and NO_ZERO_DATE, which cause problems for
 # Postfix Admin code, from strict mode.
 #sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ##### End inkVerb #####
-" >> /etc/my.cnf
-/usr/bin/systemctl enable mariadb
-/usr/bin/systemctl start mariadb
+#" >> /etc/my.cnf
+/usr/bin/systemctl restart mariadb
 
 # Firewall
 /usr/bin/pacman -S --noconfirm ufw

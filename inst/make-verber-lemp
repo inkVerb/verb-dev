@@ -246,8 +246,7 @@ echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/
 /usr/bin/mysql_secure_installation <<EOF
 ${MYSQLPASS}
 y
-${MYSQLPASS}
-${MYSQLPASS}
+n
 y
 y
 y

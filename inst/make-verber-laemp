@@ -302,8 +302,7 @@ EOF
 /usr/bin/mysql_secure_installation <<EOF
 ${MYSQLPASS}
 y
-${MYSQLPASS}
-${MYSQLPASS}
+n
 y
 y
 y

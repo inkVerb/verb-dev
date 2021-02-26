@@ -18,6 +18,8 @@ $ORIGIN hostdomain286.
 ;; End Root Site Defaults
 
 ; Hostname Record Defaults
+r.hostdomain286.		IN  A		hostip286
+r.hostdomain286.		IN  AAAA	hostipv6286
 
 ; Aliase Default
 www.hostdomain286.		IN  CNAME	hostdomain286.

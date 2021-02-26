@@ -92,8 +92,6 @@ LC_MEASUREMENT="en_US.UTF-8"
 
 # Site settings
 ## Configs
-/usr/bin/mkdir -p /opt/verb/conf/localtime
-/usr/bin/touch /opt/verb/conf/localtime/${PHPCITY}
 /bin/mv /opt/verb/inst/mysqlrootpassword /opt/verb/conf/
 /bin/mv /opt/verb/conf/sitenameip286 /opt/verb/conf/sitenameip
 /bin/mv /opt/verb/conf/siteport286 /opt/verb/conf/siteport
@@ -338,49 +336,49 @@ done
 . /opt/verb/conf/sitetldstatus
 . /opt/verb/conf/servertype
 if [ ${VERBemail}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${emailURI}
+/opt/verb/serfs/ensitenginx ${emailURI} e.${emailURI}
 fi
 if [ ${VERBone}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${oneURI}
+/opt/verb/serfs/ensitenginx ${oneURI} o.${oneURI}
 fi
 if [ ${VERBink}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${inkURI}
+/opt/verb/serfs/ensitenginx ${inkURI} i.${inkURI}
 fi
 if [ ${VERBblue}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${blueURI}
+/opt/verb/serfs/ensitenginx ${blueURI} b.${blueURI}
 fi
 if [ ${VERBvip}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${vipURI}
+/opt/verb/serfs/ensitenginx ${vipURI} v.${vipURI}
 fi
 if [ ${VERBkiwi}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${kiwiURI}
+/opt/verb/serfs/ensitenginx ${kiwiURI} k.${kiwiURI}
 fi
 if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${redURI}
+/opt/verb/serfs/ensitenginx ${redURI} r.${redURI}
 fi
 if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /bin/systemctl reload nginx
 fi
 if [ ${VERBemail}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${emailURI}
+/opt/verb/serfs/ensiteapache ${emailURI} e.${emailURI}
 fi
 if [ ${VERBone}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${oneURI}
+/opt/verb/serfs/ensiteapache ${oneURI} o.${oneURI}
 fi
 if [ ${VERBink}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${inkURI}
+/opt/verb/serfs/ensiteapache ${inkURI} i.${inkURI}
 fi
 if [ ${VERBblue}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${blueURI}
+/opt/verb/serfs/ensiteapache ${blueURI} b.${blueURI}
 fi
 if [ ${VERBvip}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${vipURI}
+/opt/verb/serfs/ensiteapache ${vipURI} v.${vipURI}
 fi
 if [ ${VERBkiwi}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${kiwiURI}
+/opt/verb/serfs/ensiteapache ${kiwiURI} k.${kiwiURI}
 fi
 if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${redURI}
+/opt/verb/serfs/ensiteapache ${redURI} r.${redURI}
 fi
 if [ ${VERBred}=true ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /bin/systemctl reload httpd
@@ -425,6 +423,7 @@ FLUSH PRIVILEGES;"
 # inkVerb IPv4
 127.0.1.1 ${hostURI} ${HNAME}
 ${SERVERIPV4} ${hostURI} ${HNAME}
+::1 localhost
 127.0.0.1 localhost.localdomain localhost
 
 # The following lines are desirable for IPv6 capable hosts
@@ -524,6 +523,7 @@ done
 /usr/sbin/ufw allow http
 /usr/sbin/ufw allow https
 /usr/sbin/ufw allow ftp
+/usr/sbin/ufw allow sftp
 
 # File pe/bin/rmissions for configs
 /bin/chmod 660 -R /opt/verb/conf
@@ -560,6 +560,6 @@ login using: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
 
 # Cleanup
 /usr/sbin/ufw --force enable
-/bin/systemctl restart sshd
 /bin/rm -f /opt/verb/serfs/setupverb
 /bin/rm -f /opt/verb/inst
+/bin/systemctl reload sshd

@@ -139,8 +139,6 @@ Protocols h2 http/1.1
 IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
 /usr/bin/mkdir -p /opt/verb/conf/webserver/httpd/sites-available /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd
 /bin/cp /opt/verb/inst/webserver/laemp-httpd-sites-available/*.conf /opt/verb/conf/webserver/httpd/sites-available/
-/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available /etc/httpd/
-/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd/
 /usr/bin/cat <<'EOF' > /srv/http/index.htm
 <!DOCTYPE html>
 <html>
@@ -158,8 +156,6 @@ EOF
 /usr/bin/pacman -S --noconfirm nginx
 /usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-available /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
 /bin/cp /opt/verb/inst/webserver/laemp-nginx-sites-available/*.conf /opt/verb/conf/webserver/nginx/sites-available/
-/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
-/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 
 ## Nginx Settings
 /usr/bin/cat <<'EOF' > /etc/nginx/nginx.conf
@@ -300,9 +296,11 @@ EOF
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb
 /usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+## Set password before securing
+/usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
 ## Secure
 /usr/bin/mysql_secure_installation <<EOF
-
+${MYSQLPASS}
 y
 ${MYSQLPASS}
 ${MYSQLPASS}
@@ -312,7 +310,6 @@ y
 y
 EOF
 ## Alternate method of above Secure
-#/usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
 #/usr/bin/printf "${MYSQLPASS}\n n\n n\n n\n y\n y\n y\n" | /usr/bin/mysql_secure_installation
 
 ## MySQL conf for Postfix Admin
@@ -329,6 +326,8 @@ EOF
 /usr/bin/pacman -S --noconfirm ufw
 /usr/bin/ufw allow 80/tcp
 /usr/bin/ufw allow 443/tcp
+/usr/bin/systemctl enable ufw
+/usr/bin/systemctl start ufw
 
 ## tmp folder for a secure PHP
 /bin/mkdir -p /srv/www/tmp

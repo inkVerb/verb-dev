@@ -544,11 +544,11 @@ done
 /usr/sbin/ufw allow ${NEWPORT}
 /bin/sed -i "/SITEPORT.*/ c\SITEPORT=${NEWPORT}" /opt/verb/conf/siteport
 ## Reset settings
-/usr/sbin/ufw allow ssh
-/usr/sbin/ufw allow http
-/usr/sbin/ufw allow https
-/usr/sbin/ufw allow ftp
-/usr/sbin/ufw allow sftp
+#/usr/sbin/ufw allow ssh
+#/usr/sbin/ufw allow http
+#/usr/sbin/ufw allow https
+#/usr/sbin/ufw allow ftp
+#/usr/sbin/ufw allow sftp
 
 # File pe/bin/rmissions for configs
 /bin/chmod 660 -R /opt/verb/conf

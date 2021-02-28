@@ -171,17 +171,17 @@ echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/
 /usr/bin/pacman -S --noconfirm pkg-config php-gd php-apcu nginx-mod-headers-more fcgiwrap php-imagick php-intl
 
 ## Services
-/usr/bin/systemctl enable php-fpm
-/usr/bin/systemctl start php-fpm
-/usr/bin/systemctl enable httpd
-/usr/bin/systemctl start httpd
+/usr/bin/systemctl enable php-fpm; wait
+/usr/bin/systemctl start php-fpm; wait
+/usr/bin/systemctl enable httpd; wait
+/usr/bin/systemctl start httpd; wait
 
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb
 /usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 ## Start it now so it works when we run the secure installation
-/usr/bin/systemctl enable mariadb
-/usr/bin/systemctl start mariadb
+/usr/bin/systemctl enable mariadb; wait
+/usr/bin/systemctl start mariadb; wait
 ## Set password before securing
 /usr/bin/mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('${MYSQLPASS}');FLUSH PRIVILEGES;"
 ## Secure
@@ -204,14 +204,14 @@ EOF
 #sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ##### End inkVerb #####
 #" >> /etc/my.cnf
-/usr/bin/systemctl restart mariadb
+/usr/bin/systemctl restart mariadb; wait
 
 # Firewall
 /usr/bin/pacman -S --noconfirm ufw
 /usr/bin/ufw allow 80/tcp
 /usr/bin/ufw allow 443/tcp
-/usr/bin/systemctl enable ufw
-/usr/bin/systemctl start ufw
+/usr/bin/systemctl enable ufw; wait
+/usr/bin/systemctl start ufw; wait
 
 ## tmp folder for a secure PHP
 /bin/mkdir -p /srv/www/tmp
@@ -269,8 +269,8 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/mysql /etc/monit/monitrc.d/
 /bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/openssh-server /etc/monit/monitrc.d/
 /bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/sshd /etc/monit/monitrc.d/
-/bin/systemctl enable monit
-/bin/systemctl start monit
+/bin/systemctl enable monit; wait
+/bin/systemctl start monit; wait
 
 # Server type
 /bin/echo 'SERVERTYPE="lamp"' > /opt/verb/conf/servertype

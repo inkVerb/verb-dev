@@ -372,7 +372,7 @@ if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "
 /opt/verb/serfs/ensitenginx ${redURI} r.${redURI}
 fi
 if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/bin/systemctl reload nginx
+/bin/systemctl restart nginx; wait
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${emailURI} e.${emailURI}
@@ -396,7 +396,7 @@ if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "
 /opt/verb/serfs/ensiteapache ${redURI} r.${redURI}
 fi
 if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/bin/systemctl reload httpd
+/bin/systemctl restart httpd; wait
 fi
 
 # Link in sites
@@ -587,4 +587,4 @@ login using: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
 /usr/sbin/ufw --force enable
 /bin/rm -f /opt/verb/serfs/setupverb
 /bin/rm -rf /opt/verb/inst
-/bin/systemctl reload sshd
+/bin/systemctl reload sshd; wait

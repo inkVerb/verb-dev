@@ -154,13 +154,13 @@ redURI=\"${VNAME}.verb.red\"
 fi
 . /opt/verb/conf/siteurilist
 
-# Snakeoil cert
+# Snakeoil cert (larger file for production)
 /usr/bin/mkdir -p /etc/ssl/server
 cd /etc/ssl/server
 /usr/bin/rm -f server.key
 /usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.key
 /usr/bin/chmod 400 server.key
-#Pre-answer details:
+/usr/bin/rm -f /etc/ssl/server/server.csr
 country=""
 state=""
 locality="${PHPCITY}"
@@ -172,8 +172,9 @@ companyname=""
 /usr/bin/openssl req -new -sha256 -key server.key -out server.csr \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email/unstructuredName=$companyname/"
 /usr/bin/openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
+/usr/bin/rm -f /etc/ssl/server/server.csr
 
-## Diffie-Helman Group file (security)
+## Diffie-Helman Group file (larger file for production)
 /bin/rm -f /etc/ssl/server/dhparams.pem
 /usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 2048
 /bin/chmod 600 /etc/ssl/server/dhparams.pem
@@ -537,7 +538,7 @@ inkZone="$(/bin/echo ${inkZoneDB} | /bin/sed 's/db\.//' )"
 done
 
 ## Set for IPV6 (should be set already, but just to be sure)
-/bin/sed -i "s/IPV6=.*/IPV6=yes/g" /etc/default/ufw
+/bin/sed -i "s/IPV6=.*/IPV6=yes/" /etc/default/ufw
 ## Port (set to something to avoid attacks)
 /bin/sed -i "/Port.*/ c\Port ${NEWPORT}" /etc/ssh/sshd_config
 /usr/sbin/ufw allow ${NEWPORT}

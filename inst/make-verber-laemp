@@ -101,19 +101,21 @@ cd ..
 /usr/bin/chmod u+w /srv/www/html
 /usr/bin/chown -R www:www /srv/www/html
 
-## Snakeoil install
+## Snakeoil install (small file just so the server works)
 /usr/bin/mkdir -p /etc/ssl/server
 cd /etc/ssl/server
 /usr/bin/rm -f server.key
-/usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.key
+/usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:512 -out server.key
 /usr/bin/chmod 400 server.key
+/usr/bin/rm -f /etc/ssl/server/server.csr
 /usr/bin/openssl req -new -sha256 -key server.key -out server.csr \
     -subj "/C=/ST=/L=/O=/OU=/CN=/emailAddress=/unstructuredName=/"
 /usr/bin/openssl x509 -req -days 1095 -in server.csr -signkey server.key -out server.crt
+/usr/bin/rm -f /etc/ssl/server/server.csr
 
-## Diffie-Helman Group file (security)
+## Diffie-Helman Group file (small file just so the server works)
 /bin/rm -f /etc/ssl/server/dhparams.pem
-/usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 2048
+/usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 512
 /bin/chmod 600 /etc/ssl/server/dhparams.pem
 cd $OLDPWD
 

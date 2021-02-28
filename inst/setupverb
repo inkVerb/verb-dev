@@ -12,7 +12,7 @@
 # How to use:
 ## ./setupverb [host] [namespace] [tld] [email] [serverIPv4] [serverIPv6 - if none use IPv6NA ] [SSLemail] [php.file-limit] [php.up-size] [php.city] [new-port] [new-boss] [boss-pass] [verb-dev - optional]
 # Elaborate how to use:
-## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tls, should be 'email' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/te/bin/rminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
+## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tls, should be 'email' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/te/usr/bin/rminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
 
 # IMPORTANT: Choose a hostname that is: 1. short, 2. unique, 3. memorable, and 4. has only numbers and lower-case letters.
 ## You will see this name in terminal tabs and window titles when you connect to your Verber via command line.
@@ -157,10 +157,10 @@ fi
 # Snakeoil cert (larger file for production)
 /usr/bin/mkdir -p /etc/ssl/server
 cd /etc/ssl/server
-/usr/bin/rm -f server.key
+/usr/usr/bin/rm -f server.key
 /usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.key
 /usr/bin/chmod 400 server.key
-/usr/bin/rm -f /etc/ssl/server/server.csr
+/usr/usr/bin/rm -f server.csr
 country=""
 state=""
 locality="${PHPCITY}"
@@ -172,10 +172,10 @@ companyname=""
 /usr/bin/openssl req -new -sha256 -key server.key -out server.csr \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email/unstructuredName=$companyname/"
 /usr/bin/openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
-/usr/bin/rm -f /etc/ssl/server/server.csr
+/usr/usr/bin/rm -f server.csr
 
 ## Diffie-Helman Group file (larger file for production)
-/bin/rm -f /etc/ssl/server/dhparams.pem
+/usr/bin/rm -f /etc/ssl/server/dhparams.pem
 /usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 2048
 /bin/chmod 600 /etc/ssl/server/dhparams.pem
 cd $OLDPWD
@@ -550,7 +550,7 @@ done
 #/usr/sbin/ufw allow ftp
 #/usr/sbin/ufw allow sftp
 
-# File pe/bin/rmissions for configs
+# File pe/usr/bin/rmissions for configs
 /bin/chmod 660 -R /opt/verb/conf
 
 # Instructions
@@ -568,7 +568,7 @@ fi
 ## Common message
 /bin/echo "- Then, set up email with postfix and roundcube.
 
-If you choose to set up email before doinkcert, you will need to make an Advanced > exception rule for these in your browser concerning security/safety/SSL, you should not need to pe/bin/rmanently store it.
+If you choose to set up email before doinkcert, you will need to make an Advanced > exception rule for these in your browser concerning security/safety/SSL, you should not need to pe/usr/bin/rmanently store it.
 
 You should reboot the server now using:
 
@@ -585,6 +585,6 @@ login using: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
 
 # Cleanup
 /usr/sbin/ufw --force enable
-/bin/rm -f /opt/verb/serfs/setupverb
-/bin/rm -rf /opt/verb/inst
+/usr/bin/rm -f /opt/verb/serfs/setupverb
+/usr/bin/rm -rf /opt/verb/inst
 /bin/systemctl reload sshd; wait

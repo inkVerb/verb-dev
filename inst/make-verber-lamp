@@ -275,11 +275,6 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 # Server type
 /bin/echo 'SERVERTYPE="lamp"' > /opt/verb/conf/servertype
 
-# Delete the snakeoil keys and Diffie-Helman Group security file to prevent security risks (keep this verber unique)
-/bin/rm -f /etc/ssl/server/dhparams.pem
-/bin/rm -f /etc/ssl/server/server.crt
-/bin/rm -f /etc/ssl/server/server.key
-
 # Remove unneeded packages
 /usr/bin/pacman -Qdt --noconfirm
 

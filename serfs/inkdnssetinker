@@ -21,29 +21,28 @@
 ## ./inkdnssetinker ns.poetryiscode.com 555.555.555.555 8001:0056::489a
 
 
-DEFAULTns="1verb.ink.verb.ink"
-INKERip4="104.248.208.98"
-INKDERip6="2604:a880:2:d0:53:1001::"
+# Defaults
+. /opt/verb/conf/inkdns/inkdnsconf
 
 # Check variables present
 ## Domain
 if [ -z "$1"  || [ "$1" -d ]]; then
   /bin/echo "Inkder domain not specified; using default."
-  NSDOMAIN="${DEFAULTns}"
+  NSDOMAIN="${DEFAULTns1}"
 else
   NSDOMAIN="$1"
 fi
 ## IP4
 if [ -z "$2" ] || [ "$2" -d ]; then
   /bin/echo "IP4 not specified; using default."
-  NSIP4="${INKERip4}"
+  NSIP4="${INKER1ip4}"
 else
   NSIP4=$2
 fi
 ## IP6
 if [ -z "$3" ] || [ "$3" -d ]; then
   /bin/echo "IP6 not specified; using default."
-  NSIP6="${INKDERip6}"
+  NSIP6="${INKDER1ip6}"
 else
   NSIP6=$3
 fi

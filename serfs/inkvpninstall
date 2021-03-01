@@ -72,11 +72,11 @@ gzip -d -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | 
 /bin/sed -i "s/^port.*/port ${INKVPNPORT}/" /etc/openvpn/server.conf
 
 # Firewall
-/usr/sbin/ufw allow openvpn
-/usr/sbin/ufw allow from any to any port ${INKVPNPORT} proto udp
+/usr/bin/ufw allow openvpn
+/usr/bin/ufw allow from any to any port ${INKVPNPORT} proto udp
 ## If bugs, try uncommenting:
-#/usr/sbin/ufw allow 1194/udp
-#/usr/sbin/ufw allow OpenSSH
+#/usr/bin/ufw allow 1194/udp
+#/usr/bin/ufw allow OpenSSH
 
 ## Uncomment an important line to allow Internet traffic on the VPN tunnel
 /bin/sed -i 's/;push "redirect-gateway def1 bypass-dhcp"/push "redirect-gateway def1 bypass-dhcp"/' /etc/openvpn/server.conf

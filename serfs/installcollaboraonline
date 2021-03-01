@@ -35,7 +35,7 @@ docker pull collabora/code
 docker run -t -d -p 127.0.0.1:${PORT}:${PORT} -e "domain=nc.${blueURI}" --restart always --cap-add MKNOD collabora/code
 
 # Firewall
-/usr/sbin/ufw allow ${PORT}
+/usr/bin/ufw allow ${PORT}
 
 # Apache2
 ## Enable mods

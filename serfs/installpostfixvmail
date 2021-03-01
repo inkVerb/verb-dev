@@ -31,7 +31,7 @@ if [ ${SITEMAILSTATUS} = "PMAIL_SERVER" ]; then
 Email server is already installed.
 "
 exit 0; fi
-if /bin/grep -Fq "Webmail Defaults" /opt/verb/conf/inkdns/zones/db.${emailTLDURI}; then
+if /bin/grep -Fq "Webmail Defaults" /opt/verb/conf/inkdns/inkzones/db.${emailTLDURI}; then
 /bin/echo "
 Webmail Defaults already declared in the DNS zone file. This won't work.
 "
@@ -297,23 +297,23 @@ sa-update -v
 /bin/sed -i "s/SITEMAILPASSAPG.*/SITEMAILPASSAPG=\"${MAILPASSGEN}\"/g" /opt/verb/conf/sitemailpass
 
 # UFW (services and ports below them if known)
-/usr/sbin/ufw allow postfix
-/usr/sbin/ufw allow smtp
-/usr/sbin/ufw allow 25
-/usr/sbin/ufw allow 587
-/usr/sbin/ufw allow smtps
-/usr/sbin/ufw allow 465
-/usr/sbin/ufw allow pop3
-/usr/sbin/ufw allow 110
-/usr/sbin/ufw allow pop3s
-/usr/sbin/ufw allow 995
-/usr/sbin/ufw allow imap
-/usr/sbin/ufw allow 143
-/usr/sbin/ufw allow imaps
-/usr/sbin/ufw allow 993
+/usr/bin/ufw allow postfix
+/usr/bin/ufw allow smtp
+/usr/bin/ufw allow 25
+/usr/bin/ufw allow 587
+/usr/bin/ufw allow smtps
+/usr/bin/ufw allow 465
+/usr/bin/ufw allow pop3
+/usr/bin/ufw allow 110
+/usr/bin/ufw allow pop3s
+/usr/bin/ufw allow 995
+/usr/bin/ufw allow imap
+/usr/bin/ufw allow 143
+/usr/bin/ufw allow imaps
+/usr/bin/ufw allow 993
 # for OpenDKIM
-/usr/sbin/ufw allow 8891
-/usr/sbin/ufw allow 12301
+/usr/bin/ufw allow 8891
+/usr/bin/ufw allow 12301
 
 # OpenDKIM
 ## Create/reset OpenDKIM files
@@ -350,14 +350,14 @@ cd /etc/opendkim/keys/${nameURI}
 ####serviceend###
 
 # DNS MX and TXT mail records for this server
-/opt/verb/serfs/inkdnsaddmail ${nameURI}; wait
+/opt/verb/serfs/inkdnsaddmail ${nameURI} verber; wait
 ## Keep the zone file clean & let the server know "I was here."
-/bin/echo ";" >> /opt/verb/conf/inkdns/zones/db.${nameURI}
+/bin/echo ";" >> /opt/verb/conf/inkdns/inkzones/db.${nameURI}
 /opt/verb/serfs/addinkdkim ${nameURI}; wait
-/opt/verb/serfs/inkdnsaddinkdkim ${nameURI}; wait
+/opt/verb/serfs/inkdnsaddinkdkim ${nameURI} verber; wait
 ## Webmail TLD prep
 /bin/echo "; Webmail Defaults
-" >> /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
+" >> /opt/verb/conf/inkdns/inkzones/db.${emailTLDURI}
 
 # inkCert
 ## This adds the declared domain to the end of the "domains =" line

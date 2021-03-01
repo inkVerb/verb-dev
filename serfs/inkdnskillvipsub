@@ -5,29 +5,35 @@
 
 # How to use:
 ## ./inkdnskillvipsub [subdomain]
+## ./inkdnskillvipsub [subdomain] verber
 
 
 DNSSUBDOM=$1
+if [ -n $2 ] && [ "$2" = "verber" ]; then
+  ZONEDIR="inkzones"
+else
+  ZONEDIR="zones"
+fi
 
 # Include the configs
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
 
 # Check if already added
-if ! /bin/grep -Fq "${DNSSUBDOM}.${vipURI}" /opt/verb/conf/inkdns/zones/db.${vipURI}; then
+if ! /bin/grep -Fq "${DNSSUBDOM}.${vipURI}" /opt/verb/conf/inkdns/${ZONEDIR}/db.${vipURI}; then
 /bin/echo "The subdomain ${DNSSUBDOM} has not been added to ${vipURI}. Use inkdnsaddsub to add it."
 exit 0; fi
 
 # Remove the records
-/bin/sed -i "/; Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/zones/db.${vipURI}
-/bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/zones/nv.${vipURI}
+/bin/sed -i "/; Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/${ZONEDIR}/db.${vipURI}
+/bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/${ZONEDIR}/nv.${vipURI}
 
 # Set the Serial No
 /opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
 
 # Refresh zones
-if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
-  . /opt/verb/conf/inkdns/inkdnsstatus
+if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then
+  . /opt/verb/conf/inkdns/inkdnsconf
   if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
 /opt/verb/serfs/inkdnsrefreshbind; fi; fi
 

@@ -33,9 +33,9 @@ NEWPORT=$1
 
 /bin/sed -i "s/Port.*/Port ${NEWPORT}/g" /etc/ssh/sshd_config
 /bin/sed -i "s/SITEPORT.*/SITEPORT=\"${NEWPORT}\"/" /opt/verb/conf/siteport
-/usr/sbin/ufw allow ${NEWPORT}
+/usr/bin/ufw allow ${NEWPORT}
 # Deny the previous port from the config file which has been written, but not yet refreshed
-/usr/sbin/ufw deny ${SITEPORT}
+/usr/bin/ufw deny ${SITEPORT}
 
 # Reload the settings
 /bin/systemctl reload ssh

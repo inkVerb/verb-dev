@@ -15,41 +15,39 @@
 
 
 # Check if installed
-if [ -f /opt/ink/conf/inkdns/inkdnsstatus ]; then
-. /opt/ink/conf/inkdns/inkdnsstatus
- if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
-/bin/echo "inkDNS already installed."
-exit 2
- fi
+. /opt/verb/conf/inkdns/inkdnsconf
+if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
+  /bin/echo "inkDNS already installed."
+  exit 0
 fi
+
+# Set the Inkers
+/opt/verb/serfs/inkdnssetinker
+/opt/verb/serfs/inkdnssetinker
 
 # Include the configs
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
 
-# Set the Inker
-/opt/verb/serfs/inkdnssetinker
-
 # Install Bind
-/usr/bin/apt-get install -y net-tools bind9 bind9utils
-/usr/sbin/ufw allow bind9
-
-# Backup settings
-cd /etc/bind
-/bin/mv named.conf.options named.conf.options.original
+/usr/bin/pacman -S --noconfirm bind
 
 # Config
-/bin/cp -f /opt/verb/conf/inkdns/named.conf.options /etc/bind/
-/bin/chown bind:bind /etc/bind/named.conf.options
-/bin/chmod 644 /etc/bind/named.conf.options
+/bin/cp -f /etc/named.conf /etc/named.conf.original
+/bin/cp -f /opt/verb/conf/inkdns/named.conf /etc/
+/bin/chown bind:bind /etc/named.conf
+/bin/chmod 644 /etc/named.conf
+## Make sure our included files exist
+/usr/bin/touch /opt/verb/conf/inkdns/named.conf.rdns
+/usr/bin/touch /opt/verb/conf/inkdns/named.conf.verb
 
 # Set the NS domains
-/bin/sed -i "s/DNSID286\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/zones/*
-/bin/sed -i "s/DNSID286\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/*
 /bin/sed -i "s/ns1\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/zones/*
 /bin/sed -i "s/ns1\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/*
+/bin/sed -i "s/ns2\.DNSDOMAIN286/${SITEINKERDNS}/g" /opt/verb/conf/inkdns/inkzones/*
 /bin/sed -i "s/ns2\.DNSDOMAIN286/${SITEINKERDNS}/g" /opt/verb/conf/inkdns/zones/*
 /bin/sed -i "s/ns2\.DNSDOMAIN286/${SITEINKERDNS}/g" /opt/verb/conf/inkdns/*
+/bin/sed -i "s/ns3\.DNSDOMAIN286/${SITE2INKERDNS}/g" /opt/verb/conf/inkdns/inkzones/*
 /bin/sed -i "s/ns3\.DNSDOMAIN286/${SITE2INKERDNS}/g" /opt/verb/conf/inkdns/zones/*
 /bin/sed -i "s/ns3\.DNSDOMAIN286/${SITE2INKERDNS}/g" /opt/verb/conf/inkdns/*
 
@@ -62,23 +60,15 @@ cd /etc/bind
 /bin/rm -f /opt/verb/conf/inkdns/serial' > /opt/verb/donjon/rmserial.sh
 /bin/chmod 750 /opt/verb/donjon/rmserial.sh
 
-# include the verb file
-/bin/echo '// Below added by #inkVerb-inkDNS' >> /etc/bind/named.conf.local
-/bin/echo 'include "/etc/bind/named.conf.rdns";' >> /etc/bind/named.conf.local
-/bin/echo 'include "/etc/bind/named.conf.verb";' >> /etc/bind/named.conf.local
-
 # Allow the port
-/usr/sbin/ufw allow 53
-/usr/sbin/ufw allow bind9
+/usr/bin/ufw allow 53
 
 # Restart
-/etc/init.d/bind9 restart
+/bin/systemctl enable named
+/bin/systemctl start named
 
 # Config
-/bin/echo "#!/bin/sh
-
-INKDNSSTAT=INSTALLED
-" > /opt/verb/conf/inkdns/inkdnsstatus
+/bin/sed -i "s/INKDNSSTAT=.*/INKDNSSTAT=\"INSTALLED\"/" /opt/verb/conf/inkdns/inkdnsconf
 
 # Refresh all records
 /opt/verb/serfs/inkdnsrefreshbind

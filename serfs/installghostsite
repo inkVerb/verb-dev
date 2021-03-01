@@ -54,7 +54,7 @@ cd /srv/www/ghost/ghostsite-${DOMAIN}
 /bin/sed -i "s/mail: {}/mail: {transport: 'SMTP', options: {host: 'localhost', port: 25, service: 'dovecot', auth: {user: '${EMAILUSER}', pass: '${EMAILPASS}'}}}/g" config.js
 
 # Set UFW to allow the Ghost port
-/usr/sbin/ufw allow ${NEWPORT}
+/usr/bin/ufw allow ${NEWPORT}
 
 # Apache
 ## Remove static-Apache newdomain config & html folder

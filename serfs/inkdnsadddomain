@@ -30,8 +30,8 @@ ${SITEARPAIP6}		IN  PTR  ${DNSDOMAIN}." > /opt/verb/conf/inkdns/zones/nv.${DNSDO
 /opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
 
 # Refresh zones
-if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
-  . /opt/verb/conf/inkdns/inkdnsstatus
+if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then
+  . /opt/verb/conf/inkdns/inkdnsconf
   if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
 /opt/verb/serfs/inkdnsrefreshbind; fi; fi
 

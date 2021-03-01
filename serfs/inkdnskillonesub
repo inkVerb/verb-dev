@@ -5,29 +5,35 @@
 
 # How to use:
 ## ./inkdnskillonesub [subdomain]
+## ./inkdnskillonesub [subdomain] verber
 
 
 DNSSUBDOM=$1
+if [ -n $2 ] && [ "$2" = "verber" ]; then
+  ZONEDIR="inkzones"
+else
+  ZONEDIR="zones"
+fi
 
 # Include the configs
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
 
 # Check if already added
-if ! /bin/grep -Fq "${DNSSUBDOM}.${oneURI}" /opt/verb/conf/inkdns/zones/db.${oneURI}; then
+if ! /bin/grep -Fq "${DNSSUBDOM}.${oneURI}" /opt/verb/conf/inkdns/${ZONEDIR}/db.${oneURI}; then
 /bin/echo "The subdomain ${DNSSUBDOM} has not been added to ${oneURI}. Use inkdnsaddsub to add it."
 exit 0; fi
 
 # Remove the records
-/bin/sed -i "/; Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${oneURI}/,+2d" /opt/verb/conf/inkdns/zones/db.${oneURI}
-/bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${oneURI}/,+2d" /opt/verb/conf/inkdns/zones/nv.${oneURI}
+/bin/sed -i "/; Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${oneURI}/,+2d" /opt/verb/conf/inkdns/${ZONEDIR}/db.${oneURI}
+/bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${oneURI}/,+2d" /opt/verb/conf/inkdns/${ZONEDIR}/nv.${oneURI}
 
 # Set the Serial No
 /opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
 
 # Refresh zones
-if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
-  . /opt/verb/conf/inkdns/inkdnsstatus
+if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then
+  . /opt/verb/conf/inkdns/inkdnsconf
   if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
 /opt/verb/serfs/inkdnsrefreshbind; fi; fi
 

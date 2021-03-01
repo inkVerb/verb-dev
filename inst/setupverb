@@ -471,67 +471,65 @@ EOF
 ## Include config
 . /opt/verb/conf/sitenameip
 ## Set the namespace, TLD, and IP values
-### db.*
-/bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/zones/db.*
+/usr/bin/mkdir -p /opt/verb/conf/inkdns1/zones
+/bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/hostipv6286/${SERVERIPV6}/g" /opt/verb/conf/inkdns/zones/db.*
+/bin/sed -i "s/hostipv6286/${SERVERIPV6}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/hostipv6286/${SERVERIPV6}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/sitename286/${SITENAME}/g" /opt/verb/conf/inkdns/zones/db.*
+/bin/sed -i "s/sitename286/${SITENAME}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/sitename286/${SITENAME}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/zones/db.*
+/bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/zones/db.*
+/bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/zones/db.*
+/bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
-#### Remove dup in the hosted site
-/bin/sed -i "s/${nameURI} ${nameURI}/${nameURI}/" /opt/verb/conf/inkdns/zones/db.*
 
 ### nv.*
-/bin/sed -i "s/hostarpaip286/${SITEARPAIP4}/g" /opt/verb/conf/inkdns/zones/nv.*
+/bin/sed -i "s/hostarpaip286/${SITEARPAIP4}/g" /opt/verb/conf/inkdns/inkzones/nv.*
 /bin/sed -i "s/hostarpaip286/${SITEARPAIP4}/g" /opt/verb/conf/inkdns/nv.dnsdomain
-/bin/sed -i "s/hostarpaipv6286/${SITEARPAIP6}/g" /opt/verb/conf/inkdns/zones/nv.*
+/bin/sed -i "s/hostarpaipv6286/${SITEARPAIP6}/g" /opt/verb/conf/inkdns/inkzones/nv.*
 /bin/sed -i "s/hostarpaipv6286/${SITEARPAIP6}/g" /opt/verb/conf/inkdns/nv.dnsdomain
 
 ## Set the FQDN host
 /bin/echo "; FQDN Host A Records
 ${hostURI}.	IN  A		hostip286
 ${hostURI}.	IN  AAAA	hostipv6286
-" >> /opt/verb/conf/inkdns/zones/db.${SITETLD}
+" >> /opt/verb/conf/inkdns/inkzones/db.${SITETLD}
 ## Populate the Verber domains
-/bin/sed -i "s/hostdomain286/${emailURI}/g" /opt/verb/conf/inkdns/zones/db.email
-/bin/sed -i "s/hostdomain286/${oneURI}/g" /opt/verb/conf/inkdns/zones/db.one
-/bin/sed -i "s/hostdomain286/${inkURI}/g" /opt/verb/conf/inkdns/zones/db.ink
-/bin/sed -i "s/hostdomain286/${blueURI}/g" /opt/verb/conf/inkdns/zones/db.blue
-/bin/sed -i "s/hostdomain286/${vipURI}/g" /opt/verb/conf/inkdns/zones/db.vip
-/bin/sed -i "s/hostdomain286/${kiwiURI}/g" /opt/verb/conf/inkdns/zones/db.kiwi
-/bin/sed -i "s/hostdomain286/${redURI}/g" /opt/verb/conf/inkdns/zones/db.red
-/bin/sed -i "s/hostdomain286/${emailURI}/g" /opt/verb/conf/inkdns/zones/nv.email
-/bin/sed -i "s/hostdomain286/${oneURI}/g" /opt/verb/conf/inkdns/zones/nv.one
-/bin/sed -i "s/hostdomain286/${inkURI}/g" /opt/verb/conf/inkdns/zones/nv.ink
-/bin/sed -i "s/hostdomain286/${blueURI}/g" /opt/verb/conf/inkdns/zones/nv.blue
-/bin/sed -i "s/hostdomain286/${vipURI}/g" /opt/verb/conf/inkdns/zones/nv.vip
-/bin/sed -i "s/hostdomain286/${kiwiURI}/g" /opt/verb/conf/inkdns/zones/nv.kiwi
-/bin/sed -i "s/hostdomain286/${redURI}/g" /opt/verb/conf/inkdns/zones/nv.red
+/bin/sed -i "s/hostdomain286/${emailURI}/g" /opt/verb/conf/inkdns/inkzones/db.email
+/bin/sed -i "s/hostdomain286/${oneURI}/g" /opt/verb/conf/inkdns/inkzones/db.one
+/bin/sed -i "s/hostdomain286/${inkURI}/g" /opt/verb/conf/inkdns/inkzones/db.ink
+/bin/sed -i "s/hostdomain286/${blueURI}/g" /opt/verb/conf/inkdns/inkzones/db.blue
+/bin/sed -i "s/hostdomain286/${vipURI}/g" /opt/verb/conf/inkdns/inkzones/db.vip
+/bin/sed -i "s/hostdomain286/${kiwiURI}/g" /opt/verb/conf/inkdns/inkzones/db.kiwi
+/bin/sed -i "s/hostdomain286/${redURI}/g" /opt/verb/conf/inkdns/inkzones/db.red
+/bin/sed -i "s/hostdomain286/${emailURI}/g" /opt/verb/conf/inkdns/inkzones/nv.email
+/bin/sed -i "s/hostdomain286/${oneURI}/g" /opt/verb/conf/inkdns/inkzones/nv.one
+/bin/sed -i "s/hostdomain286/${inkURI}/g" /opt/verb/conf/inkdns/inkzones/nv.ink
+/bin/sed -i "s/hostdomain286/${blueURI}/g" /opt/verb/conf/inkdns/inkzones/nv.blue
+/bin/sed -i "s/hostdomain286/${vipURI}/g" /opt/verb/conf/inkdns/inkzones/nv.vip
+/bin/sed -i "s/hostdomain286/${kiwiURI}/g" /opt/verb/conf/inkdns/inkzones/nv.kiwi
+/bin/sed -i "s/hostdomain286/${redURI}/g" /opt/verb/conf/inkdns/inkzones/nv.red
 ## Set host FQDN
-/bin/sed -i "s/;; End Root Site Defaults/${hostURI}\.\t\tIN  A\t\t${SERVERIPV4}\n${hostURI}\.\t\tIN  AAAA\t${SERVERIPV6}\n;; End Root Site Defaults/" /opt/verb/conf/inkdns/zones/db.${SERVERTLD}
+/bin/sed -i "s/;; End Root Site Defaults/${hostURI}\.\t\tIN  A\t\t${SERVERIPV4}\n${hostURI}\.\t\tIN  AAAA\t${SERVERIPV6}\n;; End Root Site Defaults/" /opt/verb/conf/inkdns/inkzones/db.${SERVERTLD}
 ## Set the URI names
-/bin/mv /opt/verb/conf/inkdns/zones/db.email /opt/verb/conf/inkdns/zones/db.${emailURI}
-/bin/mv /opt/verb/conf/inkdns/zones/db.one /opt/verb/conf/inkdns/zones/db.${oneURI}
-/bin/mv /opt/verb/conf/inkdns/zones/db.ink /opt/verb/conf/inkdns/zones/db.${inkURI}
-/bin/mv /opt/verb/conf/inkdns/zones/db.blue /opt/verb/conf/inkdns/zones/db.${blueURI}
-/bin/mv /opt/verb/conf/inkdns/zones/db.vip /opt/verb/conf/inkdns/zones/db.${vipURI}
-/bin/mv /opt/verb/conf/inkdns/zones/db.kiwi /opt/verb/conf/inkdns/zones/db.${kiwiURI}
-/bin/mv /opt/verb/conf/inkdns/zones/db.red /opt/verb/conf/inkdns/zones/db.${redURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.email /opt/verb/conf/inkdns/zones/nv.${emailURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.one /opt/verb/conf/inkdns/zones/nv.${oneURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.ink /opt/verb/conf/inkdns/zones/nv.${inkURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.blue /opt/verb/conf/inkdns/zones/nv.${blueURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.vip /opt/verb/conf/inkdns/zones/nv.${vipURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.kiwi /opt/verb/conf/inkdns/zones/nv.${kiwiURI}
-/bin/mv /opt/verb/conf/inkdns/zones/nv.red /opt/verb/conf/inkdns/zones/nv.${redURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.email /opt/verb/conf/inkdns/inkzones/db.${emailURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.one /opt/verb/conf/inkdns/inkzones/db.${oneURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.ink /opt/verb/conf/inkdns/inkzones/db.${inkURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.blue /opt/verb/conf/inkdns/inkzones/db.${blueURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.vip /opt/verb/conf/inkdns/inkzones/db.${vipURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.kiwi /opt/verb/conf/inkdns/inkzones/db.${kiwiURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/db.red /opt/verb/conf/inkdns/inkzones/db.${redURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.email /opt/verb/conf/inkdns/inkzones/nv.${emailURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.one /opt/verb/conf/inkdns/inkzones/nv.${oneURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.ink /opt/verb/conf/inkdns/inkzones/nv.${inkURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.blue /opt/verb/conf/inkdns/inkzones/nv.${blueURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.vip /opt/verb/conf/inkdns/inkzones/nv.${vipURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.kiwi /opt/verb/conf/inkdns/inkzones/nv.${kiwiURI}
+/bin/mv /opt/verb/conf/inkdns/inkzones/nv.red /opt/verb/conf/inkdns/inkzones/nv.${redURI}
 ## Serial Nos
-cd /opt/verb/conf/inkdns/zones
+cd /opt/verb/conf/inkdns/inkzones
 for inkZoneDB in db.*; do
 inkZone="$(/bin/echo ${inkZoneDB} | /bin/sed 's/db\.//' )"
 /opt/verb/serfs/inkdnsserial ${inkZone}
@@ -541,14 +539,14 @@ done
 /bin/sed -i "s/IPV6=.*/IPV6=yes/" /etc/default/ufw
 ## Port (set to something to avoid attacks)
 /bin/sed -i "/Port.*/ c\Port ${NEWPORT}" /etc/ssh/sshd_config
-/usr/sbin/ufw allow ${NEWPORT}
+/usr/bin/ufw allow ${NEWPORT}
 /bin/sed -i "/SITEPORT.*/ c\SITEPORT=${NEWPORT}" /opt/verb/conf/siteport
 ## Reset settings
-#/usr/sbin/ufw allow ssh
-#/usr/sbin/ufw allow http
-#/usr/sbin/ufw allow https
-#/usr/sbin/ufw allow ftp
-#/usr/sbin/ufw allow sftp
+#/usr/bin/ufw allow ssh
+#/usr/bin/ufw allow http
+#/usr/bin/ufw allow https
+#/usr/bin/ufw allow ftp
+#/usr/bin/ufw allow sftp
 
 # File pe/usr/bin/rmissions for configs
 /bin/chmod 660 -R /opt/verb/conf
@@ -570,7 +568,7 @@ fi
 
 If you choose to set up email before doinkcert, you will need to make an Advanced > exception rule for these in your browser concerning security/safety/SSL, you should not need to pe/usr/bin/rmanently store it.
 
-You should reboot the server now using:
+You must reboot the server now using:
 
 reboot
 
@@ -584,7 +582,7 @@ login using: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
 "
 
 # Cleanup
-/usr/sbin/ufw --force enable
+#/usr/bin/ufw --force enable # Delete if everything works
 /usr/bin/rm -f /opt/verb/serfs/setupverb
 /usr/bin/rm -rf /opt/verb/inst
 /bin/systemctl reload sshd; wait

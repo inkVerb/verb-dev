@@ -1,5 +1,5 @@
 $TTL    86400
-hostdomain286.		IN  SOA		DNSID286.DNSDOMAIN286. root.hostdomain286. (
+hostdomain286.		IN  SOA		ns2.DNSDOMAIN286. ns.ns2.DNSDOMAIN286. (
 0000000001		; Serial No
 10800			; Refresh
 3600			; Retry
@@ -8,7 +8,6 @@ hostdomain286.		IN  SOA		DNSID286.DNSDOMAIN286. root.hostdomain286. (
 
 $ORIGIN hostdomain286.
 ; Nameserver Defaults
-@		IN  NS		ns1.DNSDOMAIN286.
 @		IN  NS		ns2.DNSDOMAIN286.
 @		IN  NS		ns3.DNSDOMAIN286.
 
@@ -18,8 +17,8 @@ $ORIGIN hostdomain286.
 ;; End Root Site Defaults
 
 ; Hostname Record Defaults
-b.hostdomain286.		IN  A		hostip286
-b.hostdomain286.		IN  AAAA	hostipv6286
+v.hostdomain286.		IN  A		hostip286
+v.hostdomain286.		IN  AAAA	hostipv6286
 
 ; Aliase Default
 www.hostdomain286.		IN  CNAME	hostdomain286.

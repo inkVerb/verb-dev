@@ -71,7 +71,7 @@ fi
 /bin/echo 'slave  ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/slave
 
 # AUR package manager
-/usr/bin/pacman -S base-devel --noconfirm # Dependencies
+/usr/bin/pacman -S --noconfirm base-devel # Dependencies
 cd /home/slave
 /usr/bin/su slave -c '/usr/bin/git clone https://aur.archlinux.org/yay.git'
 cd yay
@@ -338,6 +338,9 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 # Server type
 /bin/echo 'SERVERTYPE="lemp"' > /opt/verb/conf/servertype
 
+# UFW
+/usr/bin/ufw --force enable
+
 # Remove unneeded packages
 /usr/bin/pacman -Qdt --noconfirm
 
@@ -345,7 +348,9 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /bin/echo "
 The Verber™ server has been made and is ready to run setupverb.
 
-At this point, there is no urgent need to restart the server.
+You must first reboot the server using:
+
+reboot
 "
 
 # Delete this one-time script

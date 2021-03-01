@@ -22,8 +22,8 @@ exit 0; fi
 /bin/rm -f /opt/verb/conf/inkdns/zones/nv.${DNSDOMAIN}
 
 # Refresh zones & delete the global rDNS entry
-if [ -f "/opt/verb/conf/inkdns/inkdnsstatus" ]; then
-  . /opt/verb/conf/inkdns/inkdnsstatus
+if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then
+  . /opt/verb/conf/inkdns/inkdnsconf
   if [ "${INKDNSSTAT}" = "INSTALLED" ]; then
 /opt/verb/serfs/inkdnsrefreshbind; fi; fi
 

@@ -12,29 +12,28 @@
 ## ./inkdnssetinker2 ns.poetryiscode.com
 
 
-DEFAULTns="ns1.inkisaverb.com"
-INKERip4="NOT_SET"
-INKDERip6="NOT_SET"
+# Defaults
+. /opt/verb/conf/inkdns/inkdnsconf
 
 # Check variables present
 ## Domain
 if [ -z "$1"  || [ "$1" -d ]]; then
   /bin/echo "Inkder domain not specified; using default."
-  NSDOMAIN="${DEFAULTns}"
+  NSDOMAIN="${DEFAULTns2}"
 else
   NSDOMAIN="$1"
 fi
 ## IP4
 if [ -z "$2" ] || [ "$2" -d ]; then
   /bin/echo "IP4 not specified; using default."
-  NSIP4="${INKERip4}"
+  NSIP4="${INKER2ip4}"
 else
   NSIP4=$2
 fi
 ## IP6
 if [ -z "$3" ] || [ "$3" -d ]; then
   /bin/echo "IP6 not specified; using default."
-  NSIP6="${INKDERip6}"
+  NSIP6="${INKDER2ip6}"
 else
   NSIP6=$3
 fi
@@ -46,5 +45,3 @@ fi
 
 # Finish
 /bin/echo "Secondary DNS Inker set to: ${NSIP4} & ${NSIP6} for ${NSDOMAIN}"
-# Set the changes
-

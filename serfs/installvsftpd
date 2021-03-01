@@ -62,5 +62,5 @@ usermod -d /srv/vsftpd/ftp ftp
 
 # Set the firewall to allow the site port
 . /opt/verb/conf/siteport
-/usr/sbin/ufw allow from any to any port ${SITEPORT}
+/usr/bin/ufw allow from any to any port ${SITEPORT}
 

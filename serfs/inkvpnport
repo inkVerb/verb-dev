@@ -21,14 +21,14 @@ fi
 
 # Disable the old port
 . /opt/verb/conf/inkvpn/inkvpnstatus
-/usr/sbin/ufw deny ${INKVPNPORT}
+/usr/bin/ufw deny ${INKVPNPORT}
 
 # Implement the new port
 /bin/sed -i "s/INKVPNPORT=.*/INKVPNPORT=${NEWPORTADDR}/" /opt/verb/conf/inkvpn/inkvpnstatus
 . /opt/verb/conf/inkvpn/inkvpnstatus
 /bin/sed -i "s/^port.*/port ${INKVPNPORT}/" /etc/openvpn/server.conf
-/usr/sbin/ufw allow from any to any port ${INKVPNPORT} proto udp
-/usr/sbin/ufw allow ${INKVPNPORT}
+/usr/bin/ufw allow from any to any port ${INKVPNPORT} proto udp
+/usr/bin/ufw allow ${INKVPNPORT}
 ## If a client file already exists
 if [ -f "/opt/openvpn/certificates/clients/client.ovpn" ]; then
 /bin/sed -i "s/^remote ${hostURI}.*/remote ${hostURI} ${INKVPNPORT}/" /opt/openvpn/certificates/clients/client.ovpn

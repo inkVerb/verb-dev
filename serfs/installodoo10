@@ -28,9 +28,9 @@ exit 0; fi
 
 # Set UFW to allow the Odoo port
 ## HTTP
-/usr/sbin/ufw allow 8069
+/usr/bin/ufw allow 8069
 ## TCP
-/usr/sbin/ufw allow 8072
+/usr/bin/ufw allow 8072
 
 # Apache
 ## Remove static-Apache html folder

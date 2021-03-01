@@ -1,5 +1,5 @@
 $TTL    86400
-hostdomain286.		IN  SOA		DNSID286.DNSDOMAIN286. root.hostdomain286. (
+hostdomain286.		IN  SOA		ns1.DNSDOMAIN286. ns.ns2.DNSDOMAIN286. (
 0000000001		; Serial No
 10800			; Refresh
 3600			; Retry

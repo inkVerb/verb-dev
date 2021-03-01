@@ -148,7 +148,7 @@ CREATE DATABASE  ${DBASE};
 GRANT ALL PRIVILEGES ON ${DBASE}.* TO '${DBUSER}'@'localhost' IDENTIFIED BY '${DBPASSWORD}';
 FLUSH PRIVILEGES;"
 ## MySQL port (may not be necessary, so commented)
-#/usr/sbin/ufw allow 3306
+#/usr/bin/ufw allow 3306
 
 # Write the config for backup
 /bin/echo "#!/bin/sh

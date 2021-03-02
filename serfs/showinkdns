@@ -8,7 +8,7 @@
 ## ./showinkdns [domain.tld]
 
 
-DOMAIN=$1
+DOMAIN="$1"
 
 /bin/echo "Zone file:"
 /bin/cat /opt/verb/conf/inkdns/zones/db.${DOMAIN}

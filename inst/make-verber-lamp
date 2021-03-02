@@ -67,8 +67,10 @@ fi
 /usr/bin/usermod -a -G www slave
 /usr/bin/mkdir -p /home/slave
 /usr/bin/chown -R slave:slave /home/slave
-## User privilege specifi/bin/cation
 /bin/echo 'slave  ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/slave
+# Let's use sudo
+/usr/bin/groupadd sudo
+/usr/bin/sed -i "s?# %sudo\tALL=(ALL) ALL?%sudo\tALL=(ALL) ALL?" /etc/sudoers
 
 # AUR package manager
 /usr/bin/pacman -S --noconfirm base-devel # Dependencies
@@ -210,8 +212,6 @@ EOF
 /usr/bin/pacman -S --noconfirm ufw
 /usr/bin/ufw allow 80/tcp
 /usr/bin/ufw allow 443/tcp
-/usr/bin/systemctl enable ufw; wait
-/usr/bin/systemctl start ufw; wait
 
 ## tmp folder for a secure PHP
 /bin/mkdir -p /srv/www/tmp
@@ -274,9 +274,6 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 
 # Server type
 /bin/echo 'SERVERTYPE="lamp"' > /opt/verb/conf/servertype
-
-# UFW
-/usr/bin/ufw --force enable
 
 # Remove unneeded packages
 /usr/bin/pacman -Qdt --noconfirm

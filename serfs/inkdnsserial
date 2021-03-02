@@ -5,12 +5,18 @@
 
 # How to use:
 ## ./inkdnsserial [domain]
+## ./inkdnsserial [domain] verber
 
 
-DNSDOMAIN=$1
+DNSDOMAIN="$1"
+if [ -n $2 ] && [ "$2" = "verber" ]; then
+  ZONEDIR="inkzones"
+else
+  ZONEDIR="zones"
+fi
 
 # Check if the zone file exists
-if [ ! -f "/opt/verb/conf/inkdns/zones/db.${DNSDOMAIN}" ]; then
+if [ ! -f "/opt/verb/conf/inkdns/${ZONEDIR}/db.${DNSDOMAIN}" ]; then
 /bin/echo "The domain \"${DNSDOMAIN}\" has no DNS zone file. That comes first."
 exit 8; fi
 
@@ -34,4 +40,4 @@ NEWSERIAL="0${NEWSERIAL}"; fi
 ## Create a datestamp-based serial number to the second (how inkVerb does it)
 SERNO="${DATESTAMP}${NEWSERIAL}\t\t; Serial No"
 ## Set it in the files
-/bin/sed -i "/; Serial No/c ${SERNO}" /opt/verb/conf/inkdns/zones/db.${DNSDOMAIN}
+/bin/sed -i "/; Serial No/c ${SERNO}" /opt/verb/conf/inkdns/${ZONEDIR}/db.${DNSDOMAIN}

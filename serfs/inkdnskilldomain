@@ -7,7 +7,7 @@
 ## ./inkdnskilldomain [domain]
 
 
-DNSDOMAIN=$1
+DNSDOMAIN="$1"
 
 # Include the configs
 . /opt/verb/conf/sitenameip

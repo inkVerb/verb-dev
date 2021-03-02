@@ -7,8 +7,8 @@
 ## ./inkdnskillsub [subdomain] [domain]
 
 
-DNSSUBDOM=$1
-DNSDOMAIN=$2
+DNSSUBDOM="$1"
+DNSDOMAIN="$2"
 
 # Include the configs
 . /opt/verb/conf/sitenameip

@@ -28,14 +28,14 @@ if [ -z "$2" ] || [ "$2" -d ]; then
   /bin/echo "IP4 not specified; using default."
   NSIP4="${INKER2ip4}"
 else
-  NSIP4=$2
+  NSIP4="$2"
 fi
 ## IP6
 if [ -z "$3" ] || [ "$3" -d ]; then
   /bin/echo "IP6 not specified; using default."
   NSIP6="${INKDER2ip6}"
 else
-  NSIP6=$3
+  NSIP6="$3"
 fi
 
 # Set the changes

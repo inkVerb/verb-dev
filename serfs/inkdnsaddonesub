@@ -8,7 +8,7 @@
 ## ./inkdnsaddonesub [subdomain] verber
 
 
-DNSSUBDOM=$1
+DNSSUBDOM="$1"
 if [ -n $2 ] && [ "$2" = "verber" ]; then
   ZONEDIR="inkzones"
 else

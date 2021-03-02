@@ -411,10 +411,10 @@ fi
 
 # Create the new boss user
 /usr/bin/groupadd ${NEWBOSS}
-/usr/sbin/useradd ${NEWBOSS} ${NEWBOSS}
+/usr/bin/useradd -g ${NEWBOSS} ${NEWBOSS}
 /bin/echo "${NEWBOSS}:${NEWBOSSPASS}" | chpasswd
-/usr/sbin/usermod -a -G sudo ${NEWBOSS}
-/usr/sbin/usermod -a -G www ${NEWBOSS}
+/usr/bin/usermod -a -G sudo ${NEWBOSS}
+/usr/bin/usermod -a -G www ${NEWBOSS}
 /usr/bin/mkdir -p /home/${NEWBOSS}
 /bin/ln -sfn /opt/verb/boss /home/${NEWBOSS}/
 ## User privilege specifi/bin/cation
@@ -437,7 +437,7 @@ GRANT ALL PRIVILEGES ON *.* TO '${NEWBOSS}'@'localhost' IDENTIFIED BY '${NEWBOSS
 FLUSH PRIVILEGES;"
 
 # Host name
-/bin/hostname ${HNAME}
+
 /usr/bin/hostnamectl set-hostname ${HNAME}
 ##DEV this restart causes an "is masked" error and may not be necessary with the mandatory reboot after setupverb
 #/bin/systemctl restart hostname
@@ -532,15 +532,17 @@ ${hostURI}.	IN  AAAA	hostipv6286
 cd /opt/verb/conf/inkdns/inkzones
 for inkZoneDB in db.*; do
 inkZone="$(/bin/echo ${inkZoneDB} | /bin/sed 's/db\.//' )"
-/opt/verb/serfs/inkdnsserial ${inkZone}
+/opt/verb/serfs/inkdnsserial ${inkZone} verber
 done
+cd $OLDPWD
 
 ## Set for IPV6 (should be set already, but just to be sure)
 /bin/sed -i "s/IPV6=.*/IPV6=yes/" /etc/default/ufw
 ## Port (set to something to avoid attacks)
 /bin/sed -i "/Port.*/ c\Port ${NEWPORT}" /etc/ssh/sshd_config
-/usr/bin/ufw allow ${NEWPORT}
 /bin/sed -i "/SITEPORT.*/ c\SITEPORT=${NEWPORT}" /opt/verb/conf/siteport
+/usr/bin/ufw allow ${NEWPORT}
+/usr/bin/ufw --force enable; wait
 ## Reset settings
 #/usr/bin/ufw allow ssh
 #/usr/bin/ufw allow http

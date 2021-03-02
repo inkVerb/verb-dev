@@ -8,7 +8,7 @@
 ## ./inkdnskillinkdkim [domain] verber
 
 
-DNSDOMAIN=$1
+DNSDOMAIN="$1"
 if [ -n $2 ] && [ "$2" = "verber" ]; then
   ZONEDIR="inkzones"
 else

@@ -35,11 +35,11 @@ fi
 # Config
 /bin/cp -f /etc/named.conf /etc/named.conf.original
 /bin/cp -f /opt/verb/conf/inkdns/named.conf /etc/
-/bin/chown bind:bind /etc/named.conf
+/bin/chown root:named /etc/named.conf
 /bin/chmod 644 /etc/named.conf
 ## Make sure our included files exist
-/usr/bin/touch /opt/verb/conf/inkdns/named.conf.rdns
-/usr/bin/touch /opt/verb/conf/inkdns/named.conf.verb
+/usr/bin/touch /var/named/named.conf.rdns
+/usr/bin/touch /var/named/named.conf.verb
 
 # Set the NS domains
 /bin/sed -i "s/ns1\.DNSDOMAIN286/${hostURI}/g" /opt/verb/conf/inkdns/zones/*

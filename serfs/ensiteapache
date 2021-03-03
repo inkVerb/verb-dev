@@ -1,19 +1,21 @@
 #!/bin/sh
 #inkVerbSerf! verb.ink
 
-# This enables an httpd site by creating a symlink.
+# This enables an httpd site by creating a symlink
+## Use second argument "r" to reload automatically
 
 # How to use:
 ## ./ensiteapache [domain.tld or subdomain.domain.tld]
+## ./ensiteapache [domain.tld or subdomain.domain.tld] r
 
 
 # Run as a loop so multiple sites can be enabled in one command, just like a2ensite
 for DOMAIN in $@
 do
-
   /usr/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/httpd/sites-enabled/${DOMAIN}.conf
-
 done
 
-# Reload
-/usr/bin/systemctl reload httpd
+# Restart?
+if [ -n $2 ] && [ "$2" = "r" ]; then
+  /bin/systemctl reload httpd; wait
+fi

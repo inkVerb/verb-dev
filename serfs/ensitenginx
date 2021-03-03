@@ -1,19 +1,21 @@
 #!/bin/sh
 #inkVerbSerf! verb.ink
 
-# This enables an nginx site by creating a symlink.
+# This enables an nginx site by creating a symlink
+## Use second argument "r" to reload automatically
 
 # How to use:
 ## ./ensitenginx [domain.tld or subdomain.domain.tld]
+## ./ensitenginx [domain.tld or subdomain.domain.tld] r
 
 
 # Run as a loop so multiple sites can be enabled in one command, just like a2ensite
 for DOMAIN in $@
 do
-
   /usr/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/nginx/sites-enabled/${DOMAIN}.conf
-
 done
 
-# Reload
-/usr/bin/systemctl reload nginx
+# Restart?
+if [ -n $2 ] && [ "$2" = "r" ]; then
+  /bin/systemctl reload nginx; wait
+fi

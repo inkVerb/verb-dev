@@ -12,7 +12,7 @@
 # How to use:
 ## ./setupverb [host] [namespace] [tld] [email] [serverIPv4] [serverIPv6 - if none use IPv6NA ] [SSLemail] [php.file-limit] [php.up-size] [php.city] [new-port] [new-boss] [boss-pass] [verb-dev - optional]
 # Elaborate how to use:
-## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tls, should be 'email' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/te/usr/bin/rminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
+## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tls, should be 'email' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/terminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
 
 # IMPORTANT: Choose a hostname that is: 1. short, 2. unique, 3. memorable, and 4. has only numbers and lower-case letters.
 ## You will see this name in terminal tabs and window titles when you connect to your Verber via command line.
@@ -157,10 +157,10 @@ fi
 # Snakeoil cert (larger file for production)
 /usr/bin/mkdir -p /etc/ssl/server
 cd /etc/ssl/server
-/usr/usr/bin/rm -f server.key
+/usr/bin/rm -f server.key
 /usr/bin/openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.key
 /usr/bin/chmod 400 server.key
-/usr/usr/bin/rm -f server.csr
+/usr/bin/rm -f server.csr
 country=""
 state=""
 locality="${PHPCITY}"
@@ -172,7 +172,7 @@ companyname=""
 /usr/bin/openssl req -new -sha256 -key server.key -out server.csr \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email/unstructuredName=$companyname/"
 /usr/bin/openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
-/usr/usr/bin/rm -f server.csr
+/usr/bin/rm -f server.csr
 
 ## Diffie-Helman Group file (larger file for production)
 /usr/bin/rm -f /etc/ssl/server/dhparams.pem
@@ -371,7 +371,7 @@ fi
 if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /opt/verb/serfs/ensitenginx ${redURI} r.${redURI}
 fi
-if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 /bin/systemctl restart nginx; wait
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
@@ -395,7 +395,7 @@ fi
 if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /opt/verb/serfs/ensiteapache ${redURI} r.${redURI}
 fi
-if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
+if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /bin/systemctl restart httpd; wait
 fi
 
@@ -471,7 +471,7 @@ EOF
 ## Include config
 . /opt/verb/conf/sitenameip
 ## Set the namespace, TLD, and IP values
-/usr/bin/mkdir -p /opt/verb/conf/inkdns1/zones
+/usr/bin/mkdir -p /opt/verb/conf/inkdns/zones
 /bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/db.dnsdomain
 /bin/sed -i "s/hostipv6286/${SERVERIPV6}/g" /opt/verb/conf/inkdns/inkzones/db.*
@@ -550,7 +550,7 @@ cd $OLDPWD
 #/usr/bin/ufw allow ftp
 #/usr/bin/ufw allow sftp
 
-# File pe/usr/bin/rmissions for configs
+# File permissions for configs
 /bin/chmod 660 -R /opt/verb/conf
 
 # Instructions
@@ -568,7 +568,7 @@ fi
 ## Common message
 /bin/echo "- Then, set up email with postfix and roundcube.
 
-If you choose to set up email before doinkcert, you will need to make an Advanced > exception rule for these in your browser concerning security/safety/SSL, you should not need to pe/usr/bin/rmanently store it.
+If you choose to set up email before doinkcert, you will need to make an Advanced > exception rule for these in your browser concerning security/safety/SSL, you should not need to permanently store it.
 
 You must reboot the server now using:
 

@@ -28,7 +28,11 @@ exit 0; fi
 /bin/sed -i "/; PTR Hostname Mail Record Defaults/,/;; End Mail Defaults/d" /opt/verb/conf/inkdns/${ZONEDIR}/nv.${DNSDOMAIN}
 
 # Set the Serial No
-/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+if [ "${ZONEDIR}" = "inkzones" ]; then
+  /opt/verb/serfs/inkdnsserial ${DNSDOMAIN} verber
+elif [ "${ZONEDIR}" = "zones" ]; then
+  /opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+fi
 
 # Refresh zones
 if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then

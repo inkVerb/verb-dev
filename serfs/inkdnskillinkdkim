@@ -27,7 +27,11 @@ exit 0; fi
 /bin/sed -i "/; inkDKIM key ${DNSDOMAIN}/,/;; End inkDKIM key ${DNSDOMAIN}/d" /opt/verb/conf/inkdns/${ZONEDIR}/db.${DNSDOMAIN}
 
 # Set the Serial No
-/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+if [ "${ZONEDIR}" = "inkzones" ]; then
+  /opt/verb/serfs/inkdnsserial ${DNSDOMAIN} verber
+elif [ "${ZONEDIR}" = "zones" ]; then
+  /opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+fi
 
 # Refresh zones
 if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then

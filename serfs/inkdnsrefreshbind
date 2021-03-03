@@ -1,7 +1,7 @@
 #!/bin/sh
 #inkVerbSerf! verb.ink
 
-# This resets a complete list of local inkDNS domains in the Bind9 config file: /var/named/named.conf.verb after copying inkDNS db. files to /var/named/zones/db.*
+# This resets a complete list of local inkDNS domains in the Bind config file: /var/named/named.conf.verb after copying inkDNS db. files to /var/named/zones/db.*
 
 # How to use:
 ## ./inkdnsrefreshbind

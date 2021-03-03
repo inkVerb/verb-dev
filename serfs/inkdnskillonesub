@@ -5,15 +5,10 @@
 
 # How to use:
 ## ./inkdnskillonesub [subdomain]
-## ./inkdnskillonesub [subdomain] verber
 
 
 DNSSUBDOM="$1"
-if [ -n $2 ] && [ "$2" = "verber" ]; then
-  ZONEDIR="inkzones"
-else
-  ZONEDIR="zones"
-fi
+ZONEDIR="inkzones"
 
 # Include the configs
 . /opt/verb/conf/sitenameip
@@ -29,7 +24,7 @@ exit 0; fi
 /bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${oneURI}/,+2d" /opt/verb/conf/inkdns/${ZONEDIR}/nv.${oneURI}
 
 # Set the Serial No
-/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+/opt/verb/serfs/inkdnsserial ${oneURI} verber
 
 # Refresh zones
 if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then

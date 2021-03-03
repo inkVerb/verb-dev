@@ -1,7 +1,7 @@
 #!/bin/sh
 #inkVerbSerf! verb.ink
 
-# This adds a subdomain A & AAAA records to an existing GURU DNS record in the inkDNS zone file on this Verber
+# This adds a subdomain A & AAAA records to an existing VIP DNS record in the inkDNS zone file on this Verber
 
 # How to use:
 ## ./inkdnsaddvipsub [subdomain]
@@ -9,11 +9,7 @@
 
 
 DNSSUBDOM="$1"
-if [ -n $2 ] && [ "$2" = "verber" ]; then
-  ZONEDIR="inkzones"
-else
-  ZONEDIR="zones"
-fi
+ZONEDIR="inkzones"
 
 # Include the configs
 . /opt/verb/conf/sitenameip
@@ -35,7 +31,7 @@ exit 0; fi
 /bin/echo "${SITEARPAIP6}		IN  PTR  ${DNSSUBDOM}.${vipURI}" >> /opt/verb/conf/inkdns/${ZONEDIR}/nv.${vipURI}
 
 # Set the Serial No
-/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+/opt/verb/serfs/inkdnsserial ${vipURI} verber
 
 # Refresh zones
 if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then

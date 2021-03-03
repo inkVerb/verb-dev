@@ -74,11 +74,11 @@ find /srv/www/html/${vTLD}.serve/${sDIR}/* -type d -mmin +30 -exec rm -rf {} \;"
 /bin/chmod 0644 /etc/cron.d/rmdldirs
 
 # DNS
-/bin/echo "; Subdomain Records Added by inkDNS ${serveURI}" >> /opt/verb/conf/inkdns/zones/db.${!nServeURI}
-/bin/echo "${serveURI}\tIN  A\t\t${SITEIP}" >> /opt/verb/conf/inkdns/zones/db.${!nServeURI}
-/bin/echo "${serveURI}\tIN  AAAA\t\t${SITEIPV6}" >> /opt/verb/conf/inkdns/zones/db.${!nServeURI}
+/bin/echo "; Subdomain Records Added by inkDNS ${serveURI}" >> /opt/verb/conf/inkdns/inkzones/db.${!nServeURI}
+/bin/echo "${serveURI}\tIN  A\t\t${SITEIP}" >> /opt/verb/conf/inkdns/inkzones/db.${!nServeURI}
+/bin/echo "${serveURI}\tIN  AAAA\t\t${SITEIPV6}" >> /opt/verb/conf/inkdns/inkzones/db.${!nServeURI}
 ## Set the Serial No
-/opt/verb/serfs/inkdnsserial ${!nServeURI}
+/opt/verb/serfs/inkdnsserial ${!nServeURI} verber
 
 # Finish
 /bin/echo "Service download files set"

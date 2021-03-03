@@ -5,15 +5,10 @@
 
 # How to use:
 ## ./inkdnsaddinkdkim [domain]
-## ./inkdnsaddinkdkim [domain] verber
 
 
 DNSDOMAIN="$1"
-if [ -n $2 ] && [ "$2" = "verber" ]; then
-  ZONEDIR="inkzones"
-else
-  ZONEDIR="zones"
-fi
+ZONEDIR="inkzones"
 
 # Include the configs
 . /opt/verb/conf/sitenameip
@@ -34,7 +29,7 @@ exit 7; fi
 /bin/sed -i "s/inkdkim\._domainkey/inkdkim\._domainkey\.${DNSDOMAIN}\./" /opt/verb/conf/inkdns/${ZONEDIR}/db.${DNSDOMAIN}
 
 # Set the Serial No
-/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+/opt/verb/serfs/inkdnsserial ${DNSDOMAIN} verber
 
 # Refresh zones
 if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then

@@ -1,19 +1,14 @@
 #!/bin/sh
 #inkVerbSerf! verb.ink
 
-# This removes a subdomain A & AAAA records from an existing GURU DNS record in the inkDNS zone file on this Verber
+# This removes a subdomain A & AAAA records from an existing VIP DNS record in the inkDNS zone file on this Verber
 
 # How to use:
 ## ./inkdnskillvipsub [subdomain]
-## ./inkdnskillvipsub [subdomain] verber
 
 
 DNSSUBDOM="$1"
-if [ -n $2 ] && [ "$2" = "verber" ]; then
-  ZONEDIR="inkzones"
-else
-  ZONEDIR="zones"
-fi
+ZONEDIR="inkzones"
 
 # Include the configs
 . /opt/verb/conf/sitenameip
@@ -29,7 +24,7 @@ exit 0; fi
 /bin/sed -i "/; PTR Subdomain Records Added by inkDNS ${DNSSUBDOM}\.${vipURI}/,+2d" /opt/verb/conf/inkdns/${ZONEDIR}/nv.${vipURI}
 
 # Set the Serial No
-/opt/verb/serfs/inkdnsserial ${DNSDOMAIN}
+/opt/verb/serfs/inkdnsserial ${vipURI} verber
 
 # Refresh zones
 if [ -f "/opt/verb/conf/inkdns/inkdnsconf" ]; then

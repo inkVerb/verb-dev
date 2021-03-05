@@ -51,7 +51,7 @@ BLOWFISH=$(/usr/bin/pwgen -c -1 32)
 /bin/ln -sfn /srv/www/vapps/${CVAPPNAME} /srv/www/html/vip.sql/${DIRECTRY}; wait
 /bin/chown -R www:www /srv/www/html/vip.mysql; wait
 
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 /bin/echo "
 PHP My Admin now active & this MySQL admin is setup:

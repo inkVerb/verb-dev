@@ -123,7 +123,7 @@ fi
 
 # Reset all permissions and reload
 /bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Finish
 /bin/echo "These are setup:

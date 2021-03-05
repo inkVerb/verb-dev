@@ -13,16 +13,38 @@
 
 DOMAIN=$1
 
+. /opt/verb/conf/servertype
 
-# Verify that the "fixwww" has been added
-if ! /bin/grep -q "##INKWWWFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
-	/bin/echo "${DOMAIN} doesn't have the www subdomain fix. Nothing to do."
+if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
+	# Nginx
+	## Verify that the "fixwww" has been added
+	if ! /bin/grep -q "##INKWWWFIX=fixed" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf; then
+		/bin/echo "${DOMAIN} doesn't have the www subdomain fix. Nothing to do."
+	fi
+
+	## Remove the old settings
+	/bin/sed -i '/^##INKWWWFIX=fixed/,/^##verbFIXwww/{/^##INKWWWFIX=fixed/!{/^##verbFIXwww/!d}}' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+	/bin/sed -i '/##INKWWWFIX=fixed/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+	/bin/sed -i '/##verbFIXwww/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+	/bin/systemctl reloat nginx; wait
+
+	# Finish
+	/bin/echo "${DOMAIN} the www subdomain fix has been removed."
+
+
+elif [ ${SERVERTYPE} = "lamp" ]; then
+	# Verify that the "fixwww" has been added
+	if ! /bin/grep -q "##INKWWWFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
+		/bin/echo "${DOMAIN} doesn't have the www subdomain fix. Nothing to do."
+	fi
+
+	## Remove the old settings
+	/bin/sed -i '/^##INKWWWFIX=fixed/,/^##verbFIXwww/{/^##INKWWWFIX=fixed/!{/^##verbFIXwww/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+	/bin/sed -i '/##INKWWWFIX=fixed/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+	/bin/sed -i '/##verbFIXwww/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+	/usr/bin/apachectl graceful
+
+	# Finish
+	/bin/echo "${DOMAIN} the www subdomain fix has been removed."
+
 fi
-
-## Remove the old settings
-/bin/sed -i '/^##INKWWWFIX=fixed/,/^##verbFIXwww/{/^##INKWWWFIX=fixed/!{/^##verbFIXwww/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##INKWWWFIX=fixed/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-/bin/sed -i '/##verbFIXwww/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-
-/usr/sbin/apache2ctl graceful
-/bin/echo "${DOMAIN} the www subdomain fix has been removed."

@@ -44,7 +44,7 @@ cd /srv/www/html
 if [ ! -f "/opt/verb/inst/setupverb" ]; then
 /bin/echo "...reloading Apache..."
 /opt/verb/serfs/ensiteapache ${SUBDOMAIN}.${tldURI}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # inkCert
 ## If inkCert has already run

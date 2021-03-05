@@ -72,7 +72,7 @@ if [ ! -d /etc/inkcert/le/live/${DOMAIN} ]; then
 /bin/sed -i '/#INKVERB-INKCERT=DONE_CBDIGOC/,/#INKVERB-INKCERT-stop/{/#INKVERB-INKCERT=DONE_CBDIGOC/!{/#INKVERB-INKCERT-stop/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /bin/sed -i 's/#INKVERB-INKCERT=DONE_CBDIGOC/#INKVERB-INKCERT=INK_NO_REMOVED/' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /bin/sed -i '/#INKVERB-INKCERT-stop/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 ## Note to the config
 /bin/sed -i "s/INKCERTED=DONE_CBDIGOC/INKCERTED=NO_REMOVED_CBDIGOC/" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${DOMAIN}
 

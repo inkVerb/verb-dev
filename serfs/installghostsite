@@ -66,7 +66,7 @@ cd /srv/www/ghost/ghostsite-${DOMAIN}
 /bin/sed -i "s/ghostsite286/${DOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /bin/sed -i "s/2368/${NEWPORT}/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 /bin/sed -i "s/ip286/${SITEIP}/g" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 ## inkCert SSL certs
 ### Not setup
 if /bin/grep -Fq "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${DOMAIN}; then

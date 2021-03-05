@@ -88,7 +88,7 @@ FLUSH PRIVILEGES;"
 /bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.rc
 /bin/sed -i "s/; Webmail Defaults/; Webmail Defaults\nrc\.${emailTLDURI}\.\tIN  A\t\t${SITEIP}\nrc\.${emailTLDURI}\.\tIN  AAAA\t${SITEIPV6}/" /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
 /opt/verb/serfs/ensiteapache rc.${emailTLDURI}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 
 # inkCert
@@ -112,7 +112,7 @@ wait
 pear install -f Net_IDNA2-0.1.1
 ## Should already be enabled, but enable just in case, Ex Ratione had some problems
 phpenmod intl zip
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 wait
 
 # Settings

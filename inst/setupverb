@@ -92,13 +92,13 @@ LC_MEASUREMENT="en_US.UTF-8"
 
 # Site settings
 ## Configs
-/bin/mv /opt/verb/inst/mysqlrootpassword /opt/verb/conf/
-/bin/mv /opt/verb/conf/sitenameip286 /opt/verb/conf/sitenameip
-/bin/mv /opt/verb/conf/siteport286 /opt/verb/conf/siteport
-/bin/mv /opt/verb/conf/siteinkget286 /opt/verb/conf/siteinkget
-/bin/mv /opt/verb/conf/sitemailpath286 /opt/verb/conf/sitemailpath
-/bin/mv /opt/verb/conf/sitetldstatus286 /opt/verb/conf/sitetldstatus
-/bin/mv /opt/verb/conf/siteinstallstatus286 /opt/verb/conf/siteinstallstatus
+/usr/bin/mv /opt/verb/inst/mysqlrootpassword /opt/verb/conf/
+/usr/bin/mv /opt/verb/conf/sitenameip286 /opt/verb/conf/sitenameip
+/usr/bin/mv /opt/verb/conf/siteport286 /opt/verb/conf/siteport
+/usr/bin/mv /opt/verb/conf/siteinkget286 /opt/verb/conf/siteinkget
+/usr/bin/mv /opt/verb/conf/sitemailpath286 /opt/verb/conf/sitemailpath
+/usr/bin/mv /opt/verb/conf/sitetldstatus286 /opt/verb/conf/sitetldstatus
+/usr/bin/mv /opt/verb/conf/siteinstallstatus286 /opt/verb/conf/siteinstallstatus
 ## Ensure scripts are executable
 /bin/chmod 750 /opt/verb/serfs/*
 /bin/chmod 750 /opt/verb/donjon/*.sh
@@ -194,8 +194,8 @@ serveDIR="$(/usr/bin/pwgen -s -1 6)"
 /bin/sed -i "s/SITEEMAILTLD=.*/SITEEMAILTLD=\"${SVMAILTLD}\"/" /opt/verb/conf/sitemailpath
 /bin/sed -i "s/inkcertemail286/${SSLEMAIL}/" /opt/verb/conf/inkcert/inkcertstatus
 ## Copy other config files with pre-install status
-/bin/mv /opt/verb/conf/sitemailpass286 /opt/verb/conf/sitemailpass
-/bin/mv /opt/verb/conf/siteufwip286 /opt/verb/conf/siteufwip
+/usr/bin/mv /opt/verb/conf/sitemailpass286 /opt/verb/conf/sitemailpass
+/usr/bin/mv /opt/verb/conf/siteufwip286 /opt/verb/conf/siteufwip
 
 # LAEMP Reverse Proxy?
 if [ -f "/etc/httpd/conf/rpaf.conf" ]; then
@@ -204,7 +204,7 @@ if [ -f "/etc/httpd/conf/rpaf.conf" ]; then
 fi
 
 # PHP ini file
-/bin/mv /opt/verb/conf/php.name286.ini /opt/verb/conf/php.${VNAME}.ini
+/usr/bin/mv /opt/verb/conf/php.name286.ini /opt/verb/conf/php.${VNAME}.ini
 /bin/sed -i "s/phplimit286/${PHPLIMIT}/g" /opt/verb/conf/php.${VNAME}.ini
 /bin/sed -i "s/phpsize286M/${PHPSIZE}M/g" /opt/verb/conf/php.${VNAME}.ini
 /bin/sed -i "s:phptimecity286:${PHPCITY}:g" /opt/verb/conf/php.${VNAME}.ini
@@ -214,7 +214,7 @@ fi
 /bin/sed -i "s/;.*.upload_tmp_dir =.*/upload_tmp_dir = \/var\/www\/tmp/" /opt/verb/conf/php."${VNAME}".ini
 
 # Get the current PHP version & set php.ini
-/bin/mv /etc/php/php.ini /etc/php/php.original.ini
+/usr/bin/mv /etc/php/php.ini /etc/php/php.original.ini
 /bin/ln -sfn /opt/verb/conf/php.${VNAME}.ini /etc/php/php.ini
 /bin/chmod 644 /etc/php/php.ini
 
@@ -232,31 +232,31 @@ if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   ### Rename
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailURI286.conf
   do
-    mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*oneURI286.conf
   do
-    mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*inkURI286.conf
   do
-    mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*blueURI286.conf
   do
-    mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*vipURI286.conf
   do
-    mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*kiwiURI286.conf
   do
-    mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*redURI286.conf
   do
-    mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
   done
 fi
 ## Nginx
@@ -272,31 +272,31 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ]; then
   ### Rename
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*emailURI286.conf
   do
-    mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%emailURI286.conf/}${emailURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*oneURI286.conf
   do
-    mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%oneURI286.conf/}${oneURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*inkURI286.conf
   do
-    mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%inkURI286.conf/}${inkURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*blueURI286.conf
   do
-    mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%blueURI286.conf/}${blueURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*vipURI286.conf
   do
-    mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%vipURI286.conf/}${vipURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*kiwiURI286.conf
   do
-    mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%kiwiURI286.conf/}${kiwiURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*redURI286.conf
   do
-    mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%redURI286.conf/}${redURI}.conf"
   done
 fi
 
@@ -514,20 +514,20 @@ ${hostURI}.	IN  AAAA	hostipv6286
 ## Set host FQDN
 /bin/sed -i "s/;; End Root Site Defaults/${hostURI}\.\t\tIN  A\t\t${SERVERIPV4}\n${hostURI}\.\t\tIN  AAAA\t${SERVERIPV6}\n;; End Root Site Defaults/" /opt/verb/conf/inkdns/inkzones/db.${SERVERTLD}
 ## Set the URI names
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.email /opt/verb/conf/inkdns/inkzones/db.${emailURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.one /opt/verb/conf/inkdns/inkzones/db.${oneURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.ink /opt/verb/conf/inkdns/inkzones/db.${inkURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.blue /opt/verb/conf/inkdns/inkzones/db.${blueURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.vip /opt/verb/conf/inkdns/inkzones/db.${vipURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.kiwi /opt/verb/conf/inkdns/inkzones/db.${kiwiURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/db.red /opt/verb/conf/inkdns/inkzones/db.${redURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.email /opt/verb/conf/inkdns/inkzones/nv.${emailURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.one /opt/verb/conf/inkdns/inkzones/nv.${oneURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.ink /opt/verb/conf/inkdns/inkzones/nv.${inkURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.blue /opt/verb/conf/inkdns/inkzones/nv.${blueURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.vip /opt/verb/conf/inkdns/inkzones/nv.${vipURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.kiwi /opt/verb/conf/inkdns/inkzones/nv.${kiwiURI}
-/bin/mv /opt/verb/conf/inkdns/inkzones/nv.red /opt/verb/conf/inkdns/inkzones/nv.${redURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.email /opt/verb/conf/inkdns/inkzones/db.${emailURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.one /opt/verb/conf/inkdns/inkzones/db.${oneURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.ink /opt/verb/conf/inkdns/inkzones/db.${inkURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.blue /opt/verb/conf/inkdns/inkzones/db.${blueURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.vip /opt/verb/conf/inkdns/inkzones/db.${vipURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.kiwi /opt/verb/conf/inkdns/inkzones/db.${kiwiURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/db.red /opt/verb/conf/inkdns/inkzones/db.${redURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.email /opt/verb/conf/inkdns/inkzones/nv.${emailURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.one /opt/verb/conf/inkdns/inkzones/nv.${oneURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.ink /opt/verb/conf/inkdns/inkzones/nv.${inkURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.blue /opt/verb/conf/inkdns/inkzones/nv.${blueURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.vip /opt/verb/conf/inkdns/inkzones/nv.${vipURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.kiwi /opt/verb/conf/inkdns/inkzones/nv.${kiwiURI}
+/usr/bin/mv /opt/verb/conf/inkdns/inkzones/nv.red /opt/verb/conf/inkdns/inkzones/nv.${redURI}
 ## Serial Nos
 cd /opt/verb/conf/inkdns/inkzones
 for inkZoneDB in db.*; do

@@ -110,7 +110,7 @@ fi
 
 # Reset all permissions and reload
 /bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}.${DOMAIN}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 /bin/echo "These are setup:
 

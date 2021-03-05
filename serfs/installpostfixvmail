@@ -58,7 +58,7 @@ phpNum=$(/opt/verb/serfs/phpver)
   libdbi-perl \
   libdbd-mysql-perl \
   php${phpNum}-imap
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Add other tools for spam and antivirus
 /usr/bin/apt-get install -y \
@@ -343,10 +343,10 @@ cd /etc/opendkim/keys/${nameURI}
 
 # Apache
 ####systemctl####
-#/usr/sbin/apache2ctl graceful
+#/usr/bin/apachectl graceful
 ####systemctlend#
 ####service######
-/usr/sbin/service apache2 reload
+/usr/sbin/service httpd reload
 ####serviceend###
 
 # DNS MX and TXT mail records for this server

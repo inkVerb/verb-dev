@@ -21,7 +21,7 @@ NEWVIPSUB=$1
 /bin/cp -R /opt/verb/conf/site-files/newvipsubdir /srv/www/vip/_subs.vip/${NEWVIPSUB}
 /bin/chown -R www:www /srv/www/vip/_subs.vip/${NEWVIPSUB}
 /opt/verb/serfs/ensiteapache ${NEWVIPSUB}.${vipURI}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 /bin/cp /srv/www/html/vip/index-newvipsub.php /srv/www/html/vip/index-${NEWVIPSUB}.php
 /bin/chown -R www:www /srv/www/html/vip
 

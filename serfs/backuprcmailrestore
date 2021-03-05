@@ -69,7 +69,7 @@ if [ ${RCFRESH} = "YES" ]; then
  sed -i "s/; Webmail Defaults/; Webmail Defaults\nrc\.${emailTLDURI}\.\tIN  A\t\t${SITEIP}\nrc\.${emailTLDURI}\.\tIN  AAAA\t${SITEIPV6}/" /opt/verb/conf/inkdns/zones/db.${emailTLDURI}
  fi
 /opt/verb/serfs/ensiteapache rc.${emailTLDURI}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
  if /bin/grep -Fq "rc.${emailTLDURI}" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini; then
  /bin/echo "rc.${emailTLDURI} already declared for inkCert, moving on..."; else
  sed -i "/^domains =/ s/$/, rc.${emailTLDURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini

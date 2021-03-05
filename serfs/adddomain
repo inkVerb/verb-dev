@@ -11,6 +11,7 @@
 
 # Include settings
 . /opt/verb/conf/sitenameip
+. /opt/verb/conf/servertype
 . /opt/verb/conf/inkcert/inkcertstatus
 
 NEWDOMAIN=$1
@@ -32,20 +33,34 @@ if [ -f /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf ]; then
  fi
 fi
 
-# Copy and prepare Apache server config files
-/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
-/bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+# Server config files
+## Web directory
 if [ ! -d /srv/www/domains/${NEWDOMAIN} ]; then
-/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${NEWDOMAIN}
+  /usr/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${NEWDOMAIN}
 fi
 /bin/ln -sfn /srv/www/domains/${NEWDOMAIN} /srv/www/html/
 /bin/chown -R www:www /srv/www/html/${NEWDOMAIN}
 /bin/chown -R www:www /srv/www/domains/${NEWDOMAIN}
 /bin/chmod -R 750 /srv/www/domains/${NEWDOMAIN}
-/opt/verb/serfs/ensiteapache ${NEWDOMAIN}
-/usr/sbin/apache2ctl graceful
-## Just in case...
-/bin/systemctl start apache2
+## Copy
+if [ ${SERVERTYPE} = "lemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensitenginx ${NEWDOMAIN} r
+elif [ ${SERVERTYPE} = "lamp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensiteapache ${NEWDOMAIN} r
+elif [ ${SERVERTYPE} = "laemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensiteapache ${NEWDOMAIN} r
+  /opt/verb/serfs/ensitenginx ${NEWDOMAIN} r
+fi
 
 # inkCert
 ## Ensure that you don't get double entries

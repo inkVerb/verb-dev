@@ -44,7 +44,7 @@ docker run -t -d -p 127.0.0.1:${PORT}:${PORT} -e "domain=nc.${blueURI}" --restar
 /usr/sbin/a2enmod proxy_http
 /usr/sbin/a2enmod ssl
 ## Reload
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Write the config for status
 /bin/echo "#!/bin/sh

@@ -26,7 +26,7 @@ KILLDOMAIN=$1
 /bin/rm -f /etc/httpd/sites-enabled/*${KILLDOMAIN}.conf
 /bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${KILLDOMAIN}.conf
 /bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/*${KILLDOMAIN}.conf
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 /opt/verb/serfs/killdomainshell ${KILLDOMAIN}; wait
 /bin/rm -f /srv/www/html/${KILLDOMAIN}
 /bin/rm -f /srv/www/html/*${KILLDOMAIN}

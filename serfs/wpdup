@@ -101,7 +101,7 @@ NONCE_SALT=$(/usr/bin/pwgen -s -1 27)
 
 ## Reset all permissions and reload
 /bin/chown -R www:www /srv/www/vapps/wp.${nDOMAIN}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Finish
 /bin/echo "The WordPress site duplicated from ${oDOMAIN} is now live and ready for login at: http://${nDOMAIN}/wp-admin/"

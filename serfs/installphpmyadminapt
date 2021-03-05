@@ -21,7 +21,7 @@ if [ -z ${1} ]; then
 /bin/echo "You must designate a folder."
 exit 8; fi
 
-/bin/echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+/bin/echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect httpd" | debconf-set-selections
 /bin/echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
 /bin/echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | debconf-set-selections
 /bin/echo "phpmyadmin phpmyadmin/mysql/admin-pass password ${MYSQL_ROOT_PASS}" | debconf-set-selections
@@ -40,7 +40,7 @@ exit 8; fi
 /bin/ln -s /usr/share/phpmyadmin /srv/www/html/vip.mysql/${PHPMYADMIN_DIR}
 /bin/chown -R www:www vip.mysql
 
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 /bin/echo "
 PHP My Admin now active.

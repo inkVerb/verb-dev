@@ -80,8 +80,8 @@ else
 fi
 
 # Stop Apache
-/usr/sbin/apache2ctl graceful-stop; wait
-/bin/systemctl stop apache2; wait
+/usr/bin/apachectl graceful-stop; wait
+/bin/systemctl stop httpd; wait
 
 # Comment the Snakeoil certs
 /bin/sed -i "s/SSLCertificateFile/#INKVERB-INKCERT-COMMENT-SSLCertificateFile/g" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf
@@ -89,7 +89,7 @@ fi
 
 # Insert the inkCert certs
 /bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_CBDIGOC\n\t\tSSLCertificateFile\t\/etc\/inkcert\/le\/live\/${CERTDOMAIN}\/cert\.pem\n\t\tSSLCertificateKeyFile\t\/etc\/inkcert\/le\/live\/${CERTDOMAIN}\/privkey\.pem\n\t\tSSLCertificateChainFile\t\/etc\/inkcert\/le\/live\/${CERTDOMAIN}\/chain\.pem\n\t\t#INKVERB-INKCERT-stop/" /opt/verb/conf/webserver/httpd/sites-available/${SITEDOMAIN}.conf
-/usr/sbin/apache2ctl start
+/usr/bin/apachectl start
 
 # Create the inkCert-DOMAIN config file
 /bin/echo "#!/bin/sh
@@ -110,7 +110,7 @@ fi
 /usr/bin/touch /var/log/inkcert/inkcertle.log
 
 # Start Apache
-/bin/systemctl start apache2; wait
+/bin/systemctl start httpd; wait
 
 # Finish
 /bin/echo "

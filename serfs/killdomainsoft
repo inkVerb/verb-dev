@@ -23,7 +23,7 @@ KILLDOMAIN=$1
 # Remove Apache server config files
 /bin/rm -f /etc/httpd/sites-enabled/${KILLDOMAIN}.conf
 /bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${KILLDOMAIN}.conf
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Remove from inkCert
 /bin/sed -i "s/${KILLDOMAIN}, //g" /opt/verb/conf/inkcert/cli-ini/cli.${KILLDOMAIN}.ini

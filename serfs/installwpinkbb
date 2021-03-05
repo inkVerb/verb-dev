@@ -110,7 +110,7 @@ fi
 
 # Set up the Apache config
 /bin/cp /opt/verb/conf/site-files/conf/wpbbb-bb.${inkURI}.conf /opt/verb/conf/webserver/httpd/sites-available/bb.${inkURI}.conf
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 ## inkCert SSL certs
 ### Not setup
 if /bin/grep -Fq "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${inkURI}; then

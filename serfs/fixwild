@@ -9,20 +9,45 @@
 
 DOMAIN=$1
 
+. /opt/verb/conf/servertype
 
-# Check to see if "fixwildcard" has already been added
-if /bin/grep -q "INKWILDFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
-/usr/sbin/apache2ctl graceful
-	/bin/echo "${DOMAIN} already has the wildcard subdomain fix. The server was just reloaded so the site should work."
-else
+if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
+	# Nginx
+	## Check to see if "fixwildcard" has already been added
+	if /bin/grep -q "INKWILDFIX=fixed" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf; then
+		/bin/systemctl reloat nginx; wait
+		/bin/echo "${DOMAIN} already has the wildcard subdomain fix. The server was just reloaded so the site should work."
+	else
 
-# Add the config line
-/bin/sed -i "s/ServerName ${DOMAIN}/ServerName ${DOMAIN}\n\t\tServerAlias *.${DOMAIN}/" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		## Adjust the server_name line
+		/bin/sed -i "s/server_name ${DOMAIN};/server_name ${DOMAIN} *.${DOMAIN};/" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
 
-# Then add the fix config line.
-/bin/echo "
+		## Then add the fix config line
+		/bin/echo "
+##INKWILDFIX=fixed
+" >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+		/bin/systemctl reloat nginx; wait
+
+		/bin/echo "${DOMAIN} now has wildcard subdomain fix for subdomains and is ready to go."
+	fi
+
+elif [ ${SERVERTYPE} = "lamp" ]; then
+	# Check to see if "fixwildcard" has already been added
+	if /bin/grep -q "INKWILDFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
+	/usr/bin/apachectl graceful
+		/bin/echo "${DOMAIN} already has the wildcard subdomain fix. The server was just reloaded so the site should work."
+	else
+
+		# Add the config line
+		/bin/sed -i "s/ServerName ${DOMAIN}/ServerName ${DOMAIN}\n\t\tServerAlias *.${DOMAIN}/" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+
+		# Then add the fix config line.
+		/bin/echo "
 ##INKWILDFIX=fixed
 " >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-/usr/sbin/apache2ctl graceful
-	/bin/echo "${DOMAIN} now has wildcard subdomain fix for subdomains and is ready to go."
+		/usr/bin/apachectl graceful
+
+		/bin/echo "${DOMAIN} now has wildcard subdomain fix for subdomains and is ready to go."
+	fi
+
 fi

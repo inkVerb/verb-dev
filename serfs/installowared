@@ -89,7 +89,7 @@ OWA_AUTH_SALT="$(/usr/bin/pwgen -s -1 27)"
 
 # Reset all permissions and reload
 /bin/chown -R www:www /srv/www/vapps/${CVAPPNAME}; wait
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Finish
 /bin/echo "These are setup:

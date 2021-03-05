@@ -20,7 +20,7 @@ KILLSUBDOMAIN=${KILLSUB}.${KILLDOMAIN}
 # Remove Apache server config files
 /bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${KILLSUBDOMAIN}.conf
 /bin/rm -f /etc/httpd/sites-enabled/${KILLSUBDOMAIN}.conf
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # Remove from inkCert
 /bin/sed -i "s/, ${KILLSUBDOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${KILLDOMAIN}.ini

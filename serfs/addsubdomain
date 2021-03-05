@@ -38,7 +38,7 @@ fi
 /bin/chown -R www:www /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
 /bin/chmod -R 750 /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
 /opt/verb/serfs/ensiteapache ${SUBDOMAIN}.${OLDDOMAIN}
-/usr/sbin/apache2ctl graceful
+/usr/bin/apachectl graceful
 
 # inkDNS
 /opt/verb/serfs/inkdnsaddsub ${SUBDOMAIN} ${OLDDOMAIN}

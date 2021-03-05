@@ -143,7 +143,7 @@ Protocols h2 http/1.1
 # Include the virtual host configurations:
 IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
 /usr/bin/mkdir -p /opt/verb/conf/webserver/httpd/sites-available /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd
-/bin/cp /opt/verb/inst/webserver/laemp-httpd-sites-available/*.conf /opt/verb/conf/webserver/httpd/sites-available/
+/usr/bin/cp /opt/verb/inst/webserver/laemp-httpd-sites-available/*.conf /opt/verb/conf/webserver/httpd/sites-available/
 /usr/bin/cat <<'EOF' > /srv/http/index.htm
 <!DOCTYPE html>
 <html>
@@ -152,15 +152,18 @@ IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
 </html>
 EOF
 
-## Verber Apache site configs
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
+## New Apache & Nginx site-files
+/usr/bin/cp /opt/verb/inst/webserver/laemp-conf/* /opt/verb/conf/site-files/conf/
+
+## Verber Apache site defaults
+/usr/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
+/usr/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
 /usr/bin/chown -R www:www /srv/www/html
 
 ## Nginx
 /usr/bin/pacman -S --noconfirm nginx
 /usr/bin/mkdir -p /opt/verb/conf/webserver/nginx/sites-available /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx
-/bin/cp /opt/verb/inst/webserver/laemp-nginx-sites-available/*.conf /opt/verb/conf/webserver/nginx/sites-available/
+/usr/bin/cp /opt/verb/inst/webserver/laemp-nginx-sites-available/*.conf /opt/verb/conf/webserver/nginx/sites-available/
 
 ## Nginx Settings
 /usr/bin/cat <<'EOF' > /etc/nginx/nginx.conf
@@ -383,12 +386,12 @@ host = localhost" > /opt/verb/conf/mysqlboss.cnf
 ## Copy configs (These seem to have precedence, files in /etc/monit seem to conflict with them but may be u/bin/sed instead
 /bin/mkdir -p /etc/monit/monitrc.d
 sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
-/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/acpid /etc/monit/monitrc.d/
-/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/nginx /etc/monit/monitrc.d/
-/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/memcached /etc/monit/monitrc.d/
-/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/mysql /etc/monit/monitrc.d/
-/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/openssh-server /etc/monit/monitrc.d/
-/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/sshd /etc/monit/monitrc.d/
+/usr/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/acpid /etc/monit/monitrc.d/
+/usr/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/nginx /etc/monit/monitrc.d/
+/usr/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/memcached /etc/monit/monitrc.d/
+/usr/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/mysql /etc/monit/monitrc.d/
+/usr/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/openssh-server /etc/monit/monitrc.d/
+/usr/bin/cp /opt/verb/inst/root-config/etc/monit/monitrc.d/sshd /etc/monit/monitrc.d/
 /bin/systemctl enable monit; wait
 /bin/systemctl start monit; wait
 

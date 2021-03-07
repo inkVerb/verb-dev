@@ -22,23 +22,21 @@ NEWDOMAIN=$1
 
 # inkCert
 if [ ! -f "/opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN}" ]; then
-/bin/cp /opt/verb/conf/inkcert/cli-ini/cli.new.ini /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
-/bin/sed -i "s/inkcertemail589/${INKCERTEMAIL}/g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
-/bin/sed -i "s/newdomain589/${NEWDOMAIN}/g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
-/bin/echo "#!/bin/sh
-INKCERTED=NOT_YET
-" > /opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN}
+  /bin/cp /opt/verb/conf/inkcert/cli-ini/cli.new.ini /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
+  /bin/sed -i "s/inkcertemail589/${INKCERTEMAIL}/g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
+  /bin/sed -i "s/newdomain589/${NEWDOMAIN}/g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
+  /bin/echo "INKCERTED=NOT_YET" > /opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN}
 fi
 
 # inkDNS
 if [ ! -f "/opt/verb/conf/inkdns/zones/db.${NEWDOMAIN}" ]; then
-/opt/verb/serfs/inkdnsadddomain ${NEWDOMAIN}; wait
+  /opt/verb/serfs/inkdnsadddomain ${NEWDOMAIN}; wait
 fi
 
 # inkDKIM & vmail (if installed)
 if [ "${SITEMAILSTATUS}" != "EMAIL_NOT_INSTALLED" ]; then
-/opt/verb/serfs/addinkdkim ${NEWDOMAIN}; wait
-/opt/verb/serfs/vmaildomain ${NEWDOMAIN}; wait
+  /opt/verb/serfs/addinkdkim ${NEWDOMAIN}; wait
+  /opt/verb/serfs/vmaildomain ${NEWDOMAIN}; wait
 
   # inkDNS for vmail
   if [ -f "/opt/verb/conf/inkdns/zones/db.${NEWDOMAIN}" ]; then

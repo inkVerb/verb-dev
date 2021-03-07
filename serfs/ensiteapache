@@ -1,21 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 #inkVerbSerf! verb.ink
 
 # This enables an httpd site by creating a symlink
-## Use second argument "r" to reload automatically
+## Use flag "-r" to reload automatically
 
 # How to use:
+## ./ensiteapache [domain.tld or subdomain.domain.tld] [domain2.tld] [domain3.tld]
 ## ./ensiteapache [domain.tld or subdomain.domain.tld]
-## ./ensiteapache [domain.tld or subdomain.domain.tld] r
+## ./ensiteapache -r [domain.tld or subdomain.domain.tld] [domain2.tld] [domain3.tld]
+## ./ensiteapache -r [domain.tld or subdomain.domain.tld]
 
 
 # Run as a loop so multiple sites can be enabled in one command, just like a2ensite
-for DOMAIN in $@
-do
-  /usr/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/httpd/sites-enabled/${DOMAIN}.conf
+for DOMAIN in $@; do
+  if [ "${DOMAIN}" != "-r" ] && [ -f "/etc/httpd/sites-available/${DOMAIN}.conf" ] && [ -f "/opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf" ]; then
+    /usr/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/httpd/sites-enabled/${DOMAIN}.conf
+  else
+    /usr/bin/echo "${DOMAIN} Apache config does not exist at /etc/httpd/sites-available/${DOMAIN}.conf"
+  fi
 done
 
 # Restart?
-if [ -n $2 ] && [ "$2" = "r" ]; then
-  /bin/systemctl reload httpd; wait
-fi
+while getopts ":r" Var; do
+  case $Var in
+    r)
+      /bin/systemctl restart httpd; wait
+    ;;
+  esac
+done

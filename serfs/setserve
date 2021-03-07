@@ -52,24 +52,24 @@ if [ ${SERVERTYPE} = "lemp" ]; then
   /bin/cp /opt/verb/conf/site-files/conf/serve.conf /opt/verb/conf/webserver/nginx/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveURI286/${serveURI}/g" /opt/verb/conf/webserver/nginx/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveTLD286/${vTLD}/g" /opt/verb/conf/webserver/nginx/sites-available/${serveURI}.conf
-  /opt/verb/serfs/ensitenginx ${serveURI} r
+  /opt/verb/serfs/ensitenginx -r ${serveURI}
 elif [ ${SERVERTYPE} = "lamp" ]; then
   # Apache
   /bin/cp /opt/verb/conf/site-files/conf/serve.conf /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveURI286/${serveURI}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveTLD286/${vTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
-  /opt/verb/serfs/ensiteapache ${serveURI} r
+  /opt/verb/serfs/ensiteapache -r ${serveURI}
 elif [ ${SERVERTYPE} = "laemp" ]; then
   # Nginx
   /bin/cp /opt/verb/conf/site-files/conf/servenginx.conf /opt/verb/conf/webserver/nginx/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveURI286/${serveURI}/g" /opt/verb/conf/webserver/nginx/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveTLD286/${vTLD}/g" /opt/verb/conf/webserver/nginx/sites-available/${serveURI}.conf
-  /opt/verb/serfs/ensitenginx ${serveURI} r
+  /opt/verb/serfs/ensitenginx -r ${serveURI}
   # Apache
   /bin/cp /opt/verb/conf/site-files/conf/serveapache.conf /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveURI286/${serveURI}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
   /bin/sed -i "s/serveTLD286/${vTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
-  /opt/verb/serfs/ensiteapache ${serveURI} r
+  /opt/verb/serfs/ensiteapache -r ${serveURI}
 fi
 
 # inkCert

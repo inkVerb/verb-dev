@@ -20,7 +20,7 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 	# Nginx
 	## Check to see if "fixwww" has already been added
 	if /bin/grep -q "##INKWWWFIX=fixed" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf; then
-		/bin/systemctl reloat nginx; wait
+		/bin/systemctl restart nginx; wait
 		/bin/echo "${DOMAIN} already has the www subdomain fix. The server was just reloaded so the site should work."
 	else
 
@@ -35,7 +35,7 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 	}
 
 ##verbFIXwww" >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
-		/bin/systemctl reloat nginx; wait
+		/bin/systemctl restart nginx; wait
 
 		/bin/echo "${DOMAIN} now has the www subdomain fix and is ready to go."
 	fi

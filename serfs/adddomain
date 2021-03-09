@@ -47,19 +47,19 @@ if [ ${SERVERTYPE} = "lemp" ]; then
   /usr/bin/cp /opt/verb/conf/site-files/conf/newnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
   /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
   ## Server
-  /opt/verb/serfs/ensitenginx ${NEWDOMAIN} r
+  /opt/verb/serfs/ensitenginx -r ${NEWDOMAIN}
 elif [ ${SERVERTYPE} = "lamp" ]; then
   /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
   /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
   ## Server
-  /opt/verb/serfs/ensiteapache ${NEWDOMAIN} r
+  /opt/verb/serfs/ensiteapache -r ${NEWDOMAIN}
 elif [ ${SERVERTYPE} = "laemp" ]; then
   /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
   /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
-  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
   ## Server
-  /opt/verb/serfs/ensiteapache ${NEWDOMAIN} r
-  /opt/verb/serfs/ensitenginx ${NEWDOMAIN} r
+  /opt/verb/serfs/ensiteapache -r ${NEWDOMAIN}
+  /opt/verb/serfs/ensitenginx -r ${NEWDOMAIN}
 fi
 
 # inkCert

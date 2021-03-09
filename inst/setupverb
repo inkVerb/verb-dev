@@ -341,9 +341,6 @@ fi
 /usr/bin/mv /opt/verb/conf/inkcert/cli-ini/siteinkcert.kiwiURI286 /opt/verb/conf/inkcert/cli-ini/siteinkcert.${kiwiURI}
 /usr/bin/mv /opt/verb/conf/inkcert/cli-ini/siteinkcert.redURI286 /opt/verb/conf/inkcert/cli-ini/siteinkcert.${redURI}
 
-## Serve URI
-/opt/verb/serfs/setserve
-
 # www default indexes
 /opt/verb/serfs/updatehtmlverbs; wait
 
@@ -408,6 +405,9 @@ fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /bin/systemctl restart httpd; wait
 fi
+
+# Serve URI
+/opt/verb/serfs/setserve
 
 # Create the new boss user
 /usr/bin/groupadd ${NEWBOSS}

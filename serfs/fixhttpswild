@@ -12,10 +12,10 @@ DOMAIN=$1
 
 . /opt/verb/conf/servertype
 
-if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
+if [ ${SERVERTYPE} = "lemp" ]; then
 	# Check to see if "fixhttps" has already been added
 	if /bin/grep -q "##INKHTTPSFIX=fixed" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf; then
-		/bin/systemctl reloat nginx; wait
+		/bin/systemctl restart nginx; wait
 		/bin/echo "${DOMAIN} already has the https fix. The server was just reloaded so the site should work."
 	else
 		if [ -f "/opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed" ]; then
@@ -23,8 +23,8 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 			exit 6
 		fi
 
-		## Then set the new config if it doesn't.
-		### Back up the http declaration and remove it (this way, the actual Apache file stays small, without loads of commented lines)
+		# Then set the new config if it doesn't.
+		## Back up the http declaration and remove it (this way, the actual Apache file stays small, without loads of commented lines)
 		/bin/sed -n '/##inkHTTPstart/,/##inkHTTPstop/p' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf > /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed
 		/bin/sed -i '/^##inkHTTPstart/,/^##inkHTTPstop/{/^##inkHTTPstart/!{/^##inkHTTPstop/!d}}' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
 		/bin/sed -i '/##inkHTTPstart/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
@@ -43,19 +43,62 @@ server {
 }
 
 ##verbFIXhttps" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-		### Adjust the server_name line
+		## Adjust the server_name line
 		/bin/sed -i "s/server_name ${DOMAIN};/server_name ${DOMAIN} *.${DOMAIN};/" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 
-		### Then add the fix config line
+		## Then add the fix config line
 		/bin/echo "
 ##INKWILDFIX=fixed
 " >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-		/bin/systemctl reloat nginx; wait
-		/bin/echo "${DOMAIN} now redirects all http traffic to SSL-secure https."
+		/bin/systemctl restart nginx; wait
+		/bin/echo "${DOMAIN} now redirects all www & http traffic to SSL-secure https."
 	fi
 
 elif [ ${SERVERTYPE} = "lamp" ]; then
 	# Check to see if "fixhttps" has already been added
+	if /bin/grep -q "##INKHTTPSFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
+		/usr/bin/apachectl graceful
+		/bin/echo "${DOMAIN} already has the https fix. The server was just reloaded so the site should work."
+	else
+		if [ -f "/opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed" ]; then
+			/bin/echo "Something is wrong. The backup file for this https fix exists, but the config does not have the settings."
+			exit 6
+		fi
+
+		# Then set the new config if it doesn't.
+		## Back up the http declaration and remove it (this way, the actual Apache file stays small, without loads of commented lines)
+		/bin/sed -n '/##inkHTTPstart/,/##inkHTTPstop/p' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf > /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed
+		/bin/sed -i '/^##inkHTTPstart/,/^##inkHTTPstop/{/^##inkHTTPstart/!{/^##inkHTTPstop/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		/bin/sed -i '/##inkHTTPstart/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		/bin/sed -i 's/##inkHTTPstop/##inkHTTPremoved/' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		## Add the new lines
+		/bin/echo "
+
+##INKHTTPSFIX=fixed
+# Fixes https
+<VirtualHost *:80>
+	ServerName ${DOMAIN}
+  ServerAlias *.${DOMAIN}
+
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,NE,R=301]
+</VirtualHost>
+##verbFIXhttps" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		## Adjust the server_name line
+		/bin/sed -i "s/server_name ${DOMAIN};/server_name ${DOMAIN} *.${DOMAIN};/" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+
+		## Then add the fix config line
+		/bin/echo "
+##INKWILDFIX=fixed
+" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		/usr/bin/apachectl graceful
+		/bin/echo "${DOMAIN} now redirects all www & http traffic to SSL-secure https."
+	fi
+
+elif [ ${SERVERTYPE} = "laemp" ]; then
+	# Apache
+	## Check to see if "fixhttps" has already been added
 	if /bin/grep -q "##INKHTTPSFIX=fixed" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf; then
 		/usr/bin/apachectl graceful
 		/bin/echo "${DOMAIN} already has the https fix. The server was just reloaded so the site should work."
@@ -93,7 +136,58 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
 ##INKWILDFIX=fixed
 " >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 		/usr/bin/apachectl graceful
-		/bin/echo "${DOMAIN} now redirects all http traffic to SSL-secure https."
+
+		justfixedhttpd="true"
+	fi
+
+	# Nginx
+	## Check to see if "fixhttps" has already been added
+	if /bin/grep -q "##INKHTTPSFIX=fixed" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf; then
+		/bin/systemctl restart nginx; wait
+		/bin/echo "${DOMAIN} already has the https fix. The server was just reloaded so the site should work."
+	else
+		if [ -f "/opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed" ]; then
+			/bin/echo "Something is wrong. The backup file for this https fix exists, but the config does not have the settings."
+			exit 6
+		fi
+
+		## Then set the new config if it doesn't.
+		### Back up the http declaration and remove it (this way, the actual Apache file stays small, without loads of commented lines)
+		/bin/sed -n '/##inkHTTPstart/,/##inkHTTPstop/p' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf > /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed
+		/bin/sed -i '/^##inkHTTPstart/,/^##inkHTTPstop/{/^##inkHTTPstart/!{/^##inkHTTPstop/!d}}' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+		/bin/sed -i '/##inkHTTPstart/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+		/bin/sed -i 's/##inkHTTPstop/##inkHTTPremoved/' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
+		### Add the new lines
+		/bin/echo "
+
+##INKHTTPSFIX=fixed
+# Fixes https
+server {
+  listen 80;
+  listen [::]:80;
+  server_name ${DOMAIN};
+
+  return 301 https://\$host\$request_uri;
+}
+
+##verbFIXhttps" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		### Adjust the server_name line
+		/bin/sed -i "s/server_name ${DOMAIN};/server_name ${DOMAIN} *.${DOMAIN};/" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+
+		### Then add the fix config line
+		/bin/echo "
+##INKWILDFIX=fixed
+" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		/bin/systemctl restart nginx; wait
+
+		justfixednginx="true"
+	fi
+
+	# Finish
+	if [ "$justfixedhttpd" = "true" ] && [ "$justfixednginx" = "true" ]; then
+		/bin/echo "${DOMAIN} now redirects all www & http traffic to SSL-secure https."
+	else
+		/bin/echo "${DOMAIN} wildcard fix is half-ready at most, something's wrong."
 	fi
 
 fi

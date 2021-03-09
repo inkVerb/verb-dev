@@ -1,4 +1,4 @@
-z#!/bin/sh
+#!/bin/sh
 #inkVerbSerf! verb.ink
 
 # This adds an existing domain to an existing ftpfiler's home ~/domains folder
@@ -12,4 +12,3 @@ OLDDOMAIN=$1
 FILER=$2
 
 /bin/ln -s /srv/www/domains/${OLDDOMAIN} /srv/vip/filers/${FILER}/_domains/${OLDDOMAIN}
-

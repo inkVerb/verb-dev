@@ -31,7 +31,7 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
     ## Put the original settings back
     /bin/cat /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
     /bin/rm /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed
-    /bin/systemctl reloat nginx; wait
+    /bin/systemctl restart nginx; wait
 
   else
     /bin/echo "${DOMAIN} doesn't have the https fix. Doing nothing."
@@ -58,7 +58,7 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
     /bin/cat /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
     /bin/rm /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed
 
-    /bin/systemctl reloat nginx; wait
+    /bin/systemctl restart nginx; wait
   else
     /bin/echo "${DOMAIN} doesn't have the https fix. Doing nothing."
     exit 0

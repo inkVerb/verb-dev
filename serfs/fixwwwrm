@@ -26,7 +26,7 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 	/bin/sed -i '/^##INKWWWFIX=fixed/,/^##verbFIXwww/{/^##INKWWWFIX=fixed/!{/^##verbFIXwww/!d}}' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
 	/bin/sed -i '/##INKWWWFIX=fixed/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
 	/bin/sed -i '/##verbFIXwww/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
-	/bin/systemctl reloat nginx; wait
+	/bin/systemctl restart nginx; wait
 
 	# Finish
 	/bin/echo "${DOMAIN} the www subdomain fix has been removed."

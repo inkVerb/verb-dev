@@ -16,7 +16,7 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 	# Nginx
 	## Check to see if "fixhttps" has already been added
 	if /bin/grep -q "##INKHTTPSFIX=fixed" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf; then
-		/bin/systemctl reloat nginx; wait
+		/bin/systemctl restart nginx; wait
 		/bin/echo "${DOMAIN} already has the https fix. The server was just reloaded so the site should work."
 	else
 		if [ -f "/opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf.verbhttpsfixed" ]; then
@@ -44,7 +44,7 @@ server {
 }
 
 ##verbFIXhttps" >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
-		/bin/systemctl reloat nginx; wait
+		/bin/systemctl restart nginx; wait
 
 		/bin/echo "${DOMAIN} now redirects all http traffic to SSL-secure https."
 	fi

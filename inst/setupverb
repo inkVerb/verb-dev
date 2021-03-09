@@ -344,9 +344,19 @@ fi
 ## Serve URI
 /opt/verb/serfs/setserve
 
-# www start indexes
+# www default indexes
 /opt/verb/serfs/updatehtmlverbs; wait
-exit
+
+# Link sites
+if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ] && [ -d "/etc/httpd" ]; then
+  /bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available /etc/httpd/
+  /bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd/
+fi
+if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ] && [ -d "/etc/nginx" ]; then
+  /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
+  /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
+fi
+
 # Enable sites
 . /opt/verb/conf/sitetldstatus
 . /opt/verb/conf/servertype
@@ -397,16 +407,6 @@ if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "
 fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
 /bin/systemctl restart httpd; wait
-fi
-
-# Link in sites
-if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ] && [ -d "/etc/httpd" ]; then
-  /bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available /etc/httpd/
-  /bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-enabled /etc/httpd/
-fi
-if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ] && [ -d "/etc/nginx" ]; then
-  /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available /etc/nginx/
-  /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 fi
 
 # Create the new boss user

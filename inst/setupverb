@@ -346,7 +346,7 @@ fi
 
 # www start indexes
 /opt/verb/serfs/updatehtmlverbs; wait
-
+exit
 # Enable sites
 . /opt/verb/conf/sitetldstatus
 . /opt/verb/conf/servertype

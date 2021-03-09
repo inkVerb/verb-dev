@@ -29,16 +29,34 @@ if [ -f /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}
  fi
 fi
 
-# Copy and prepare Apache server config files
-/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
-/bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
-/bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+# Server config files
+## Web directory
+if [ ! -d /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN} ]; then
+  /bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+fi
 /bin/ln -s /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN} /srv/www/html/
 /bin/chown -R www:www /srv/www/html/${SUBDOMAIN}.${OLDDOMAIN}
 /bin/chown -R www:www /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
 /bin/chmod -R 750 /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
-/opt/verb/serfs/ensiteapache ${SUBDOMAIN}.${OLDDOMAIN}
-/usr/bin/apachectl graceful
+## Copy
+if [ ${SERVERTYPE} = "lemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensitenginx -r ${SUBDOMAIN}.${OLDDOMAIN}
+elif [ ${SERVERTYPE} = "lamp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensiteapache -r ${SUBDOMAIN}.${OLDDOMAIN}
+elif [ ${SERVERTYPE} = "laemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensiteapache -r ${SUBDOMAIN}.${OLDDOMAIN}
+  /opt/verb/serfs/ensitenginx -r ${SUBDOMAIN}.${OLDDOMAIN}
+fi
 
 # inkDNS
 /opt/verb/serfs/inkdnsaddsub ${SUBDOMAIN} ${OLDDOMAIN}
@@ -65,6 +83,19 @@ In summary: ${SUBDOMAIN}.${OLDDOMAIN} will not have SSL certs until you run:
   inkcertremovele ${OLDDOMAIN}
    ...then...
   inkcertdole ${OLDDOMAIN}
+"
+fi
+## inkCert-CB DONE
+if /bin/grep -Fq "INKCERTED=DONE_CB" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${OLDDOMAIN}; then
+/bin/echo "FYI: inkCert has already been setup for this domain with Certbot. So, your other certs will need inkCert-LE certs also.
+The Certbot certs will include this subdomain next time your Certbot certs renew. But, that hasn't happened yet.
+To refresh and thus get certs for this subdomain, run inkcertreqle for ${OLDDOMAIN} with the \"r\" option, unless you want to add more subdomains first.
+Note: Don't get Certbot certs for the same core domain.tld too often or Certbot will make you wait to get more.
+
+In summary: ${SUBDOMAIN}.${OLDDOMAIN} will not have SSL certs until you run:
+  inkcertremovecb ${OLDDOMAIN}
+   ...then...
+  inkcertdocb ${OLDDOMAIN}
 "
 fi
 ## inkCert-IC DONE

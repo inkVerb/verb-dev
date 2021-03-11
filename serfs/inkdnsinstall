@@ -30,16 +30,18 @@ fi
 . /opt/verb/conf/siteurilist
 
 # Install Bind
-/usr/bin/pacman -S --noconfirm bind
+/usr/bin/pacman -S --noconfirm bind certbot-dns-rfc2136
 
 # Config
 /bin/cp -f /etc/named.conf /etc/named.conf.original
 /bin/cp -f /opt/verb/conf/inkdns/named.conf /etc/
-/bin/chown root:named /etc/named.conf
-/bin/chmod 644 /etc/named.conf
+/usr/bin/chown root:named /etc/named.conf
+/usr/bin/chown 644 /etc/named.conf
 ## Make sure our included files exist
 /usr/bin/touch /var/named/named.conf.rdns
 /usr/bin/touch /var/named/named.conf.verb
+## Add the Certbot key to the named config
+/usr/bin/echo $(tsig-keygen -a HMAC-SHA512 inkCertbotKey) >> /etc/named.conf
 
 # Set the NS domains
 ## Verber Domains

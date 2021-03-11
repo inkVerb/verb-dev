@@ -22,6 +22,7 @@ DOMAIN=$1
 # Include the configs
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
+. /opt/verb/conf/servertype
 . /opt/verb/conf/inkcert/inkcertstatus
 
 # Check inkCert installed
@@ -173,25 +174,20 @@ if [ "${DOMAIN}" = "${rocksURI}" ]; then
  fi
 fi
 
-# Stop Apache
-/usr/bin/apachectl graceful-stop; wait
-/bin/systemctl stop httpd; wait
-
 # Get the certs
 ##NOTE make the system wait before and after Letsencrypt because sometimes LE can stumble over it's own feet.
 sleep 1
-## We need `yes n |` because the salesmen want to break the script with email solicitation
-yes n | /usr/local/bin/certbot --apache certonly --expand --renew-by-default -c /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+## We may need `yes n |` as alternatives to --server https://acme-v02.api.letsencrypt.org/directory --agree-tos
+if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
+  #yes n | /usr/bin/certbot --nginx certonly --expand --renew-by-default -c /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+  /usr/bin/certbot --nginx certonly --expand --server https://acme-v02.api.letsencrypt.org/directory --agree-tos --no-eff-email --renew-by-default -c /opt/verb/conf/inkcert/cli-ini/cli.name.verb.one.ini
+  /bin/systemctl restart nginx; wait
+elif [ ${SERVERTYPE} = "lamp" ]; then
+  /usr/bin/certbot --apache certonly --expand --server https://acme-v02.api.letsencrypt.org/directory --agree-tos --no-eff-email --renew-by-default -c /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+  /bin/systemctl restart httpd; wait
+fi
 wait
 sleep 1
-# the --quiet / -q option doesn't seem to work
-# Additional options if not doing certonly: --no-redirect --no-hsts --no-uir
-# https://certbot.eff.org/docs/using.html#command-line
-# https://certbot.eff.org/#ubuntuxenial-apache
-
-# Turn Apache on again
-#/usr/bin/apachectl start; wait
-/bin/systemctl start httpd; wait
 
 # Verify the certs
 if [ ! -d /etc/inkcert/le/live/${DOMAIN} ]; then

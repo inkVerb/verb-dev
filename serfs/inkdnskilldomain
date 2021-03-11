@@ -13,7 +13,7 @@ DNSDOMAIN="$1"
 . /opt/verb/conf/sitenameip
 
 # Check if added
-if [ -e "/opt/verb/conf/inkdns/zones/db.${DNSDOMAIN}" ]; then
+if [ ! -e "/opt/verb/conf/inkdns/zones/db.${DNSDOMAIN}" ]; then
 /bin/echo "The domain ${DNSDOMAIN} zone file has not been created. Use inkdnsadddomain to add it."
 exit 0; fi
 

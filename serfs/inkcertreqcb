@@ -22,6 +22,7 @@ DOMAIN=$1
 # Include the configs
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
+. /opt/verb/conf/servertype
 . /opt/verb/conf/inkcert/inkcertstatus
 
 # Check inkCert installed
@@ -172,8 +173,14 @@ fi
 # Get the certs
 ##NOTE make the system wait before and after Certbot because sometimes CB can stumble over it's own feet.
 sleep 1
-## We need `yes n |` because the salesmen want to break the script with email solicitation
-/usr/local/bin/certbot --manual certonly --preferred-challenges=dns --email ${INKCERTEMAIL} --server https://acme-v02.api.letsencrypt.org/directory --agree-tos --renew-by-default -d ${DOMAIN} -d *.${DOMAIN}
+#DEV: This currently does only the domain and wildcard domains interactively, not according to cli.ini files; this needs to be automated to modify inkDNS zone files with --preferred-challenges=dns
+#/usr/bin/certbot certonly --dns-rfc2136 --dns-rfc2136-credentials /etc/letsencrypt/rfc2136.ini --email ${INKCERTEMAIL} --server https://acme-v02.api.letsencrypt.org/directory --agree-tos --no-eff-email --force-renewal -d "${DOMAIN}" -d "*.${DOMAIN}"
+#DEV: The above shell command should work, once the on-server Named zones are synced with other nameservers, such as ns1.inkisaverb.com
+if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
+  /usr/bin/certbot --nginx certonly --preferred-challenges=dns --email ${INKCERTEMAIL} --server https://acme-v02.api.letsencrypt.org/directory --agree-tos --no-eff-email --renew-by-default -d "${DOMAIN}" -d *.${DOMAIN}
+elif [ ${SERVERTYPE} = "lamp" ]; then
+  /usr/bin/certbot --apache certonly --preferred-challenges=dns --email ${INKCERTEMAIL} --server https://acme-v02.api.letsencrypt.org/directory --agree-tos --no-eff-email --renew-by-default -d "${DOMAIN}" -d "*.${DOMAIN}"
+fi
 wait
 sleep 1
 # the --quiet / -q option doesn't seem to work

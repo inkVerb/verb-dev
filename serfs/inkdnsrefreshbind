@@ -69,7 +69,7 @@ zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITEINKE
   cd /var/named/zones/
   for inkZoneDB in db.*; do
     inkZone="$(/bin/echo ${inkZoneDB} | sed 's/db\.//' )"
-    /bin/echo "zone \"${inkZone}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP6}; ${SITEINKERIP4}; }; file \"/var/named/zones/db.${inkZone}\"; };
+    /bin/echo "zone \"${inkZone}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP6}; ${SITEINKERIP4}; }; file \"/var/named/zones/db.${inkZone}\"; update-policy { grant inkCertbotKey name _acme-challenge.${inkZone}. txt; }; };
 " >> /var/named/named.conf.verb
     /bin/echo "\$INCLUDE \"/var/named/zones/nv.${inkZone}\";" >> /var/named/nv.verber
   done

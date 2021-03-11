@@ -20,7 +20,6 @@ $ORIGIN hostdomain286.
 ; Hostname Record Defaults
 
 ; Aliase Defaults
-www.hostdomain286.	IN  CNAME	hostdomain286.
 *.hostdomain286.		IN  CNAME	hostdomain286.
 
 ; Text Record Defaults

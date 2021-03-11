@@ -555,32 +555,20 @@ cd $OLDPWD
 
 # Instructions
 ######################### FIX inkCert instructions #########################
-/bin/echo "After 1. setting up any extra domains and subdomains, 2. turning off any unused verb domains and changing the email server setting if you choose,"
-## Domain Mod?
-if /bin/grep -Fq "SITENAME=DOMAIN_MOD-" /opt/verb/conf/sitenameip; then
-/bin/echo "- Run for Certbot: inkcertdocb-all-verbs (or inkcertdocb ${nameURI} if not using a single server)"
-else
-/bin/echo "- Run for Certbot: inkcertdocb-all-verbs (or inkcertdocb ${nameURI} if not using a single server)"
-/bin/echo "OR"
-/bin/echo "- Install your DigitalOcean keys for automated Certbot with: setinkcertcbdigoc"
-/bin/echo "- Run for Certbot: inkcertdocbdigoc-all-verbs (or inkcertdocbdigoc ${nameURI} if not using a single server)"
-fi
-## Common message
-/bin/echo "- Then, set up email with postfix and roundcube.
+/bin/echo "After reboot:
+1. Turn off any unused verb domains and change the email server if you choose
+2. Install:
+  - inkDNS
+  - inkCert (inkcertdole-all-verbs, or inkcertdole ${nameURI} if using multiple servers)
+  - inkVmail
 
-If you choose to set up email before doinkcert, you will need to make an Advanced > exception rule for these in your browser concerning security/safety/SSL, you should not need to permanently store it.
-
-You must reboot the server now using:
+First, you must reboot the server now using:
 
 reboot
 
-Then, for SSH,
-
-login using: 'ssh root@${SERVERIPV4} -p ${NEWPORT}'
-
-OR for password with the new boss user,
-
-login using: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
+Then for SSH,
+login root: 'ssh root@${SERVERIPV4} -p ${NEWPORT}'
+login boss: 'ssh ${NEWBOSS}@${SERVERIPV4} -p ${NEWPORT}'
 "
 
 # Cleanup

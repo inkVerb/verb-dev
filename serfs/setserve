@@ -76,7 +76,7 @@ fi
 ## Ensure that you don't get double entries
 /bin/sed -i "s/ ${serveURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${!nServeURI}.ini
 ## Add it to the cli-ini
-/bin/sed -i "/^domains =/ s/$/${serveURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${!nServeURI}.ini
+/bin/sed -i "/^domains =/ s/$/, ${serveURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${!nServeURI}.ini
 
 # Create the serve dir
 /bin/rm -rf /srv/www/html/${vTLD}.serve

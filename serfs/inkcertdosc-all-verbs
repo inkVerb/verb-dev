@@ -27,9 +27,6 @@ exit 0; fi
 if [ $VERBemail=true ]; then
 /opt/verb/serfs/inkcertdosc ${emailURI}; fi
 wait
-if [ $VERBcity=true ]; then
-/opt/verb/serfs/inkcertdosc ${cityURI}; fi
-wait
 if [ $VERBone=true ]; then
 /opt/verb/serfs/inkcertdosc ${oneURI}; fi
 wait
@@ -45,11 +42,5 @@ wait
 if [ $VERBkiwi=true ]; then
 /opt/verb/serfs/inkcertdosc ${kiwiURI}; fi
 wait
-if [ $VERBpink=true ]; then
-/opt/verb/serfs/inkcertdosc ${pinkURI}; fi
-wait
 if [ $VERBred=true ]; then
 /opt/verb/serfs/inkcertdosc ${redURI}; fi
-wait
-if [ $VERBrocks=true ]; then
-/opt/verb/serfs/inkcertdosc ${rocksURI}; fi

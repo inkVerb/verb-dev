@@ -40,8 +40,8 @@ zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITE2INK
   ### If Tertiary DNS (Secondary Inker) is NOT set
     else
     /bin/echo "// Created by inkDNS, managed automatically, edits will likely be deleted
-zone \"${SITEARPAIP6}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; }; allow-transfer { ${SITEINKERIP6}; }; file \"/var/named/nv.verber\"; allow-query { any; }; };
-zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP4}; }; file \"/var/named/nv.verber\"; allow-query { any; }; };
+zone \"${SITEARPAIP6}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; }; allow-transfer { ${SITEINKERIP6}; }; file \"/var/named/nv.verber\"; allow-query { any; }; update-policy { grant inkCertbotKey name _acme-challenge.${inkZone}. txt; }; };
+zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP4}; }; file \"/var/named/nv.verber\"; allow-query { any; }; update-policy { grant inkCertbotKey name _acme-challenge.${inkZone}. txt; }; };
 " > /var/named/named.conf.rdns
     fi
   ### Permissions
@@ -69,7 +69,8 @@ zone \"${SITEARPAIP4}\" { type master; notify explicit; also-notify { ${SITEINKE
   cd /var/named/zones/
   for inkZoneDB in db.*; do
     inkZone="$(/bin/echo ${inkZoneDB} | sed 's/db\.//' )"
-    /bin/echo "zone \"${inkZone}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP6}; ${SITEINKERIP4}; }; file \"/var/named/zones/db.${inkZone}\"; update-policy { grant inkCertbotKey name _acme-challenge.${inkZone}. txt; }; };
+    if [ "${inkZone}" = '*' ]; then continue; fi
+    /bin/echo "zone \"${inkZone}\" { type master; notify explicit; also-notify { ${SITEINKERIP6}; ${SITEINKERIP4}; }; allow-transfer { ${SITEINKERIP6}; ${SITEINKERIP4}; }; file \"/var/named/zones/db.${inkZone}\"; };
 " >> /var/named/named.conf.verb
     /bin/echo "\$INCLUDE \"/var/named/zones/nv.${inkZone}\";" >> /var/named/nv.verber
   done

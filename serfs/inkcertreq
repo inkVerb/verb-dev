@@ -135,11 +135,6 @@ if [ "${DOMAIN}" = "${emailURI}" ]; then
   verbtld_is_off
  fi
 fi
-if [ "${DOMAIN}" = "${cityURI}" ]; then
- if [[ "${VERBcity}" != true ]]; then
-  verbtld_is_off
- fi
-fi
 if [ "${DOMAIN}" = "${oneURI}" ]; then
  if [[ "${VERBone}" != true ]]; then
   verbtld_is_off
@@ -165,18 +160,8 @@ if [ "${DOMAIN}" = "${kiwiURI}" ]; then
   verbtld_is_off
  fi
 fi
-if [ "${DOMAIN}" = "${pinkURI}" ]; then
- if [[ "${VERBpink}" != true ]]; then
-  verbtld_is_off
- fi
-fi
 if [ "${DOMAIN}" = "${redURI}" ]; then
  if [[ "${VERBred}" != true ]]; then
-  verbtld_is_off
- fi
-fi
-if [ "${DOMAIN}" = "${rocksURI}" ]; then
- if [[ "${VERBrocks}" != true ]]; then
   verbtld_is_off
  fi
 fi

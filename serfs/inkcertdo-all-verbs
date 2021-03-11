@@ -17,9 +17,6 @@
 if [ $VERBemail=true ]; then
 /opt/verb/serfs/inkcertdo ${emailURI}; fi
 wait
-if [ $VERBcity=true ]; then
-/opt/verb/serfs/inkcertdole ${cityURI}; fi
-wait
 if [ $VERBone=true ]; then
 /opt/verb/serfs/inkcertdo ${oneURI}; fi
 wait
@@ -35,12 +32,5 @@ wait
 if [ $VERBkiwi=true ]; then
 /opt/verb/serfs/inkcertdo ${kiwiURI}; fi
 wait
-if [ $VERBpink=true ]; then
-/opt/verb/serfs/inkcertdo ${pinkURI}; fi
-wait
 if [ $VERBred=true ]; then
 /opt/verb/serfs/inkcertdo ${redURI}; fi
-wait
-if [ $VERBrocks=true ]; then
-/opt/verb/serfs/inkcertdo ${rocksURI}; fi
-

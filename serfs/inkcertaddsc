@@ -83,7 +83,7 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
   /bin/sed -i "s/ssl_certificate_key/#INKVERB-INKCERT-COMMENT-ssl_certificate_key/g" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
 
   ## Insert the inkCert certs
-  /bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_SC\n\t\tssl_certificate\t\/etc\/inkcert\/sc\/live\/${CERTDOMAIN}\/cert\.pem\n\t\tssl_certificate_key\t\/etc\/inkcert\/sc\/live\/${CERTDOMAIN}\/key\.pem\n\t\tSSLCertificateChainFile\t\/etc\/inkcert\/sc\/live\/${CERTDOMAIN}\/chain\.cert\.pem\n\t\t#INKVERB-INKCERT-stop/" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
+  /bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_SC\n\t\tssl_certificate\t\/etc\/inkcert\/sc\/live\/${CERTDOMAIN}\/cert\.pem;\n\t\tssl_certificate_key\t\/etc\/inkcert\/sc\/live\/${CERTDOMAIN}\/key\.pem;\n\n\t\t#INKVERB-INKCERT-stop/" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
 
   ## Create the inkCert-DOMAIN config file
   /bin/echo "INKCERTED=DONE_SC" > /opt/verb/conf/inkcert/cli-ini/siteinkcert.${SITEDOMAIN}

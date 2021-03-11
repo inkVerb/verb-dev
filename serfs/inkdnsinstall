@@ -6,12 +6,10 @@
 ## If the backup server is not specified, the default will be used, which should be used unless this is a domain mod
 
 # How to use:
-## ./inkdnsinstall [ns domain - optional]
+## ./inkdnsinstall
 
 # Eg:
 ## ./inkdnsinstall
-## ./inkdnsinstall ns3.inkisaverb.com
-## ./inkdnsinstall ns.poetryiscode.com
 
 
 # Check if installed

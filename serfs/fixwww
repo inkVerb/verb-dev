@@ -29,10 +29,10 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 
 ##INKWWWFIX=fixed
 # Fixes www
-	server {
-		server_name www.${DOMAIN};
-		return 301 \$scheme://${DOMAIN}\$request_uri;
-	}
+server {
+  server_name www.${DOMAIN};
+  return 301 \$scheme://${DOMAIN}\$request_uri;
+}
 
 ##verbFIXwww" >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
 		/bin/systemctl restart nginx; wait
@@ -48,19 +48,17 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
 	else
 
 		## Then add the config lines if it doesn't.
-		/bin/echo "
-
-##INKWWWFIX=fixed
+		/bin/echo "##INKWWWFIX=fixed
 # Fixes www
 <VirtualHost *:80>
-	ServerName www.${DOMAIN}
-	Redirect permanent / http://${DOMAIN}/
+  ServerName www.${DOMAIN}
+  Redirect permanent / http://${DOMAIN}/
 </VirtualHost>
 <IfModule mod_ssl.c>
-	<VirtualHost _default_:443>
-		ServerName www.${DOMAIN}
-		Redirect permanent / https://${DOMAIN}/
-	</VirtualHost>
+  <VirtualHost _default_:443>
+    ServerName www.${DOMAIN}
+    Redirect permanent / https://${DOMAIN}/
+  </VirtualHost>
 </IfModule>
 
 ##verbFIXwww" >> /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf

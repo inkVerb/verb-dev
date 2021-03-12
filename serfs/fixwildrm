@@ -33,7 +33,7 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
 	else
 
 		# Remove the old settings
-		/bin/sed -i "/ServerAlias *.${DOMAIN}/d" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		/bin/sed -i "/ServerAlias \*.${DOMAIN}/d" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 		/bin/sed -i '/##INKWILDFIX/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 		/usr/bin/apachectl graceful
 
@@ -49,7 +49,7 @@ elif [ ${SERVERTYPE} = "laemp" ]; then
 	else
 
 		## Remove the old settings
-		/bin/sed -i "/ServerAlias *.${DOMAIN}/d" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
+		/bin/sed -i "/ServerAlias \*.${DOMAIN}/d" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 		/bin/sed -i '/##INKWILDFIX/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
 		/usr/bin/apachectl graceful
 

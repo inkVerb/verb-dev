@@ -63,7 +63,7 @@ fi
 # Remove any CSR or Keys on this Verber
 if [ -d /etc/inkcert/csr/${DOMAIN}/ ]; then
 /bin/echo "Removing these keys for ${DOMAIN}..."
-shred -f -x /etc/inkcert/csr/${DOMAIN}/pemfraez
+/usr/bin/shred -f -x /etc/inkcert/csr/${DOMAIN}/pemfraez
 /bin/rm -rf /etc/inkcert/csr/${DOMAIN}/
 else
 /bin/echo "Keys for ${DOMAIN} not found. Nothing here to remove. All set."

@@ -55,5 +55,8 @@ fi
 # https://certbot.eff.org/docs/using.html#command-line
 # https://certbot.eff.org/#ubuntuxenial-apache
 
+## Remove the certs
+/opt/verb/serfs/inkcertdeletecble ${DOMAIN}
+
 # Echo alliswell
 /bin/echo "Unless there is an error message above, the certs should have been revoked from the CA, now uninstall them..."

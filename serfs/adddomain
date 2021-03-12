@@ -57,6 +57,7 @@ elif [ ${SERVERTYPE} = "laemp" ]; then
   /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
   /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
   /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
   ## Server
   /opt/verb/serfs/ensiteapache -r ${NEWDOMAIN}
   /opt/verb/serfs/ensitenginx -r ${NEWDOMAIN}
@@ -64,7 +65,8 @@ fi
 
 # inkCert
 ## Ensure that you don't get double entries
-/bin/sed -i "s/, ${NEWDOMAIN}/ /g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
+/bin/sed -i "s/, ${NEWDOMAIN}/ /g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini # Something added later
+/bin/sed -i "s/ ${NEWDOMAIN}/ /g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini # As created by newdomainshell
 ## Add it to the cli-ini
 /bin/sed -i "/^domains =/ s/$/, ${NEWDOMAIN}/" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
 

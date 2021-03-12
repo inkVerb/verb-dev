@@ -56,6 +56,7 @@ elif [ ${SERVERTYPE} = "laemp" ]; then
   /usr/bin/cp /opt/verb/conf/site-files/conf/newdomaincgi.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
   /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
   /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${NEWDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${NEWDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${NEWDOMAIN}.conf
   ## Server
   /opt/verb/serfs/ensiteapache -r ${NEWDOMAIN}
   /opt/verb/serfs/ensitenginx -r ${NEWDOMAIN}

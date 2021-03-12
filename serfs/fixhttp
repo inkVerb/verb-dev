@@ -27,10 +27,8 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
     /bin/sed -i '/^##INKHTTPSFIX=fixed/,/^##verbFIXhttps/{/^##INKHTTPSFIX=fixed/!{/^##verbFIXhttps/!d}}' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
     /bin/sed -i '/##INKHTTPSFIX=fixed/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
     /bin/sed -i '/##verbFIXhttps/d' /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
-
-    ## Put the original settings back
-    /bin/cat /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
     /bin/rm /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf.verbhttpsfixed
+    
     /bin/systemctl restart nginx; wait
 
   else

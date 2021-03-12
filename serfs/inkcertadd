@@ -80,10 +80,9 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
 
   ## Comment the Snakeoil certs
   /bin/sed -i "s/ssl_certificate/#INKVERB-INKCERT-COMMENT-ssl_certificate/g" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
-  /bin/sed -i "s/ssl_certificate_key/#INKVERB-INKCERT-COMMENT-ssl_certificate_key/g" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
 
   ## Insert the inkCert certs
-  /bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_IC\n\t\tssl_certificate\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.cert\.pem\n\t\tssl_certificate_key\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.key\.pem\n\t\tSSLCertificateChainFile\t\/etc\/inkcert\/live\/${CERTDOMAIN}\/${CERTDOMAIN}\.ca-chain\.cert\.pem\n\t\t#INKVERB-INKCERT-stop/" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
+  /bin/sed -i "s/#INKVERB-INKCERT=INK_.*/#INKVERB-INKCERT=DONE_IC\n  ssl_certificate\t\/etc\/inkcert\/le\/live\/${CERTDOMAIN}\/cert\.pem;\n  ssl_certificate_key\t\/etc\/inkcert\/le\/live\/${CERTDOMAIN}\/privkey\.pem;\n  #INKVERB-INKCERT-stop/" /opt/verb/conf/webserver/nginx/sites-available/${SITEDOMAIN}.conf
 
   ## Create the inkCert-DOMAIN config file
   /bin/echo "INKCERTED=DONE_IC" > /opt/verb/conf/inkcert/cli-ini/siteinkcert.${SITEDOMAIN}

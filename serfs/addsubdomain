@@ -11,6 +11,9 @@
 SUBDOMAIN=$1
 OLDDOMAIN=$2
 
+# Include the config
+. /opt/verb/conf/servertype
+
 # Check the domain shell
 if [ ! -f /opt/verb/conf/inkcert/cli-ini/siteinkcert.${OLDDOMAIN} ]; then
 /bin/echo "The shell for ${OLDDOMAIN} does not exist yet. Creating it..."
@@ -53,6 +56,7 @@ elif [ ${SERVERTYPE} = "laemp" ]; then
   /usr/bin/cp /opt/verb/conf/site-files/conf/newdomain.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
   /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
   /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
   ## Server
   /opt/verb/serfs/ensiteapache -r ${SUBDOMAIN}.${OLDDOMAIN}
   /opt/verb/serfs/ensitenginx -r ${SUBDOMAIN}.${OLDDOMAIN}

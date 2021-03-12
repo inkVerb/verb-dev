@@ -49,11 +49,13 @@ There is nothing to revoke until you run inkcertdo or inkcertdole... And then, c
 "; exit 0
 fi
 
-# Run the LE revoke
-/usr/local/bin/certbot revoke -q -c /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
-# Additional options if not doing certonly: --no-redirect --no-hsts --no-uir
-# https://certbot.eff.org/docs/using.html#command-line
-# https://certbot.eff.org/#ubuntuxenial-apache
+# Remove any CSR or Keys on this Verber
+if [ -d /etc/inkcert/csr/${DOMAIN}/ ]; then
+/bin/echo "Removing these keys for ${DOMAIN}..."
+/usr/bin/shred -f -x /etc/inkcert/csr/${DOMAIN}/pemfraez
+/bin/rm -rf /etc/inkcert/csr/${DOMAIN}/
+else
+/bin/echo "Keys for ${DOMAIN} not found. Nothing here to remove. All set."
 
 # Echo alliswell
 /bin/echo "Unless there is an error message above, the certs should have been revoked from the CA, now uninstall them..."

@@ -18,7 +18,7 @@ for DOMAIN in $@; do
   elif [ -e "/etc/httpd/sites-available/${DOMAIN}.conf" ] && [ -f "/opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf" ]; then
     /usr/bin/ln -sfn /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/httpd/sites-enabled/${DOMAIN}.conf
   else
-    /usr/bin/echo "${DOMAIN} Apache config does not exist at /etc/httpd/sites-available/${DOMAIN}.conf"
+    /usr/bin/echo "${DOMAIN} Apache config does not exist at /etc/httpd/sites-available/${DOMAIN}.conf, cannot enable"
   fi
 done
 
@@ -26,7 +26,7 @@ done
 while getopts ":r" Var; do
   case $Var in
     r)
-      /bin/systemctl restart httpd; wait
+      /usr/bin/systemctl restart httpd; wait
     ;;
   esac
 done

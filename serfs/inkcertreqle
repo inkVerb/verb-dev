@@ -78,20 +78,12 @@ case ${INKCERTED} in
   "
   exit 0
   ;;
-  DONE_CBDIGOC)
-  /bin/echo $inkcertmsg
-  /bin/echo "inkCert certbot for DigitalOcean is already setup for ${DOMAIN}.
-
-  To set up certs differently, first run: inkcertrevokecbdigoc ${DOMAIN}, then run this again.
-  "
-  exit 0
-  ;;
   NO|NOT_YET)
     /bin/echo "Ready to go..."
   ;;
   *)
     if ! /bin/grep -q "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${DOMAIN}; then
-      /bin/echo "Something's wrong with the inkCert siteinkcert. configs! Aborting."
+      /bin/echo "Something's wrong with the inkCert siteinkcert configs! Aborting."
       exit 6
     else
       /bin/echo "Ready to go..."

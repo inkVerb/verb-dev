@@ -18,7 +18,7 @@ for DOMAIN in $@; do
   elif [ -e "/etc/nginx/sites-available/${DOMAIN}.conf" ] && [ -f "/opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf" ]; then
     /usr/bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf /opt/verb/conf/webserver/nginx/sites-enabled/${DOMAIN}.conf
   else
-    /usr/bin/echo "${DOMAIN} Nginx config does not exist at /etc/nginx/sites-available/${DOMAIN}.conf"
+    /usr/bin/echo "${DOMAIN} Nginx config does not exist at /etc/nginx/sites-available/${DOMAIN}.conf, cannot enable"
   fi
 done
 
@@ -26,7 +26,7 @@ done
 while getopts ":r" Var; do
   case $Var in
     r)
-      /bin/systemctl restart nginx; wait
+      /usr/bin/systemctl restart nginx; wait
     ;;
   esac
 done

@@ -101,6 +101,8 @@ ReadWritePaths=/etc/webapps/nextcloud/config
 # Optional: add if you want to use Nextcloud's internal update process
 # ReadWritePaths=/usr/share/webapps/nextcloud
 EOF
+## For trouble shooting
+#/usr/bin/sed -i 's?;env\[PATH\] = /usr/local/bin:/usr/bin:/bin?env\[PATH\] = /usr/local/bin:/usr/bin:/bin?' /etc/php/php-fpm.d/www.conf
 /usr/bin/systemctl restart php-fpm; wait
 
 # Webserver setup
@@ -160,11 +162,13 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
 fi
 
 # Set the database and credentials for Nextcloud from the command line
-occ maintenance:install --database mysql --database-name ${DBASE} --database-host localhost --database-user ${DBUSER} --database-pass=${DBPASSWORD} --data-dir /var/lib/nextcloud/data/
-
+/usr/bin/occ maintenance:install --database mysql --database-name ${DBASE} --database-host localhost --database-user ${DBUSER} --database-pass=${DBPASSWORD} --data-dir /var/lib/nextcloud/data/
+# Apps
+/usr/bin/occ app:disable recommendation
+/usr/bin/occ app:install notes bookmarks calendar contacts spreed tasks files_markdown news audioplayer mail
 
 ## Set up cron for updates (manage the crontab files directly)
-/bin/echo '*/15 * * * *  www-data php -f /srv/www/vapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
+/bin/echo '*/15 * * * *  www-data php -f /usr/share/webapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
 /bin/chmod 0644 /etc/cron.d/nextcloud
 
 # Finish
@@ -177,9 +181,9 @@ Host: localhost
 
 *Don't make any other changes during the install!
 
-Go to https://nc.${blueURI} to install.
+Go to https://${blueURI} to install.
 
-After installing, do important Admin settings at https://nc.${blueURI}/index.php/settings/admin
+After installing, do important Admin settings at https://${blueURI}/index.php/settings/admin
 1. Background jobs
 - Cron
 2. Email

@@ -354,6 +354,9 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ] && [ -d "/etc/nginx" 
   /bin/ln -sfn /opt/verb/conf/webserver/nginx/sites-enabled /etc/nginx/
 fi
 
+# inkCert mail subdomains
+/opt/verb/serfs/setinkcertmail ${nameURI}
+
 # Enable sites
 . /opt/verb/conf/sitetldstatus
 . /opt/verb/conf/servertype

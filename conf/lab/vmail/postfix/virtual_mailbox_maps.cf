@@ -1,8 +1,8 @@
 user = mail
 password = mailpassword
-hosts = 127.0.0.1
+hosts = localhost
 dbname = mail
 table = mailbox
-select_field = CONCAT(domain, '/', local_part)
+select_field = maildir
 where_field = username
 additional_conditions = and active = '1'

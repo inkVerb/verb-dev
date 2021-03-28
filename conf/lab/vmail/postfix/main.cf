@@ -24,35 +24,41 @@ inet_protocols = ipv4
 meta_directory = /etc/postfix
 shlib_directory = /usr/lib/postfix
 
-# Snakeoil certs
-smtpd_tls_cert_file=/etc/ssl/server/server.crt
-smtpd_tls_key_file=/etc/ssl/server/server.key
-
-# inkCert certs
-# smtpd_tls_cert_file=/etc/inkcert/le/live/nameURI286/cert.pem
-# smtpd_tls_key_file=/etc/inkcert/le/live/nameURI286/privkey.pem
+# SSL certs (symlinks)
+smtpd_tls_cert_file=/etc/inkcert/mail/vmail.crt
+smtpd_tls_key_file=/etc/inkcert/mail/vmail.key
 
 # TLS
 smtpd_tls_security_level = may
 smtp_tls_security_level = may
-smtpd_use_tls = yes
+smtpd_tls_loglevel = 1
+smtp_tls_loglevel = 1
+smtpd_tls_auth_only = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
+smtpd_tls_received_header = yes
+smtpd_recipient_restrictions = reject_unauth_pipelining, permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_recipient, reject_unknown_recipient_domain, reject_unauth_destination, permit
+smtpd_relay_restrictions = reject_unauth_pipelining, permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_recipient, reject_unknown_recipient_domain, reject_unauth_destination, permit
+smtpd_sasl_local_domain = $mydomain
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = /var/run/dovecot/auth-client
 
-# Ex Ratione
+# Outside Arch Wiki
+smtpd_use_tls = yes
 smtpd_tls_mandatory_protocols=!SSLv2,!SSLv3
 smtp_tls_note_starttls_offer = yes
-smtpd_tls_loglevel = 1
-smtpd_tls_received_header = yes
 smtpd_tls_session_cache_timeout = 3600s
 tls_random_source = dev:/dev/urandom
 smtpd_helo_restrictions = permit_mynetworks, warn_if_reject reject_non_fqdn_hostname, reject_invalid_hostname, permit
 smtpd_sender_restrictions = permit_mynetworks, reject_authenticated_sender_login_mismatch, permit_sasl_authenticated, warn_if_reject reject_non_fqdn_sender, reject_unknown_sender_domain, reject_unauth_pipelining, permit
 smtpd_client_restrictions = reject_rbl_client sbl.spamhaus.org, reject_rbl_client blackholes.easynet.nl
-smtpd_recipient_restrictions = reject_unauth_pipelining, permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_recipient, reject_unknown_recipient_domain, reject_unauth_destination, permit
 smtpd_data_restrictions = reject_unauth_pipelining
-smtpd_relay_restrictions = reject_unauth_pipelining, permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_recipient, reject_unknown_recipient_domain, reject_unauth_destination, permit
 smtpd_helo_required = yes
 smtpd_delay_reject = yes
 disable_vrfy_command = yes
+
+
 
 # Delay
 unknown_local_recipient_reject_code = 450
@@ -79,16 +85,23 @@ inet_interfaces = all
 mynetworks_style = host
 
 # Vmail
+relay_domains = $mydestination
 virtual_mailbox_base = /var/vmail
-virtual_mailbox_maps = mysql:/etc/postfix/mysql_virtual_mailbox_maps.cf, mysql:/etc/postfix/mysql_virtual_mailbox_domainaliases_maps.cf
-virtual_uid_maps = static:150
-virtual_gid_maps = static:8
-virtual_alias_maps = mysql:/etc/postfix/mysql_virtual_alias_maps.cf, mysql:/etc/postfix/mysql_virtual_alias_domainaliases_maps.cf
-virtual_mailbox_domains = mysql:/etc/postfix/mysql_virtual_domains_maps.cf
-smtpd_sender_login_maps = mysql:/etc/postfix/mysql_virtual_sender_login_maps.cf
+virtual_mailbox_maps = mysql:/etc/postfix/virtual_mailbox_maps.cf, mysql:/etc/postfix/virtual_mailbox_domainaliases_maps.cf
+virtual_alias_maps = proxy:mysql:/etc/postfix/virtual_alias_maps.cf, proxy:mysql:/etc/postfix/virtual_alias_domains_maps.cf
+virtual_alias_domains = proxy:mysql:/etc/postfix/virtual_alias_domains.cf
+virtual_mailbox_domains = mysql:/etc/postfix/virtual_mailbox_domains.cf
+smtpd_sender_login_maps = mysql:/etc/postfix/virtual_sender_login_maps.cf
+virtual_mailbox_limit = 512000000
+virtual_minimum_uid = 5000
+virtual_uid_maps = static:5000
+virtual_gid_maps = static:5000
+local_transport = virtual
+local_recipient_maps = $virtual_mailbox_maps
+transport_maps = hash:/etc/postfix/transport
+virtual_transport = virtual
 
 # Dovecot
-virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
 content_filter = amavis:[127.0.0.1]:10024
 

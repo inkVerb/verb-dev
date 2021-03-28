@@ -26,6 +26,7 @@ if [ ! -f "/opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN}" ]; then
   /bin/sed -i "s/inkcertemail589/${INKCERTEMAIL}/g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
   /bin/sed -i "s/newdomain589/${NEWDOMAIN}/g" /opt/verb/conf/inkcert/cli-ini/cli.${NEWDOMAIN}.ini
   /bin/echo "INKCERTED=NOT_YET" > /opt/verb/conf/inkcert/cli-ini/siteinkcert.${NEWDOMAIN}
+  /opt/verb/serfs/setinkcertmail ${NEWDOMAIN}
 fi
 
 # inkDNS

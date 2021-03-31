@@ -38,7 +38,7 @@ if [ "${!CHECKtld}" != true ]; then
 
 # Remove the old settings
 /bin/rm -f /opt/verb/conf/webserver/httpd/sites-available/${serveURI}.conf
-/bin/sed -i "s/ ${serveURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.*
+/bin/sed -i "s/, ${serveURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.*
 
 /bin/sed -i "s/SITESERVE=.*/SITESERVE=\"${vTLD}\"/" /opt/verb/conf/sitenameip
 /bin/sed -i "s/SERVEDIR=.*/SERVEDIR=\"${sDIR}\"/" /opt/verb/conf/sitenameip

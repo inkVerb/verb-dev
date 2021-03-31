@@ -36,7 +36,6 @@ BACKUPRESTORE=$4
 fi
 
 /opt/verb/serfs/installpostfixvmail; wait
-/opt/verb/serfs/installinksplat; wait
 /opt/verb/serfs/installpfa ${PFA} ${EASYSECURE}; wait
 /opt/verb/serfs/installrc ${RC}; wait
 
@@ -53,34 +52,7 @@ You may ignore these warnings if you choose. If you want proper SSL certs, you s
 fi
 
 # Finished
-if [ "${EASYSECURE}" != "secure" ]; then
-    /bin/echo "
-Everything looks good.
-For setup, note:
-- Use the install password 'inkverb77'
-- Use any email you want admin, the admin password must include two numbers and two letters
-- Then, login:
-  - Add the domain: ${nameURI}
-  - Create a user, such as me@${nameURI} etc
-  - Use this new email and password to test the IMAP/SMTP connection in the third step of this next (webmail) setup process
-Set up all this at:
-
- https://pfa.${emailTLDURI}/${PFA}/setup.php
-
-- Then run ./postinstallpfa
-
-Roundcube is ready to be installed at:
-
- https://rc.${emailTLDURI}/${RC}/installer
-
-- Then run ./postinstallrc
-
-Once all is set, you must restart the server in order for email boxes to send and receive.
-"
-fi
-
-if [ "${EASYSECURE}" = "secure" ]; then
-    	/bin/echo "
+/bin/echo "
 Everything looks good.
 
 For PostfixAdmin setup, note:

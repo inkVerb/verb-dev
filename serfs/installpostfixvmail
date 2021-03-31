@@ -507,4 +507,14 @@ cd /etc/opendkim/keys/${nameURI}
 
 The email server is https://${emailTLDURI}
 
-FYI, you must restart the server in order for email boxes to send and receive."
+You must restart the server in order for email boxes to send and receive.
+
+Postfix Admin:
+- https://pfa.${emailTLDURI}/${PFAFOLDER}/setup.php
+- Use the install password '${INSTPASS}'
+- Then run ./postinstallpfa
+
+Roundcube:
+- https://rc.${emailTLDURI}/${RCFOLDER}/installer
+- Then run ./postinstallrc
+"

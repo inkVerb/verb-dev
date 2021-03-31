@@ -15,14 +15,14 @@ DOMAIN="$1"
 
 # inkCert
 ## Ensure that you don't get double entries
-/bin/sed -i "s/, mail//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
-/bin/sed -i "s/, smtp//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
-/bin/sed -i "s/, imap//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
-/bin/sed -i "s/, pop3//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
-/bin/sed -i "s/, pop2//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
-/bin/sed -i "s/, pop//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "s/, mail.${DOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "s/, smtp.${DOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "s/, imap.${DOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "s/, pop3.${DOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "s/, pop2.${DOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "s/, pop.${DOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
 ## Add it to the cli-ini
-/bin/sed -i "/^domains =/ s/$/, mail, smtp, imap, pop3, pop2, pop/" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
+/bin/sed -i "/^domains =/ s/$/, mail.${DOMAIN}, smtp.${DOMAIN}, imap.${DOMAIN}, pop3.${DOMAIN}, pop2.${DOMAIN}, pop.${DOMAIN}/" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
 
 # Webserver directory (make it anyway)
 /usr/bin/mkdir -p /srv/www/mailcatch

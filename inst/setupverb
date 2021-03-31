@@ -356,6 +356,10 @@ fi
 
 # inkCert mail subdomains
 /opt/verb/serfs/setinkcertmail ${nameURI}
+# inkCert email web server subdomains for RoundCube and PostfixAdmin
+/bin/sed -i "s/, pfa.${emailTLDURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini
+/bin/sed -i "s/, rc.${emailTLDURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini
+/bin/sed -i "/^domains =/ s/$/, pfa.${emailTLDURI}, rc.${emailTLDURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini
 
 # Enable sites
 . /opt/verb/conf/sitetldstatus
@@ -562,8 +566,8 @@ cd $OLDPWD
 1. Turn off any unused verb domains and change the email server if you choose
 2. Install:
   - inkDNS
-  - inkCert (inkcertdole-all-verbs, or inkcertdole ${nameURI} if using multiple servers)
   - inkVmail
+  - inkCert (inkcertdole-all-verbs, or inkcertdole ${nameURI} if using multiple servers)
 
 First, you must reboot the server now using:
 

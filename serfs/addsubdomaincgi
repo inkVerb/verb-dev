@@ -45,6 +45,7 @@ wait
 
 # inkCert
 ## This adds the declared domain to the end of the "domains =" line
+/bin/sed -i "s/, ${SUBDOMAIN}.${OLDDOMAIN}//g" /opt/verb/conf/inkcert/cli-ini/cli.${DOMAIN}.ini
 /bin/sed -i "/^domains =/ s/$/, ${SUBDOMAIN}.${OLDDOMAIN}/" /opt/verb/conf/inkcert/cli-ini/cli.${OLDDOMAIN}.ini
 
 # inkCert status

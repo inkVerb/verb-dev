@@ -2,8 +2,7 @@
 
 $CONF['configured'] = true;
 
-// With this long hash, the setup password is: inkverb77
-$CONF['setup_password'] = '6eb7d8657903da15ba69349209a1c4f9:4b0f638a1fc2788682cee2f1c7416c883cfa33e9';
+$CONF['setup_password'] = 'changeme';
 
 
 $CONF['postfix_admin_url'] = 'https://pfa.emailTLDURI286/pfafolder286';
@@ -40,7 +39,7 @@ $CONF['admin_email'] = 'admin@nameURI286';
 $CONF['smtp_server'] = 'localhost';
 $CONF['smtp_port'] = '25';
 
-$CONF['encrypt'] = 'md5crypt';
+$CONF['encrypt'] = 'dovecot:SHA512-CRYPT';
 
 $CONF['authlib_default_flavor'] = 'md5raw';
 
@@ -151,7 +150,7 @@ IMPORTANT NOTE ABOUT FORWARD ADDRESSES: If you want to use one emailbox to send 
 
 - If you set up this email with other email clients, such as Outlook or Thunderbird, you may need to approve the SSL security Certificate before receiving or sending (approve it two times). This is for security.
 
-- We recommend Thunderbird for a desktop email client since we use it to test our servers, but other clients should also work. For desktop email clients, use IMAP if you want your emails left on the server as "backup" or to sync with email clients on more than one computers; this will count against your space on the server. If you use POP instead, then your email client can delete email from the server (it's in settings) so those emails won't count against your inbox space on the email server, but there will be no backup of your email and you can't sync those emails to any other email client. POP and IMAP can both be good choices, depending on your needs. 
+- We recommend Thunderbird for a desktop email client since we use it to test our servers, but other clients should also work. For desktop email clients, use IMAP if you want your emails left on the server as "backup" or to sync with email clients on more than one computers; this will count against your space on the server. If you use POP instead, then your email client can delete email from the server (it's in settings) so those emails won't count against your inbox space on the email server, but there will be no backup of your email and you can't sync those emails to any other email client. POP and IMAP can both be good choices, depending on your needs.
 
 - For using this in Gmail, you may need an @gmail.com address. If you don't log into Gmail with an @gmail.com email address, perhaps wtih another email address that you pay Gmail for, then you may not be able to set up this email with that Gmail account.
 

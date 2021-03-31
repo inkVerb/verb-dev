@@ -40,7 +40,7 @@ $config['db_dsnw'] = 'mysql://rcmailusr:rcpass286@localhost/rcmail';
 // %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
 // %s - domain name after the '@' from e-mail address provided at login screen
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['default_host'] = 'localhost';
+$config['default_host'] = 'tls://localhost';
 
 // SMTP server host (for sending mails).
 // To use SSL/TLS connection, enter hostname with prefix ssl:// or tls://
@@ -54,11 +54,11 @@ $config['default_host'] = 'localhost';
 // For example %n = mail.domain.tld, %t = domain.tld
 // inkVerb
 //$config['smtp_server'] = '';
-$config['smtp_server'] = 'localhost';
+$config['smtp_server'] = 'tls://localhost';
 
 // SMTP port (default is 25; use 587 for STARTTLS or 465 for the
 // deprecated SSL over SMTP (aka SMTPS))
-$config['smtp_port'] = 25;
+$config['smtp_port'] = 587;
 
 // SMTP username (if required) if you use %u as the username Roundcube
 // will use the current username for login
@@ -152,4 +152,3 @@ $config['draft_autosave'] = 180;
 
 // Disable localization of the default folder names listed above
 //$config['show_real_foldernames'] = false;
-

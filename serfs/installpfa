@@ -17,6 +17,7 @@
 
 CVAPPNAME=postfixadmin
 # Include the config files
+. /opt/verb/conf/servertype
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
 . /opt/verb/conf/sitemailpass

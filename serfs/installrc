@@ -19,6 +19,7 @@
 
 CVAPPNAME=roundcube
 # Include the config files
+. /opt/verb/conf/servertype
 . /opt/verb/conf/sitenameip
 . /opt/verb/conf/siteurilist
 . /opt/verb/conf/sitemailpass
@@ -218,7 +219,8 @@ cd /srv/www/email/roundcube
 ### First, update just in case, if you want
 #php composer.phar update -n
 ### Then, run install ( -n / --no-interaction = no interaction)
-php composer.phar install -n
+#php composer.phar install -n # Composer doesn't like this run from root
+/usr/bin/su slave -c 'php composer.phar install -n'
 
 # Finished
 /bin/echo "

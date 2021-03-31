@@ -53,27 +53,15 @@ fi
 
 # Finished
 /bin/echo "
-Everything looks good.
+You must restart the server in order for email boxes to send and receive.
 
-For PostfixAdmin setup, note:
-- You must create your own password on the Setup page, then add it via: setpfapass
-  Then...
-- Use any email you want admin, the admin password must include two numbers and two letters
-- Then, login:
-  - Add the domain: ${nameURI}
-  - Create a user, such as me@${inkURI} etc
-  - Use this new email and password to test the IMAP/SMTP connection in the third step of this next (webmail) setup process
-
-Set up all this for PostfixAdmin at:
- https://pfa.${emailTLDURI}/${PFA}/setup.php
-
+Postfix Admin:
+- https://pfa.${emailTLDURI}/${PFAFOLDER}/setup.php
+- Use the install password '${INSTPASS}'
 - Then run ./postinstallpfa
 
-Roundcube is also ready to be installed at:
- https://rc.${emailTLDURI}/${RC}/installer
-
+Roundcube:
+- https://rc.${emailTLDURI}/${RCFOLDER}/installer
 - Then run ./postinstallrc
-
-Once all is set, you must restart the server in order for email boxes to send and receive.
 "
 fi

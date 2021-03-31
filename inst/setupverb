@@ -566,8 +566,8 @@ cd $OLDPWD
 1. Turn off any unused verb domains and change the email server if you choose
 2. Install:
   - inkDNS
-  - inkVmail
   - inkCert (inkcertdole-all-verbs, or inkcertdole ${nameURI} if using multiple servers)
+  - inkVmail
 
 First, you must reboot the server now using:
 

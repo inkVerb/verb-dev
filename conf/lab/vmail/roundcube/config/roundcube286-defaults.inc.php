@@ -708,6 +708,10 @@ $config['trash_mbox'] = 'Trash';
 // skin name: folder from skins/
 $config['skin'] = 'elastic';
 
+
+// Same as above for IMAP (from Arch Wiki)
+//$config['default_imap_folders'] = array('INBOX', 'Archive', 'Drafts', 'Sent', 'Junk', 'Trash');
+
 // automatically create the above listed default folders on user login
 // inkVerb: Postfix Admin won't create them because it requires www-data to own /var/vmail, which must be owned by vmail:mail
 $config['create_default_folders'] = true;

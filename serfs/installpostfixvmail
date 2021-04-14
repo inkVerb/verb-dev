@@ -117,6 +117,9 @@ host = localhost
 /bin/sed -i "s/mailpassword/mailpass${MAILPASSGEN}/g" /etc/postfix/virtual_mailbox_maps.cf
 /bin/sed -i "s/mailpassword/mailpass${MAILPASSGEN}/g" /etc/postfix/virtual_sender_login_maps.cf
 /bin/sed -i "s/hostURI286/${hostURI}/g" /etc/postfix/main.cf
+## Add an important setting
+echo "smtps 465/tcp # inkVerb
+smtps 465/udp # inkVerb" >> /etc/services
 
 ## Dovecot
 /usr/bin/mkdir -p /etc/dovecot/sieve.before.d /etc/dovecot/sieve-filter

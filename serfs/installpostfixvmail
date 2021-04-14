@@ -248,7 +248,7 @@ FLUSH PRIVILEGES;"
 ## Directory
 /usr/bin/mkdir -p /etc/inkcert/mail
 ## Snakeoil
-if /bin/grep -Fq "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${nameURI286}; then
+if /bin/grep -Fq "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${nameURI}; then
   /usr/bin/ln -sfn /etc/ssl/server/server.crt /etc/inkcert/mail/vmail.crt
   /usr/bin/ln -sfn /etc/ssl/server/server.key /etc/inkcert/mail/vmail.key
 ## inkCert
@@ -348,8 +348,8 @@ INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('po
 INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('webmaster@$nameURI', 'verberadmin@$nameURI', '$nameURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);"
 
 # UFW (services and ports below them if known)
-/usr/bin/ufw allow postfix
-/usr/bin/ufw allow smtp
+#/usr/bin/ufw allow postfix
+#/usr/bin/ufw allow smtp
 #/usr/bin/ufw allow 25
 /usr/bin/ufw allow 587
 /usr/bin/ufw allow smtps
@@ -368,11 +368,10 @@ INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('we
 
 # OpenDKIM
 ## Create/reset OpenDKIM files
-/usr/bin/pacman -S --noconfirm opendkim opendkim-tools
+/usr/bin/pacman -S --noconfirm opendkim
+/bin/mkdir -p /etc/opendkim/keys
 /bin/cp /opt/verb/conf/lab/vmail/default/opendkim /etc/default/
-/bin/cp /opt/verb/conf/lab/vmail/opendkim.conf /etc/
-/bin/mkdir /etc/opendkim
-/bin/mkdir /etc/opendkim/keys
+/bin/cp /opt/verb/conf/lab/vmail/opendkim.conf /etc/opendkim/
 /bin/echo "127.0.0.1
 localhost
 ${SITEIP}
@@ -381,9 +380,8 @@ ${hostURI}" > /etc/opendkim/TrustedHosts
 /bin/echo "${nameURI} inkdkim._domainkey.${nameURI}" > /etc/opendkim/SigningTable
 ## OpenDKIM Key for initial site
 /bin/mkdir -p /etc/opendkim/keys/${nameURI}
-cd /etc/opendkim/keys/${nameURI}
-/usr/bin/opendkim-genkey -r -S -s inkdkim -d ${nameURI}
-/bin/chmod 660 inkdkim.private
+/usr/bin/opendkim-genkey -r -S -s inkdkim -d /etc/opendkim/keys/${nameURI}
+/bin/chmod 660 /etc/opendkim/keys/${nameURI}/inkdkim.private
 /bin/chown -R opendkim:opendkim /etc/opendkim
 ## Start
 /usr/bin/systemctl enable opendkim
@@ -400,7 +398,7 @@ cd /etc/opendkim/keys/${nameURI}
 " >> /opt/verb/conf/inkdns/inkzones/db.${emailTLDURI}
 
 # Monit
-/bin/cp /opt/verb/conf/lab/vmail/monit/monitrc.d/amavis /etc/monit/monitrc.d/
+#/bin/cp /opt/verb/conf/lab/vmail/monit/monitrc.d/amavis /etc/monit/monitrc.d/
 /bin/cp /opt/verb/conf/lab/vmail/monit/monitrc.d/dovecot /etc/monit/monitrc.d/
 /bin/cp /opt/verb/conf/lab/vmail/monit/monitrc.d/opendkim /etc/monit/monitrc.d/
 /bin/cp /opt/verb/conf/lab/vmail/monit/monitrc.d/postfix /etc/monit/monitrc.d/
@@ -426,8 +424,8 @@ fi
 /usr/bin/systemctl restart postfix
 /usr/bin/systemctl restart spamassassin
 /usr/bin/systemctl restart clamav-daemon
-/usr/bin/systemctl restart amavis
 /usr/bin/systemctl restart dovecot
+#/usr/bin/systemctl restart amavis
 
 # Finish
 /bin/echo "Postfix and friends for inkVerb has been installed.

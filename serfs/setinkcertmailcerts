@@ -13,9 +13,9 @@
 . /opt/verb/conf/siteurilist
 
 # Link the certs if they exist
-if [ -f "/etc/inkcert/le/live/${nameURI286}/fullchain.pem" ]; then
-  /usr/bin/ln -sfn /etc/inkcert/le/live/${nameURI286}/fullchain.pem /etc/inkcert/mail/vmail.crt
+if [ -f "/etc/inkcert/le/live/${nameURI}/fullchain.pem" ]; then
+  /usr/bin/ln -sfn /etc/inkcert/le/live/${nameURI}/fullchain.pem /etc/inkcert/mail/vmail.crt
 fi
-if [ -f "/etc/inkcert/le/live/${nameURI286}/privkey.pem" ]; then
-  /usr/bin/ln -sfn /etc/inkcert/le/live/${nameURI286}/privkey.pem /etc/inkcert/mail/vmail.key
+if [ -f "/etc/inkcert/le/live/${nameURI}/privkey.pem" ]; then
+  /usr/bin/ln -sfn /etc/inkcert/le/live/${nameURI}/privkey.pem /etc/inkcert/mail/vmail.key
 fi

@@ -5,7 +5,7 @@ command_directory = /usr/bin
 daemon_directory = /usr/lib/postfix/bin
 data_directory = /var/lib/postfix
 mail_owner = postfix
-unknown_local_recipient_reject_code = 550
+unknown_local_recipient_reject_code = 550 
 alias_maps = hash:/etc/postfix/aliases
 alias_database = $alias_maps
 debug_peer_level = 2
@@ -61,7 +61,7 @@ disable_vrfy_command = yes
 
 
 # Delay
-unknown_local_recipient_reject_code = 450
+#unknown_local_recipient_reject_code = 450
 maximal_queue_lifetime = 7d
 minimal_backoff_time = 1000s
 maximal_backoff_time = 8000s

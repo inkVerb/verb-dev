@@ -12,6 +12,7 @@ DOMAIN="$1"
 
 # Include the config
 . /opt/verb/conf/siteurilist
+. /opt/verb/conf/servertype
 
 # inkCert
 ## Ensure that you don't get double entries

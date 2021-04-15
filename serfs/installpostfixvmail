@@ -41,7 +41,7 @@ exit 7; fi
 # Generate the mailpassword appendage
 MAILPASSGEN="$(/usr/bin/pwgen -s -1 5)"
 ## Create the MySQL login .cnf
-echo "[client]
+/bin/echo "[client]
 user = mail
 password = mailpass${MAILPASSGEN}
 database = mail
@@ -51,6 +51,7 @@ host = localhost
 /bin/sed -i "s/SITEMAILPASSAPG.*/SITEMAILPASSAPG=\"${MAILPASSGEN}\"/g" /opt/verb/conf/sitemailpass
 
 # Install
+/usr/bin/pacman -Syyu --noconfirm
 /usr/bin/pacman -S --noconfirm postfix dovecot roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp
 
 # From Ubuntu
@@ -118,8 +119,10 @@ host = localhost
 /bin/sed -i "s/mailpassword/mailpass${MAILPASSGEN}/g" /etc/postfix/virtual_sender_login_maps.cf
 /bin/sed -i "s/hostURI286/${hostURI}/g" /etc/postfix/main.cf
 ## Add an important setting
-echo "smtps 465/tcp # inkVerb
-smtps 465/udp # inkVerb" >> /etc/services
+/usr/bin/cat <<EOF >> /etc/services
+smtps 465/tcp # inkVerb
+smtps 465/udp # inkVerb
+EOF
 
 ## Dovecot
 /usr/bin/mkdir -p /etc/dovecot/sieve.before.d /etc/dovecot/sieve-filter
@@ -271,7 +274,7 @@ fi
     created datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
     modified datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
     active tinyint(1) NOT NULL DEFAULT '1',
-    phone varchar(30) CHARACTER SET utf8 NOT NULL,
+    phone varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
     email_other varchar(255) CHARACTER SET utf8 NOT NULL,
     token varchar(255) CHARACTER SET utf8 NOT NULL,
     token_validity datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
@@ -383,7 +386,7 @@ ${hostURI}" > /etc/opendkim/TrustedHosts
 /bin/echo "${nameURI} inkdkim._domainkey.${nameURI}" > /etc/opendkim/SigningTable
 ## OpenDKIM Key for initial site
 /bin/mkdir -p /etc/opendkim/keys/${nameURI}
-/usr/bin/opendkim-genkey -r -S -s inkdkim -d /etc/opendkim/keys/${nameURI}
+/usr/bin/opendkim-genkey -r -S -s inkdkim -d /etc/opendkim/keys/${nameURI}; wait
 /bin/chmod 660 /etc/opendkim/keys/${nameURI}/inkdkim.private
 /bin/chown -R opendkim:opendkim /etc/opendkim
 ## Start

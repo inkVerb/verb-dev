@@ -143,7 +143,7 @@ case ${INKCERTED} in
   ;;
   *)
     if ! /bin/grep -q "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${DOMAIN}; then
-      /bin/echo "Something's wrong with the inkCert siteinkcert configs! Aborting."
+      /bin/echo "Something's wrong with the inkCert siteinkcert configs! Aborting"
       exit 6
     else
       /bin/echo "Nextcloud is currently using Snakeoil certs, ready for inkCert"

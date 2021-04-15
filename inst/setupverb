@@ -236,7 +236,7 @@ if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   ### Rename
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailTLDURI286.conf
   do
-    /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI.conf/}${emailTLDURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI286.conf/}${emailTLDURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailURI286.conf
   do
@@ -282,7 +282,7 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ]; then
   ### Rename
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*emailTLDURI286.conf
   do
-    /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI.conf/}${emailTLDURI}.conf"
+    /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI286.conf/}${emailTLDURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*emailURI286.conf
   do

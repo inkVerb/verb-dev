@@ -386,7 +386,9 @@ ${hostURI}" > /etc/opendkim/TrustedHosts
 /bin/echo "${nameURI} inkdkim._domainkey.${nameURI}" > /etc/opendkim/SigningTable
 ## OpenDKIM Key for initial site
 /bin/mkdir -p /etc/opendkim/keys/${nameURI}
-/usr/bin/opendkim-genkey -r -S -s inkdkim -d /etc/opendkim/keys/${nameURI}; wait
+cd /etc/opendkim/keys/${nameURI}
+/usr/bin/opendkim-genkey -r -S -s inkdkim -d ${nameURI}; wait
+cd $OLDPWD
 /bin/chmod 660 /etc/opendkim/keys/${nameURI}/inkdkim.private
 /bin/chown -R opendkim:opendkim /etc/opendkim
 ## Start

@@ -14,7 +14,7 @@
 
 # Eg:
 ## (To use at rc.NAME.verb.email/mysecretpath do:)
-## ./installrc easy mysecretpath
+## ./installrc mysecretpath
 
 
 CVAPPNAME=roundcube
@@ -71,7 +71,7 @@ DESSALTGEN=$(/usr/bin/pwgen -s -1 24)
 
 # Create the MySQL database and user
 /usr/bin/mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf -e "
-CREATE DATABASE `rcmail` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`;
+CREATE DATABASE rcmail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci;
 GRANT ALL PRIVILEGES ON rcmail.* TO 'rcmailusr'@'localhost' IDENTIFIED BY 'rcpass${RCPASSGEN}';
 FLUSH PRIVILEGES;"
 ## Initialize the database before the installer page
@@ -102,19 +102,11 @@ fi
 ## DNS
 /bin/sed -i "s/; Webmail Defaults/; Webmail Defaults\nrc\.${emailTLDURI}\.\tIN  A\t\t${SITEIP}\nrc\.${emailTLDURI}\.\tIN  AAAA\t${SITEIPV6}/" /opt/verb/conf/inkdns/inkzones/db.${emailTLDURI}
 ## Server type
-if [ ${SERVERTYPE} = "laemp" ]; then
-  /usr/bin/mv /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf.old
-  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf
-  /usr/bin/mv /opt/verb/conf/webserver/httpd/sites-available/rc.${emailTLDURI}.conf /opt/verb/conf/webserver/httpd/sites-available/rc.${emailTLDURI}.conf.old
-  /usr/bin/rm /opt/verb/conf/webserver/httpd/sites-enabled/${emailTLDURI}.conf
-  /opt/verb/serfs/ensitenginx rc.${emailTLDURI}
-elif [ ${SERVERTYPE} = "lemp" ]; then
-  /usr/bin/mv /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf.old
-  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf
+if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/rc.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf
   /opt/verb/serfs/ensitenginx rc.${emailTLDURI}
 elif [ ${SERVERTYPE} = "lamp" ]; then
-  /usr/bin/mv /opt/verb/conf/webserver/httpd/sites-available/rc.${emailTLDURI}.conf /opt/verb/conf/webserver/httpd/sites-available/rc.${emailTLDURI}.conf.old
-  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud.conf /opt/verb/conf/webserver/httpd/sites-available/rc.${emailTLDURI}.conf
+  /usr/bin/cp /opt/verb/conf/site-files/conf/rc.conf /opt/verb/conf/webserver/httpd/sites-available/rc.${emailTLDURI}.conf
   /opt/verb/serfs/ensiteapache rc.${emailTLDURI}
 fi
 
@@ -160,13 +152,12 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
 fi
 
 # Copy the branding files
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/verbink_logo.png /srv/www/email/roundcube/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/logo.svg /srv/www/email/roundcube/skins/elastic/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/favicon.ico /srv/www/email/roundcube/skins/elastic/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/favicon.ico /srv/www/email/roundcube/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/verbink_logo.png /srv/www/email/roundcube/skins/larry/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/watermark.jpg /srv/www/email/roundcube/skins/larry/images/
-/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/favicon.ico /srv/www/email/roundcube/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/verbink_logo.png /usr/share/webapps/roundcubemail/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/logo.svg /usr/share/webapps/roundcubemail/skins/elastic/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/elastic/images/favicon.ico /usr/share/webapps/roundcubemail/skins/elastic/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/verbink_logo.png /usr/share/webapps/roundcubemail/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/watermark.jpg /usr/share/webapps/roundcubemail/skins/larry/images/
+/bin/cp /opt/verb/conf/lab/vmail/roundcube/roundcubepics/skins/larry/images/favicon.ico /usr/share/webapps/roundcubemail/skins/larry/images/
 
 # Own again
 /bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.rc

@@ -38,6 +38,8 @@ cd /srv/www/html
 
 # Verb sites
 if [ ! -e "ink" ]; then /bin/cp -r 0sitedefaultInProgress ink; fi
+if [ ! -e "${emailTLD}.rc" ]; then /bin/cp -r 0ne ${emailTLD}.rc; fi
+if [ ! -e "${emailTLD}.pfa" ]; then /bin/cp -r 0ne ${emailTLD}.pfa; fi
 if [ ! -e "ink.i" ]; then /bin/cp -r 0ne ink.i; fi
 if [ ! -e "email" ]; then /bin/cp -r 0ne email; fi
 if [ ! -e "email.e" ]; then /bin/cp -r 0ne email.e; fi
@@ -59,6 +61,8 @@ if [ ! -e "red.r" ]; then /bin/cp -r 0ne red.r; fi
 
 # Own
 /bin/chown -R www:www /srv/www/html
+/bin/chmod -R 750 ${emailTLD}.rc
+/bin/chmod -R 750 ${emailTLD}.pfa
 /bin/chmod -R 750 email
 /bin/chmod -R 750 email.e
 /bin/chmod -R 750 one

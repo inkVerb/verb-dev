@@ -244,7 +244,7 @@ cd $OLDPWD
 
 # Virtual mail SQL database
 /usr/bin/mysql --defaults-extra-file=/opt/verb/conf/mysqlboss.cnf -e "
-CREATE DATABASE mail;
+CREATE DATABASE mail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci;
 GRANT ALL PRIVILEGES ON mail.* TO 'mail'@'localhost' IDENTIFIED BY 'mailpass${MAILPASSGEN}';
 FLUSH PRIVILEGES;"
 # OR try:
@@ -275,8 +275,8 @@ fi
     modified datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
     active tinyint(1) NOT NULL DEFAULT '1',
     phone varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
-    email_other varchar(255) CHARACTER SET utf8 NOT NULL,
-    token varchar(255) CHARACTER SET utf8 NOT NULL,
+    email_other varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+    token varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
     token_validity datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
     PRIMARY KEY (username),
     KEY domain (domain)

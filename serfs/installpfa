@@ -111,9 +111,11 @@ php_admin_value['open_basedir'] = /tmp/:/usr/share/webapps/postfixadmin/:/etc/we
 EOF
 ## Server type
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+  /usr/bin/mv /opt/verb/conf/webserver/nginx/sites-available/pfa.${emailTLDURI}.conf /opt/verb/conf/webserver/nginx/sites-available/pfa.${emailTLDURI}.conf.old
   /usr/bin/cp /opt/verb/conf/site-files/conf/pfa.conf /opt/verb/conf/webserver/nginx/sites-available/pfa.${emailTLDURI}.conf
   /opt/verb/serfs/ensitenginx pfa.${emailTLDURI}
 elif [ ${SERVERTYPE} = "lamp" ]; then
+  /usr/bin/mv /opt/verb/conf/webserver/httpd/sites-available/pfa.${emailTLDURI}.conf /opt/verb/conf/webserver/httpd/sites-available/pfa.${emailTLDURI}.conf.old
   /usr/bin/cp /opt/verb/conf/site-files/conf/pfa.conf /opt/verb/conf/webserver/httpd/sites-available/pfa.${emailTLDURI}.conf
   /opt/verb/serfs/ensiteapache pfa.${emailTLDURI}
 fi

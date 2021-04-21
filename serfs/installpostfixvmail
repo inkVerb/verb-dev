@@ -143,7 +143,8 @@ EOF
 /bin/cp /opt/verb/conf/lab/vmail/dovecot/dovecot.conf /etc/dovecot/
 ### Diffie-Helman Group file (unique & extra large for email server)
 /usr/bin/rm -f /etc/dovecot/dh.pem
-/usr/bin/openssl dhparam -out /etc/dovecot/dh.pem 4096
+#/usr/bin/openssl dhparam -out /etc/dovecot/dh.pem 4096
+/usr/bin/openssl dhparam -out /etc/dovecot/dh.pem 2048
 /bin/chmod 600 /etc/dovecot/dh.pem
 ## Replace configs
 /bin/sed  -i "s/nameURI286/${nameURI}/g" /etc/dovecot/conf.d/10-ssl.conf

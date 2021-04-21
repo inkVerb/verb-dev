@@ -178,6 +178,7 @@ companyname=""
 
 ## Diffie-Helman Group file (larger file for production)
 /usr/bin/rm -f /etc/ssl/server/dhparams.pem
+#/usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 4096
 /usr/bin/openssl dhparam -out /etc/ssl/server/dhparams.pem 2048
 /bin/chmod 600 /etc/ssl/server/dhparams.pem
 cd $OLDPWD

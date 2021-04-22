@@ -222,6 +222,7 @@ fi
 /bin/chmod 644 /etc/php/php.ini
 
 # sites-available
+. /opt/verb/conf/servertype
 ## Apache
 if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   ### Replace
@@ -378,60 +379,59 @@ fi
 
 # Enable sites
 . /opt/verb/conf/sitetldstatus
-. /opt/verb/conf/servertype
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx pfa.${emailTLDURI} rc.${emailTLDURI}
+  /opt/verb/serfs/ensitenginx pfa.${emailTLDURI} rc.${emailTLDURI}
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${emailURI} e.${emailURI}
+  /opt/verb/serfs/ensitenginx ${emailURI} e.${emailURI}
 fi
 if [ ${VERBone} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${oneURI} o.${oneURI}
+  /opt/verb/serfs/ensitenginx ${oneURI} o.${oneURI}
 fi
 if [ ${VERBink} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${inkURI} i.${inkURI}
+  /opt/verb/serfs/ensitenginx ${inkURI} i.${inkURI}
 fi
 if [ ${VERBblue} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${blueURI} b.${blueURI}
+  /opt/verb/serfs/ensitenginx ${blueURI} b.${blueURI}
 fi
 if [ ${VERBvip} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${vipURI} v.${vipURI}
+  /opt/verb/serfs/ensitenginx ${vipURI} v.${vipURI}
 fi
 if [ ${VERBkiwi} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${kiwiURI} k.${kiwiURI}
+  /opt/verb/serfs/ensitenginx ${kiwiURI} k.${kiwiURI}
 fi
 if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/opt/verb/serfs/ensitenginx ${redURI} r.${redURI}
+  /opt/verb/serfs/ensitenginx ${redURI} r.${redURI}
 fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-/bin/systemctl restart nginx; wait
+  /bin/systemctl restart nginx; wait
 fi
-if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache pfa.${emailTLDURI} rc.${emailTLDURI}
+if [ ${SERVERTYPE} = "lamp" ]; then
+  /opt/verb/serfs/ensiteapache pfa.${emailTLDURI} rc.${emailTLDURI}
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${emailURI} e.${emailURI}
+  /opt/verb/serfs/ensiteapache ${emailURI} e.${emailURI}
 fi
 if [ ${VERBone} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${oneURI} o.${oneURI}
+  /opt/verb/serfs/ensiteapache ${oneURI} o.${oneURI}
 fi
 if [ ${VERBink} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${inkURI} i.${inkURI}
+  /opt/verb/serfs/ensiteapache ${inkURI} i.${inkURI}
 fi
 if [ ${VERBblue} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${blueURI} b.${blueURI}
+  /opt/verb/serfs/ensiteapache ${blueURI} b.${blueURI}
 fi
 if [ ${VERBvip} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${vipURI} v.${vipURI}
+  /opt/verb/serfs/ensiteapache ${vipURI} v.${vipURI}
 fi
 if [ ${VERBkiwi} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${kiwiURI} k.${kiwiURI}
+  /opt/verb/serfs/ensiteapache ${kiwiURI} k.${kiwiURI}
 fi
 if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/opt/verb/serfs/ensiteapache ${redURI} r.${redURI}
+  /opt/verb/serfs/ensiteapache ${redURI} r.${redURI}
 fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-/bin/systemctl restart httpd; wait
+  /bin/systemctl restart httpd; wait
 fi
 
 # Serve URI
@@ -498,6 +498,32 @@ EOF
 # Verber DNS records
 ## Include config
 . /opt/verb/conf/sitenameip
+
+## Set the FQDN host
+/bin/echo "
+; FQDN Host Records
+${hostURI}.	IN  A		hostip286
+${hostURI}.	IN  AAAA	hostipv6286
+" >> /opt/verb/conf/inkdns/inkzones/db.${SITETLD}
+/bin/echo "
+; FQDN PTR Host Records
+hostarpaip286  IN  PTR  ${hostURI}.
+hostarpaipv6286  IN  PTR  ${hostURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${SITETLD}
+
+## Set the email TLD URI
+/bin/echo "
+; Email Server Records
+rc.${emailTLDURI}.	IN  A		hostip286
+rc.${emailTLDURI}.	IN  AAAA	hostipv6286
+pfa.${emailTLDURI}.	IN  A		hostip286
+pfa.${emailTLDURI}.	IN  AAAA	hostipv6286" >> /opt/verb/conf/inkdns/inkzones/db.${SVMAILTLD}
+/bin/echo "
+; Email Server PTR Records
+hostarpaip286  IN  PTR  rc.${emailTLDURI}.
+hostarpaipv6286  IN  PTR  rc.${emailTLDURI}.
+hostarpaip286  IN  PTR  pfa.${emailTLDURI}.
+hostarpaipv6286  IN  PTR  pfa.${emailTLDURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${SVMAILTLD}
+
 ## Set the namespace, TLD, and IP values
 /usr/bin/mkdir -p /opt/verb/conf/inkdns/zones
 /bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/inkzones/db.*
@@ -519,11 +545,6 @@ EOF
 /bin/sed -i "s/hostarpaipv6286/${SITEARPAIP6}/g" /opt/verb/conf/inkdns/inkzones/nv.*
 /bin/sed -i "s/hostarpaipv6286/${SITEARPAIP6}/g" /opt/verb/conf/inkdns/nv.dnsdomain
 
-## Set the FQDN host
-/bin/echo "; FQDN Host A Records
-${hostURI}.	IN  A		hostip286
-${hostURI}.	IN  AAAA	hostipv6286
-" >> /opt/verb/conf/inkdns/inkzones/db.${SITETLD}
 ## Populate the Verber domains
 /bin/sed -i "s/hostdomain286/${emailURI}/g" /opt/verb/conf/inkdns/inkzones/db.email
 /bin/sed -i "s/hostdomain286/${oneURI}/g" /opt/verb/conf/inkdns/inkzones/db.one

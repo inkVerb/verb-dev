@@ -5,7 +5,7 @@
 # This updates the PostfixAdmin repo package
 
 # How to use:
-## ./pfa.updaterepo
+## ./postfixadmin.updaterepo
 
 
 CVAPPNAME=postfixadmin
@@ -19,7 +19,7 @@ cd /opt/verb/repo
 /bin/echo "Updating the PostfixAdmin package to v${DISTVER}..."
 
 # Get the package
-/usr/bin/wget https://sourceforge.net/projects/postfixadmin/files/postfixadmin/postfixadmin-${DISTVER}/postfixadmin-${DISTVER}.tar.gz
+/usr/bin/wget -O postfixadmin-${DISTVER}.tar.gz https://sourceforge.net/projects/postfixadmin/files/postfixadmin-${DISTVER}/PostfixAdmin%20${DISTVER}.tar.gz
 if [ ! -f "postfixadmin-${DISTVER}.tar.gz" ]; then
 /bin/echo "Failed download."; touch "${CVAPPNAME}.failed"
 exit 4; else
@@ -37,9 +37,9 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar -xvf postfixadmin-${DISTVER}.tar.gz
+/bin/tar -xvf postfixadmin-${DISTVER}.tar.gz
 /bin/rm postfixadmin-${DISTVER}.tar.gz
-/bin/mv postfixadmin-${DISTVER} ${CVAPPNAME}
+/bin/mv postfixadmin-postfixadmin-* ${CVAPPNAME}
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
 /bin/rm -rf ${CVAPPNAME}
 

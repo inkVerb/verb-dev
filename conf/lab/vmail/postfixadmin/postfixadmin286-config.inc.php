@@ -2,7 +2,7 @@
 
 $CONF['configured'] = true;
 
-$CONF['setup_password'] = 'changeme';
+#$CONF['setup_password'] = 'changeme';
 
 
 $CONF['postfix_admin_url'] = 'https://pfa.emailTLDURI286/pfafolder286';
@@ -39,7 +39,7 @@ $CONF['admin_email'] = 'admin@nameURI286';
 $CONF['smtp_server'] = 'localhost';
 $CONF['smtp_port'] = '25';
 
-$CONF['encrypt'] = 'dovecot:SHA512-CRYPT';
+#$CONF['encrypt'] = 'dovecot:SHA512-CRYPT'; # More secure, but Postfix Admin breaks; agree with /etc/dovecot/dovecot-sql.conf
 
 $CONF['authlib_default_flavor'] = 'md5raw';
 

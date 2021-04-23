@@ -42,7 +42,7 @@ LC_MEASUREMENT="en_US.UTF-8"
 /usr/bin/pacman -Syyu --noconfirm
 
 # Install tools
-/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl make cronie gcc autoconf imagemagick git net-tools
+/usr/bin/pacman -S --noconfirm pwgen zip unzip htop which vim curl wget make cronie gcc autoconf imagemagick git net-tools
 
 # Remove unneeded packages
 /usr/bin/pacman -Qdt --noconfirm

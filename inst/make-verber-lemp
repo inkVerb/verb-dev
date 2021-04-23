@@ -273,6 +273,7 @@ EOF
 
 # Firewall
 /usr/bin/pacman -S --noconfirm ufw
+/usr/bin/systemctl start ufw; wait
 /usr/bin/ufw allow 80/tcp
 /usr/bin/ufw allow 443/tcp
 

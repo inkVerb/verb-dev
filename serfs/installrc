@@ -196,6 +196,9 @@ cd /srv/www/email/roundcube
 # Fool RoundCube into accepting current versions of PHP
 /bin/sed -i "s/if (PHP_VERSION_ID >= .*/if (PHP_VERSION_ID >= 90000) {/" /srv/www/email/roundcube/program/include/iniset.php
 
+# Remove the installer so it is ready to go
+#/bin/rm -f /srv/www/email/roundcube/installer
+
 # Finished
 /bin/echo "
 Roundcube is installed ready to be set up.

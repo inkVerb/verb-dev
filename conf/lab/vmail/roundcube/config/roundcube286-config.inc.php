@@ -152,3 +152,40 @@ $config['draft_autosave'] = 180;
 
 // Disable localization of the default folder names listed above
 //$config['show_real_foldernames'] = false;
+
+// TLS
+$config['default_host'] = 'tls://mail.nameURI286';
+// For STARTTLS IMAP
+$config['imap_conn_options'] = array(
+    'ssl' => array(
+      'verify_peer'       => true,
+      // inkCert
+      'allow_self_signed' => false,
+      'ssl_cert' => '/etc/ssl/private/vmail.crt',
+      'ssl_key'  => '/etc/ssl/private/vmail.key',
+      // Snakeoil
+      //'allow_self_signed' => true,
+      //'ssl_cert' => '/etc/ssl/server/server.crt',
+      //'ssl_key'  => '/etc/ssl/server/server.key',
+      // probably optional parameters
+      //'ciphers' => 'TLSv1+HIGH:!aNull:@STRENGTH',
+      //'peer_name'         => 'mail.nameURI286',
+    ),
+);
+// For STARTTLS SMTP
+$config['smtp_conn_options'] = array(
+    'ssl' => array(
+      'verify_peer'       => true,
+      // inkCert
+      'allow_self_signed' => false,
+      'ssl_cert' => '/etc/ssl/private/vmail.crt',
+      'ssl_key'  => '/etc/ssl/private/vmail.key',
+      // Snakeoil
+      //'allow_self_signed' => true,
+      //'ssl_cert' => '/etc/ssl/server/server.crt',
+      //'ssl_key'  => '/etc/ssl/server/server.key',
+      // probably optional parameters
+      //'ciphers' => 'TLSv1+HIGH:!aNull:@STRENGTH',
+      //'peer_name'         => 'mail.nameURI286',
+    ),
+);

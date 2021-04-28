@@ -54,6 +54,9 @@ host = localhost
 /usr/bin/pacman -Syyu --noconfirm
 /usr/bin/pacman -S --noconfirm postfix dovecot roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp
 
+# Troubleshooting
+pacman -S --noconfirm cyrus-sasl
+
 # From Ubuntu
 #/usr/bin/pacman -S --noconfirm \
 #  postfix-mysql \
@@ -153,6 +156,9 @@ EOF
 ## Own
 /bin/chown -R vmail:dovecot /etc/dovecot
 /bin/chmod -R o-rwx /etc/dovecot
+## Service
+/usr/bin/systemctl enable dovecot
+/usr/bin/systemctl start dovecot
 
 ## SpamAssassin
 /usr/bin/mkdir -p /var/lib/dovecot/sieve/global_sieves /etc/mail/sa-update-keys
@@ -354,25 +360,6 @@ INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('ho
 INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('postmaster@$nameURI', 'verberadmin@$nameURI', '$nameURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('webmaster@$nameURI', 'verberadmin@$nameURI', '$nameURI', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);"
 
-# UFW (services and ports below them if known)
-#/usr/bin/ufw allow postfix
-#/usr/bin/ufw allow smtp
-#/usr/bin/ufw allow 25
-/usr/bin/ufw allow 587
-/usr/bin/ufw allow smtps
-/usr/bin/ufw allow 465
-/usr/bin/ufw allow pop3
-/usr/bin/ufw allow 110
-/usr/bin/ufw allow pop3s
-/usr/bin/ufw allow 995
-/usr/bin/ufw allow imap
-/usr/bin/ufw allow 143
-/usr/bin/ufw allow imaps
-/usr/bin/ufw allow 993
-# for OpenDKIM
-/usr/bin/ufw allow 8891
-/usr/bin/ufw allow 12301
-
 # OpenDKIM
 ## Create/reset OpenDKIM files
 /usr/bin/pacman -S --noconfirm opendkim
@@ -405,6 +392,25 @@ cd $OLDPWD
 ## Webmail TLD prep
 /bin/echo "; Webmail Defaults
 " >> /opt/verb/conf/inkdns/inkzones/db.${emailTLDURI}
+
+# UFW (services and ports below them if known)
+#/usr/bin/ufw allow postfix
+#/usr/bin/ufw allow smtp
+#/usr/bin/ufw allow 25
+/usr/bin/ufw allow 587
+/usr/bin/ufw allow smtps
+/usr/bin/ufw allow 465
+/usr/bin/ufw allow pop3
+/usr/bin/ufw allow 110
+/usr/bin/ufw allow pop3s
+/usr/bin/ufw allow 995
+/usr/bin/ufw allow imap
+/usr/bin/ufw allow 143
+/usr/bin/ufw allow imaps
+/usr/bin/ufw allow 993
+# for OpenDKIM
+/usr/bin/ufw allow 8891
+/usr/bin/ufw allow 12301
 
 # Monit
 #/bin/cp /opt/verb/conf/lab/vmail/monit/monitrc.d/amavis /etc/monit/monitrc.d/

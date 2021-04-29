@@ -52,7 +52,7 @@ host = localhost
 
 # Install
 /usr/bin/pacman -Syyu --noconfirm
-/usr/bin/pacman -S --noconfirm postfix dovecot roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp
+/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp
 
 # Troubleshooting
 pacman -S --noconfirm cyrus-sasl
@@ -121,6 +121,14 @@ pacman -S --noconfirm cyrus-sasl
 /bin/sed -i "s/mailpassword/mailpass${MAILPASSGEN}/g" /etc/postfix/virtual_mailbox_maps.cf
 /bin/sed -i "s/mailpassword/mailpass${MAILPASSGEN}/g" /etc/postfix/virtual_sender_login_maps.cf
 /bin/sed -i "s/hostURI286/${hostURI}/g" /etc/postfix/main.cf
+## Permissions
+/usr/bin/chmod 644 /etc/postfix/virtual_alias_domains.cf
+/usr/bin/chmod 644 /etc/postfix/virtual_alias_domains_maps.cf
+/usr/bin/chmod 644 /etc/postfix/virtual_alias_maps.cf
+/usr/bin/chmod 644 /etc/postfix/virtual_mailbox_domains.cf
+/usr/bin/chmod 644 /etc/postfix/virtual_mailbox_domainaliases_maps.cf
+/usr/bin/chmod 644 /etc/postfix/virtual_mailbox_maps.cf
+/usr/bin/chmod 644 /etc/postfix/virtual_sender_login_maps.cf
 ## Add an important setting
 /usr/bin/cat <<EOF >> /etc/services
 smtps 465/tcp # inkVerb

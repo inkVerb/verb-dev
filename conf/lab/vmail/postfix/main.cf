@@ -27,6 +27,7 @@ shlib_directory = /usr/lib/postfix
 # SSL certs (symlinks)
 smtpd_tls_cert_file=/etc/inkcert/mail/vmail.crt
 smtpd_tls_key_file=/etc/inkcert/mail/vmail.key
+smtpd_tls_dh2048_param_file = /etc/dovecot/dh.pem
 # Snakeoil Certs
 #smtpd_tls_cert_file=/etc/ssl/server/server.crt
 #smtpd_tls_key_file=/etc/ssl/server/server.key
@@ -44,10 +45,12 @@ smtpd_tls_received_header = yes
 #smtpd_relay_restrictions = reject_unauth_pipelining, permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_recipient, reject_unknown_recipient_domain, reject_unauth_destination, permit
 smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
 smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
-smtpd_sasl_local_domain = $mydomain
+#smtpd_sasl_local_domain = $mydomain
+smtpd_sasl_local_domain =
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_type = dovecot
-smtpd_sasl_path = /var/run/dovecot/auth-client
+smtpd_sasl_path = smtpd
+#smtpd_sasl_path = /var/spool/postfix/private/auth
 
 # Outside Arch Wiki
 smtpd_use_tls = yes
@@ -66,7 +69,6 @@ disable_vrfy_command = yes
 
 
 # Delay
-#unknown_local_recipient_reject_code = 450
 maximal_queue_lifetime = 7d
 minimal_backoff_time = 1000s
 maximal_backoff_time = 8000s
@@ -103,7 +105,7 @@ virtual_uid_maps = static:5000
 virtual_gid_maps = static:5000
 local_transport = virtual
 local_recipient_maps = $virtual_mailbox_maps
-transport_maps = hash:/etc/postfix/transport
+#transport_maps = hash:/etc/postfix/transport # This breaks everything and wasn't used before
 virtual_transport = virtual
 
 # Dovecot

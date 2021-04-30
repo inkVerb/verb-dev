@@ -40,7 +40,7 @@ $config['db_dsnw'] = 'mysql://rcmailusr:rcpass286@localhost/rcmail';
 // %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
 // %s - domain name after the '@' from e-mail address provided at login screen
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['default_host'] = 'tls://localhost';
+$config['default_host'] = 'tls://nameURI286';
 
 // SMTP server host (for sending mails).
 // To use SSL/TLS connection, enter hostname with prefix ssl:// or tls://
@@ -54,7 +54,7 @@ $config['default_host'] = 'tls://localhost';
 // For example %n = mail.domain.tld, %t = domain.tld
 // inkVerb
 //$config['smtp_server'] = '';
-$config['smtp_server'] = 'tls://localhost';
+$config['smtp_server'] = 'tls://nameURI286';
 
 // SMTP port (default is 25; use 587 for STARTTLS or 465 for the
 // deprecated SSL over SMTP (aka SMTPS))
@@ -153,8 +153,6 @@ $config['draft_autosave'] = 180;
 // Disable localization of the default folder names listed above
 //$config['show_real_foldernames'] = false;
 
-// TLS
-$config['default_host'] = 'tls://mail.nameURI286';
 // For STARTTLS IMAP
 $config['imap_conn_options'] = array(
     'ssl' => array(
@@ -169,7 +167,7 @@ $config['imap_conn_options'] = array(
       //'ssl_key'  => '/etc/ssl/server/server.key',
       // probably optional parameters
       //'ciphers' => 'TLSv1+HIGH:!aNull:@STRENGTH',
-      //'peer_name'         => 'mail.nameURI286',
+      //'peer_name'         => 'nameURI286',
     ),
 );
 // For STARTTLS SMTP
@@ -186,6 +184,6 @@ $config['smtp_conn_options'] = array(
       //'ssl_key'  => '/etc/ssl/server/server.key',
       // probably optional parameters
       //'ciphers' => 'TLSv1+HIGH:!aNull:@STRENGTH',
-      //'peer_name'         => 'mail.nameURI286',
+      //'peer_name'         => 'nameURI286',
     ),
 );

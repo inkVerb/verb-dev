@@ -52,10 +52,7 @@ host = localhost
 
 # Install
 /usr/bin/pacman -Syyu --noconfirm
-/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp
-
-# Troubleshooting
-pacman -S --noconfirm cyrus-sasl
+/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl
 
 # From Ubuntu
 #/usr/bin/pacman -S --noconfirm \
@@ -135,7 +132,24 @@ smtps 465/tcp # inkVerb
 smtps 465/udp # inkVerb
 EOF
 
-## Dovecot
+# SASL
+/usr/bin/mkdir -p /etc/sasl2
+/usr/bin/cat <<EOF > /etc/sasl2/smtpd.conf
+pwcheck_method: saslauthd
+mech_list: PLAIN LOGIN
+log_level: 7
+EOF
+/usr/bin/mkdir -p /etc/pam.d
+/usr/bin/cat <<EOF > /etc/pam.d/smtp
+#%PAM-1.0
+auth            required        pam_unix.so
+account         required        pam_unix.so
+EOF
+## Service
+/usr/bin/systemctl enable saslauthd
+/usr/bin/systemctl start saslauthd
+
+# Dovecot
 /usr/bin/mkdir -p /etc/dovecot/sieve.before.d /etc/dovecot/sieve-filter
 /bin/cp -r /usr/share/doc/dovecot/example-config/conf.d /etc/dovecot
 /bin/cp /opt/verb/conf/lab/vmail/dovecot/dovecot.conf /etc/dovecot/

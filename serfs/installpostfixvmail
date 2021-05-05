@@ -131,6 +131,10 @@ host = localhost
 smtps 465/tcp # inkVerb
 smtps 465/udp # inkVerb
 EOF
+/usr/bin/postmap /etc/postfix/transport
+## Service
+/usr/bin/systemctl enable postfix
+/usr/bin/systemctl start postfix
 
 # SASL
 /usr/bin/mkdir -p /etc/sasl2

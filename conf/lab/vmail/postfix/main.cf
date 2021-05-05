@@ -105,12 +105,13 @@ virtual_uid_maps = static:5000
 virtual_gid_maps = static:5000
 local_transport = virtual
 local_recipient_maps = $virtual_mailbox_maps
-#transport_maps = hash:/etc/postfix/transport # This breaks everything and wasn't used before
-virtual_transport = virtual
+#transport_maps = hash:/etc/postfix/transport # This breaks everything and isn't necessary
+#virtual_transport = virtual # Arch recommended, using legacy "dovecot"
+
 
 # Dovecot
 dovecot_destination_recipient_limit = 1
-content_filter = amavis:[127.0.0.1]:10024
+virtual_transport = dovecot # Legacy setting
 
 # Header (remove super-private details)
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks

@@ -21,22 +21,7 @@ if [ ! -d "/opt/verb" ]; then
 exit 8; fi
 
 # Local
-/usr/bin/locale-gen en_US en_US.UTF-8
-#dpkg-reconfigure locales # This broke the installer with a dialog
-## Set up locality
-/bin/echo "LANG="en_US.UTF-8"
-LANGUAGE="en_US:en"
-LC_ALL="en_US.UTF-8"
-LC_NUMERIC="en_US.UTF-8"
-LC_TIME="en_US.UTF-8"
-LC_MONETARY="en_US.UTF-8"
-LC_PAPER="en_US.UTF-8"
-LC_IDENTIFICATION="en_US.UTF-8"
-LC_NAME="en_US.UTF-8"
-LC_ADDRESS="en_US.UTF-8"
-LC_TELEPHONE="en_US.UTF-8"
-LC_MEASUREMENT="en_US.UTF-8"
-" > /etc/default/locale
+/usr/bin/localectl set-locale LANG=en_US.UTF-8
 
 # Update
 /usr/bin/pacman -Syyu --noconfirm

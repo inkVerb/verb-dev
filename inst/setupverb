@@ -153,10 +153,10 @@ cd /etc/ssl/server
 /usr/bin/rm -f server.csr
 country="na"
 state="na"
-locality="${PHPCITY}"
-commonname="${nameURI}"
+locality="na"
 organization="${nameURI}"
 organizationalunit="IT"
+commonname="${nameURI}"
 email="snakeoil@${nameURI}"
 companyname="${nameURI}"
 /usr/bin/openssl req -new -sha256 -key server.key -out server.csr \
@@ -361,7 +361,8 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ] && [ -d "/etc/nginx" 
 fi
 
 # inkCert mail subdomains
-/opt/verb/serfs/setinkcertmail ${nameURI}
+/opt/verb/serfs/setinkcertmailsubdomains ${nameURI}
+
 # inkCert email web server subdomains for RoundCube and PostfixAdmin
 /bin/sed -i "s/, pfa.${emailTLDURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini
 /bin/sed -i "s/, rc.${emailTLDURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini

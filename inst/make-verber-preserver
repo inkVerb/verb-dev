@@ -21,7 +21,10 @@ if [ ! -d "/opt/verb" ]; then
 exit 8; fi
 
 # Locale
+/usr/bin/cp /etc/locale.gen /etc/locale.gen.orig
+/usr/bin/echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 /usr/bin/localectl set-locale LANG=en_US.UTF-8
+/usr/bin/locale-gen
 
 # Update
 /usr/bin/pacman -Syyu --noconfirm

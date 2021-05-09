@@ -294,6 +294,7 @@ if /bin/grep -Fq "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${nam
 ## inkCert
 else
   /opt/verb/serfs/setinkcertmailcerts
+  /opt/verb/serfs/setinkcertmail ${nameURI} server
 fi
 
 # Create the mailbox table

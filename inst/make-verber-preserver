@@ -20,7 +20,7 @@ if [ ! -d "/opt/verb" ]; then
 /bin/echo "Put the verb directory at /opt/verb first, then try again."
 exit 8; fi
 
-# Local
+# Locale
 /usr/bin/localectl set-locale LANG=en_US.UTF-8
 
 # Update

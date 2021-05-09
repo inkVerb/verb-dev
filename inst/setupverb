@@ -72,20 +72,8 @@ if [ "${SERVERIPV6}" = "IPv6NA" ]; then
   SERVERIPV6=""
 fi
 
-# Locale (incase a VPS deleted it after make-verber-preserver)
-/bin/echo "LANG="en_US.UTF-8"
-LANGUAGE="en_US:en"
-LC_ALL="en_US.UTF-8"
-LC_NUMERIC="en_US.UTF-8"
-LC_TIME="en_US.UTF-8"
-LC_MONETARY="en_US.UTF-8"
-LC_PAPER="en_US.UTF-8"
-LC_IDENTIFICATION="en_US.UTF-8"
-LC_NAME="en_US.UTF-8"
-LC_ADDRESS="en_US.UTF-8"
-LC_TELEPHONE="en_US.UTF-8"
-LC_MEASUREMENT="en_US.UTF-8"
-" > /etc/default/locale
+# Locale (in case a VPS deleted it after make-verber-preserver)
+/usr/bin/localectl set-locale LANG=en_US.UTF-8
 
 # System timezone
 /bin/ln -sfn /usr/share/zoneinfo/${PHPCITY} /etc/localtime

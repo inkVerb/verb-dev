@@ -52,7 +52,7 @@ host = localhost
 
 # Install
 /usr/bin/pacman -Syyu --noconfirm
-/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap roundcubemail spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl
+/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl
 
 # From Ubuntu
 #/usr/bin/pacman -S --noconfirm \

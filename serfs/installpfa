@@ -15,7 +15,7 @@
 ## ./installpfa mysecretpath somepassword
 
 
-CVAPPNAME=postfixadmin
+CVAPPNAME="postfixadmin"
 # Include the config files
 . /opt/verb/conf/servertype
 . /opt/verb/conf/sitenameip

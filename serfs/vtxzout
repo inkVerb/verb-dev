@@ -15,12 +15,12 @@
 ## ./vtxzout mystuff
 
 
-FIL=$1
+FIL="$1"
 
 # Test for a .tar of the same name
 if [ -e "${FIL}.tar.xz" ]; then
   /bin/echo "The file ${FIL}.tar.xz exists, which conflicts with this operation. Deal with that out first."
-  exit 7; fi
+exit 7; fi
 
 # Move to the proper name
 /bin/mv ${FIL}.vtxz ${FIL}.tar.xz

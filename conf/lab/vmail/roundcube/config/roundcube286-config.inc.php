@@ -87,7 +87,7 @@ $config['smtp_pass'] = '%p';
 $config['username_domain'] = '%t';
 
 // Name your service. This is displayed on the login screen and in the window title
-$config['product_name'] = 'nameURI286 Roundcube Webmail';
+$config['product_name'] = 'nameURI286 Roundcube webmail';
 
 // specify an URL relative to the document root of this Roundcube installation
 //$config['support_url'] = 'http://nameURI286'; // Disabling this until a RC becomes stable and a useful support page can be created

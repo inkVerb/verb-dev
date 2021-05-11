@@ -130,7 +130,7 @@ $CONF['fetchmail'] = 'NO';
 $CONF['fetchmail_extra_options'] = 'NO';
 
 $CONF['show_header_text'] = 'YES';
-$CONF['header_text'] = 'nameURI286 email accounts & settings';
+$CONF['header_text'] = '';
 
 $CONF['show_footer_text'] = 'YES';
 $CONF['footer_text'] = 'Login to inkVerb webmail';
@@ -234,6 +234,8 @@ $CONF['new_quota_table'] = 'YES';
 $CONF['create_mailbox_subdirs_hostoptions'] = array('');
 
 $CONF['theme_logo'] = 'images/logo-ink.png';
+
+$CONF['theme_favicon'] = 'images/favicon-ink.ico';
 
 $CONF['theme_css'] = 'css/default.css';
 

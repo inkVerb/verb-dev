@@ -277,6 +277,15 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 # Server type
 /bin/echo 'SERVERTYPE="lamp"' > /opt/verb/conf/servertype
 
+# Pre-install Postfix server packages
+/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl
+
+# Pre-install inkCert-LE
+/usr/bin/pacman -S --noconfirm certbot certbot-apache
+
+# Pre-install inkDNS
+/usr/bin/pacman -S --noconfirm bind certbot-dns-rfc2136
+
 # Remove unneeded packages
 /usr/bin/pacman -Qdt --noconfirm
 

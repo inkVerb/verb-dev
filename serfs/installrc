@@ -138,7 +138,7 @@ if [ ! -d "/srv/www/email/roundcube/plugins/contextmenu" ]; then
 /opt/verb/serfs/vtxzout contextmenu; wait; fi
 
 # Sledgehammertime (Composer plugins)
-## This is excerpted from installrcinkplugins
+## Download Composer
 cd /srv/www/email/roundcube
 /usr/bin/curl -s https://getcomposer.org/installer | php
 /bin/cp composer.json-dist composer.json
@@ -155,15 +155,7 @@ cd /srv/www/email/roundcube
         \"kitist\/html5_notifier\": \"dev-master\",' composer.json
 /bin/sed -i '/\"require\": {/ a\
         \"elm\/identity_smtp\": \"dev-master\",' composer.json
-
-## Adjust PHP max limit
-###DEV May not be necessary with --ignore-platform-req=php
-#/bin/sed -i 's/"php": ">=5.4.0 <8"/"php": ">=5.4.0"/' composer.json
-#/bin/sed -i 's/"php": ">=5.4.0 <8"/"php": ">=5.4.0"/' composer.lock
-#/bin/sed -i 's/\^7.0"/\^7.0 || \^8.0 || \^9.0"/' composer.lock
-#/bin/sed -i 's/\^8.0"/\^8.0 || \^9.0"/' composer.lock
-
-## Now finish the composer installation
+## Run the Composer installation
 ### Ignore requirements that trip false warnings: --ignore-platform-req=
 ### Use the www user so changes can be made to the web directory
 /usr/bin/su www -c 'php composer.phar install -n --ignore-platform-req=php --ignore-platform-req=ext-gd --ignore-platform-req=ext-ldap'

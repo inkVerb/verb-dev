@@ -278,7 +278,7 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /bin/echo 'SERVERTYPE="lamp"' > /opt/verb/conf/servertype
 
 # Pre-install Postfix server packages
-/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl
+/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl opendkim
 
 # Pre-install inkCert-LE
 /usr/bin/pacman -S --noconfirm certbot certbot-apache

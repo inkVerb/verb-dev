@@ -53,7 +53,7 @@ host = localhost
 # Already done in make-verber-*
 # Install
 #/usr/bin/pacman -Syyu --noconfirm
-#/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl
+#/usr/bin/pacman -S --noconfirm postfix postfix-mysql dovecot php-imap spamassassin pigeonhole perl-cpanplus-dist-arch clamav razor msmtp cyrus-sasl opendkim
 
 # From Ubuntu
 #/usr/bin/pacman -S --noconfirm \
@@ -305,7 +305,6 @@ INSERT INTO alias (address, goto, domain, created, modified, active) VALUES ('we
 
 # OpenDKIM
 ## Create/reset OpenDKIM files
-/usr/bin/pacman -S --noconfirm opendkim
 /bin/mkdir -p /etc/opendkim/keys
 /bin/cp /opt/verb/conf/lab/vmail/default/opendkim /etc/default/
 /bin/cp /opt/verb/conf/lab/vmail/opendkim.conf /etc/opendkim/

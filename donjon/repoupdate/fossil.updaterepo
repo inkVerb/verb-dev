@@ -37,7 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar -xvf fossil-linux-x64-${DISTVER}.tar.gz
+tar xf fossil-linux-x64-${DISTVER}.tar.gz
 /bin/rm fossil-linux-x64-${DISTVER}.tar.gz
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
 /bin/rm -rf ${CVAPPNAME}

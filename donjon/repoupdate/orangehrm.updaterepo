@@ -37,7 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-/usr/bin/unzip orangehrm-${DISTVER}.zip
+/usr/bin/unzip -q orangehrm-${DISTVER}.zip
 /bin/rm orangehrm-${DISTVER}.zip
 /bin/mv orangehrm-${DISTVER} ${CVAPPNAME}
 /bin/rm orangehrm-quick-start-guide.html

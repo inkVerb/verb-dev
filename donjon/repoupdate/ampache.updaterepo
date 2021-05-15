@@ -41,7 +41,7 @@ fi
 mkdir ${CVAPPNAME}
 /bin/mv ampache-${DISTVER}_all.zip ${CVAPPNAME}
 cd ${CVAPPNAME}
-/usr/bin/unzip ampache-${DISTVER}_all.zip
+/usr/bin/unzip -q ampache-${DISTVER}_all.zip
 /bin/rm ampache-${DISTVER}_all.zip
 cd ..
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait

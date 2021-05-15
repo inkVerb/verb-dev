@@ -37,7 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-/usr/bin/unzip net2ftp_v${DISTVER}.zip
+/usr/bin/unzip -q net2ftp_v${DISTVER}.zip
 /bin/rm net2ftp_v${DISTVER}.zip
 cd net2ftp_v${DISTVER}
 /bin/mv files_to_upload ../${CVAPPNAME}

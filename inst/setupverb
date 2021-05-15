@@ -90,6 +90,7 @@ fi
 ## Ensure scripts are executable
 /bin/chmod 750 /opt/verb/serfs/*
 /bin/chmod 750 /opt/verb/donjon/*.sh
+/bin/chmod 650 /opt/verb/donjon/clamav
 /bin/chmod 750 /opt/verb/donjon/repoupdate/*
 /bin/chmod 750 /opt/verb/donjon/wpaddsites/*.wpsh
 

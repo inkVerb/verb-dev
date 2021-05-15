@@ -54,7 +54,7 @@ exit 4; else
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-/usr/bin/unzip iwpadmin-${DISTVER}.zip
+/usr/bin/unzip -q iwpadmin-${DISTVER}.zip
 /bin/rm iwpadmin-${DISTVER}.zip
 /bin/mv IWPAdminPanel_v${DISTVER} ${CVAPPNAME}
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait

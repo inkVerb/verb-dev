@@ -37,7 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-/bin/tar -xvf postfixadmin-${DISTVER}.tar.gz
+/bin/tar xf postfixadmin-${DISTVER}.tar.gz
 /bin/rm postfixadmin-${DISTVER}.tar.gz
 /bin/mv postfixadmin-postfixadmin-* ${CVAPPNAME}
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait

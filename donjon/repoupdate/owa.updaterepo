@@ -37,7 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar -xvf ${DISTVER}.tar.gz
+tar xf ${DISTVER}.tar.gz
 /bin/rm ${DISTVER}.tar.gz
 /bin/mv Open-Web-Analytics-${DISTVER} ${CVAPPNAME}
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait

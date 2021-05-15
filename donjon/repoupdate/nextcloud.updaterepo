@@ -39,7 +39,8 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar -xvjf nextcloud-${DISTVER}.tar.bz2
+/usr/bin/echo "Extracting from vendor..."
+/usr/bin/tar xf nextcloud-${DISTVER}.tar.bz2
 /bin/rm nextcloud-${DISTVER}.tar.bz2
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
 /bin/rm -rf ${CVAPPNAME}

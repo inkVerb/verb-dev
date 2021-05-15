@@ -37,6 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q net2ftp_v${DISTVER}.zip
 /bin/rm net2ftp_v${DISTVER}.zip
 cd net2ftp_v${DISTVER}

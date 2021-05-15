@@ -37,6 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q orangehrm-${DISTVER}.zip
 /bin/rm orangehrm-${DISTVER}.zip
 /bin/mv orangehrm-${DISTVER} ${CVAPPNAME}

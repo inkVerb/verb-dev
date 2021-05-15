@@ -39,7 +39,8 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar xvf mediawiki-${DISTVER}.tar.gz
+/usr/bin/echo "Extracting from vendor..."
+/usr/bin/tar xf mediawiki-${DISTVER}.tar.gz
 /bin/rm mediawiki-${DISTVER}.tar.gz
 /bin/mv mediawiki-${DISTVER} ${CVAPPNAME}
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait

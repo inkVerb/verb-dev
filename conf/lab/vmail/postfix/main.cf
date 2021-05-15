@@ -1,5 +1,5 @@
 # Default settings (min version, comments removed)
-compatibility_level = 2
+compatibility_level = 3.6
 queue_directory = /var/spool/postfix
 command_directory = /usr/bin
 daemon_directory = /usr/lib/postfix/bin
@@ -23,19 +23,17 @@ readme_directory = /usr/share/doc/postfix
 inet_protocols = ipv4
 meta_directory = /etc/postfix
 shlib_directory = /usr/lib/postfix
+maillog_file = /var/log/maillog
 
 # SSL certs (symlinks)
-smtpd_tls_cert_file=/etc/inkcert/mail/vmail.crt
-smtpd_tls_key_file=/etc/inkcert/mail/vmail.key
-smtpd_tls_dh2048_param_file = /etc/dovecot/dh.pem
+#smtpd_tls_cert_file=/etc/inkcert/mail/vmail.crt
+#smtpd_tls_key_file=/etc/inkcert/mail/vmail.key
 # Snakeoil Certs
 #smtpd_tls_cert_file=/etc/ssl/server/server.crt
 #smtpd_tls_key_file=/etc/ssl/server/server.key
 
 # SNI
-smtpd_tls_chain_files =
- /etc/inkcert/mail/vmail.key,
- /etc/inkcert/mail/vmail.crt
+smtpd_tls_chain_files = /etc/inkcert/mail/vmail.key, /etc/inkcert/mail/vmail.crt
 tls_server_sni_maps = hash:/etc/postfix/virtual_ssl.map
 
 # TLS
@@ -109,12 +107,12 @@ virtual_gid_maps = static:5000
 local_transport = virtual
 local_recipient_maps = $virtual_mailbox_maps
 #transport_maps = hash:/etc/postfix/transport # This breaks everything and isn't necessary
-#virtual_transport = virtual # Arch recommended, using legacy "dovecot"
-
+# Arch recommended: virtual, failed using legacy "dovecot"
+virtual_transport = virtual
+#virtual_transport = dovecot
 
 # Dovecot
 dovecot_destination_recipient_limit = 1
-virtual_transport = dovecot # Legacy setting
 
 # Header (remove super-private details)
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks

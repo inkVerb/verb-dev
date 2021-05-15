@@ -141,53 +141,45 @@ $CONF['motd_admin'] = 'Ink is a verb. So, get inking!';
 $CONF['motd_superadmin'] = 'Ink is a verb. So, get inking!';
 
 $CONF['welcome_text'] = <<<EOM
-Welcome to inkVerb email! This is real-deal email.
+Welcome to inkVerb email! This is the real-deal.
 
-- Email's settings can be administered at pfa.emailTLDURI286/???
-IMPORTANT NOTE ABOUT FORWARD ADDRESSES: If you want to use one emailbox to send mail "from" a separate forwarding address, the "from" address must be the same domain and must forward to the sending address. Otherwise, your server will reject the send request, which can cause errors in services such as Gmail. For example. If you use "forwards@inkisaverb.com" to send mail via SMTP, but you want to use the "From" identity address as "jimmy@inkisaverb.com", then in Alias/Forwarding settings, "jimmy@inkisaverb.com" must be set to forward emails to "forwards@inkisaverb.com".
+- Email accounts & forwarding are managed at pfa.emailTLDURI286/pfafolder286
 
-- Once emailboxes are set up at pfa.emailTLDURI286/??? you can log into them at rc.emailTLDURI286/??? .
+- Use your favorite client (iPhone Mail, Outlook, Thunderbird, etc.)
 
-- If you set up this email with other email clients, such as Outlook or Thunderbird, you may need to approve the SSL security Certificate before receiving or sending (approve it two times). This is for security.
+- Info for email clients:
 
-- We recommend Thunderbird for a desktop email client since we use it to test our servers, but other clients should also work. For desktop email clients, use IMAP if you want your emails left on the server as "backup" or to sync with email clients on more than one computers; this will count against your space on the server. If you use POP instead, then your email client can delete email from the server (it's in settings) so those emails won't count against your inbox space on the email server, but there will be no backup of your email and you can't sync those emails to any other email client. POP and IMAP can both be good choices, depending on your needs.
+IMAP:   imap.nameURI286   Port: 143/STARTTLS
+SMTP:   smtp.nameURI286   Port: 587/STARTTLS
+POP3:   pop3.nameURI286   Port: 110/STARTTLS
 
-- For using this in Gmail, you may need an @gmail.com address. If you don't log into Gmail with an @gmail.com email address, perhaps wtih another email address that you pay Gmail for, then you may not be able to set up this email with that Gmail account.
+Authentication: Normal password
+Username: [your nameURI286 username/email address]
+Password: [your nameURI286 login password]
 
-- There are a few ways to set up this email address in Gmail:
+- You may also use webmail at: rc.emailTLDURI286/rcfolder286
+
+- You may also set up inside Gmail:
 
 Gmail Part 1: Send "from" another email
 Go to: Settings > Accounts and Import > Send mail as: > Add another email address you own...
 Enter your email address ('Treat as alias' can be either option)...
-On the page with SMTP settings, choose Port 465, SSL, and the password you set in your account at emailTLDURI286.
+On the page with SMTP settings, choose Port 587, TLS, and the password you set in your account at pfa.emailTLDURI286.
 
-Gmail Part 2: POP into your emailbox you set up at pfa.emailTLDURI286/???
-Go to: Settings > Accounts and Import > Check mail from other accunts: > "Add another account" ...Then follow the steps to add the emailbox you created at pfa.emailTLDURI286/???.
+Gmail Part 2 (Option A): POP into your emailbox you set up at pfa.emailTLDURI286/pfafolder286
+Go to: Settings > Accounts and Import > Check mail from other accunts: > "Add another account" ...Then follow the steps to add the emailbox you created at pfa.emailTLDURI286/pfafolder286.
 
-Gmail Part 2 (Option B, less perferable): Forward to your Gmail
-Rather than doing a POP from Gmail into the emailbox created at pfa.emailTLDURI286/???, set up that same emailbox at pfa.emailTLDURI286/??? to "Forward" or "Alias" to your Gmail.
+Gmail Part 2 (Option B): Forward to your Gmail
+Rather than doing a POP from Gmail into the emailbox created at pfa.emailTLDURI286/pfafolder286, set up that same emailbox at pfa.emailTLDURI286/pfafolder286 to "Forward" or "Alias" to your Gmail.
 
-*Gmail NOTE* If you change your password or update the server, you'll also have to update/revisit the same settings in Gmail.
+*NOTE about Gmail: If you change your password or update the server, you'll also have to update/revisit the same settings in Gmail.
 To change the Gmail settings later: Settings > Accounts and Import > Send mail as/Check mail from other accunts > [your email] - "edit info"
+
+*NOTE about forwarding addresses: If you want to use one email address to send mail "from" a separate forwarding address, the "from" address must be the same domain and must forward to the sending address. For example. If you use "forwards@inkisaverb.com" to send mail via SMTP, but you want to use the "From" identity address as "jimmy@inkisaverb.com", then in Alias/Forwarding settings, "jimmy@inkisaverb.com" must be set to forward emails to "forwards@inkisaverb.com".
 
 Thanks for using this real-deal, genuine email server for your email. And, remember...
 
 Ink is a verb. So, ink!
-inkVerb Team
-
-PS Here are the email client settings if you are ever asked:
-* Use "manual" setup
-* Accept all "certificates" (for security questions)
-* STARTTLS is preferred; SSL/TLS doesn't work (SSL and TLS conflict, use SSL or TLS)
-
-IMAP:   imap.emailTLDURI286   Port: 143/STARTTLS 143/TLS 993/SSL (choose)
-POP3:   pop3.emailTLDURI286   Port: 110/STARTTLS 110/TLS 995/SSL (choose)
-SMTP:   smtp.emailTLDURI286   Port: 25/STARTTLS 25/TLS 465/SSL (choose)
-
-Authentication: Normal password
-Username: [your emailTLDURI286 username/email address]
-Password: [your emailTLDURI286 login password]
-
 EOM;
 
 $CONF['emailcheck_resolve_domain']='YES';

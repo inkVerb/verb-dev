@@ -15,6 +15,7 @@
 #dnsblog   unix  -       -       n       -       0       dnsblog
 #tlsproxy  unix  -       -       n       -       0       tlsproxy
 submission inet n       -       n       -       3       smtpd
+smtp       inet  n       -       -       -       3       smtpd
   -o syslog_name=postfix/submission
   -o smtpd_tls_security_level=encrypt
   -o smtpd_sasl_auth_enable=yes
@@ -23,7 +24,7 @@ submission inet n       -       n       -       3       smtpd
 #  -o smtpd_client_restrictions=$mua_client_restrictions
 #  -o smtpd_helo_restrictions=$mua_helo_restrictions
 #  -o smtpd_sender_restrictions=$mua_sender_restrictions
-  -o smtpd_recipient_restrictions=
+#  -o smtpd_recipient_restrictions=
   -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
   -o milter_macro_daemon_name=ORIGINATING
 # SpamAssassin
@@ -33,9 +34,8 @@ spamassassin unix -     n       n       -       -       pipe
      flags=R user=spamd argv=/usr/bin/vendor_perl/spamc -e /usr/bin/sendmail -oi -f ${sender} ${recipient}
 
 # SpamAssassin with Dovecot
-dovecot   unix  -       n       n       -       -       pipe
-     flags=DRhu user=vmail:vmail argv=/usr/bin/vendor_perl/spamc -u spamd -e /usr/lib/dovecot/dovecot-lda -f ${sender} -d ${recipient}
-
+dovecot   unix  -       n       n       -       -       pipe     flags=DRhu user=vmail:vmail argv=/usr/bin/vendor_perl/spamc -u spamd -e /usr/lib/dovecot/dovecot-lda -f ${sender} -d ${recipient}
+#dovecot   unix  -       n       n       -       -       pipe     flags=DRhu user=vmail:vmail argv=/usr/libexec/dovecot/deliver -f ${sender} -d ${recipient}
 # SASL authentication with dovecot
 ## Consider these options if troubleshooting inkVerb, recommended by Arch Linux, but not necessary for a functioning server
 #-o smtpd_sasl_type=dovecot
@@ -53,7 +53,7 @@ smtps     inet  n       -       n       -       3       smtpd
 #  -o smtpd_client_restrictions=$mua_client_restrictions
 #  -o smtpd_helo_restrictions=$mua_helo_restrictions
 #  -o smtpd_sender_restrictions=$mua_sender_restrictions
-  -o smtpd_recipient_restrictions=
+#  -o smtpd_recipient_restrictions=
   -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
   -o milter_macro_daemon_name=ORIGINATING
 #628       inet  n       -       n       -       -       qmqpd

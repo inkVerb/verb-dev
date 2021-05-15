@@ -39,7 +39,8 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar -xvjf owncloud-${DISTVER}.tar.bz2
+/usr/bin/echo "Extracting from vendor..."
+/usr/bin/tar xf owncloud-${DISTVER}.tar.bz2
 /bin/rm owncloud-${DISTVER}.tar.bz2
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
 /bin/rm -rf ${CVAPPNAME}

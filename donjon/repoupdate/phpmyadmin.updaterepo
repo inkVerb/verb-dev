@@ -37,6 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q phpMyAdmin-${DISTVER}-all-languages.zip
 /bin/rm phpMyAdmin-${DISTVER}-all-languages.zip
 /bin/mv phpMyAdmin-${DISTVER}-all-languages ${CVAPPNAME}

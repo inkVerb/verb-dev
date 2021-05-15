@@ -37,6 +37,7 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+/usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q SuiteCRM-${DISTVER}.zip
 /bin/rm SuiteCRM-${DISTVER}.zip
 /bin/mv SuiteCRM-${DISTVER} ${CVAPPNAME}

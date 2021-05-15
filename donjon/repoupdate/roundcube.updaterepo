@@ -37,7 +37,8 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-tar xf roundcubemail-${DISTVER}-complete.tar.gz
+/usr/bin/echo "Extracting from vendor..."
+/usr/bin/tar xf roundcubemail-${DISTVER}-complete.tar.gz
 /bin/rm roundcubemail-${DISTVER}-complete.tar.gz
 /bin/mv roundcubemail-${DISTVER} ${CVAPPNAME}
 /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait

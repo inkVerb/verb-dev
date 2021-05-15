@@ -38,9 +38,10 @@ fi
 /bin/rm -f ${CVAPPNAME}.legacy.vtxz
 /usr/bin/touch ${CVAPPNAME}.vtxz
 /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
-mkdir ${CVAPPNAME}
+/usr/bin/mkdir ${CVAPPNAME}
 /bin/mv ampache-${DISTVER}_all.zip ${CVAPPNAME}
 cd ${CVAPPNAME}
+/usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q ampache-${DISTVER}_all.zip
 /bin/rm ampache-${DISTVER}_all.zip
 cd ..

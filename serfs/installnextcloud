@@ -163,6 +163,8 @@ fi
 
 # Set the database and credentials for Nextcloud from the command line
 /usr/bin/occ maintenance:install --database mysql --database-name ${DBASE} --database-host localhost --database-user ${DBUSER} --database-pass=${DBPASSWORD} --data-dir /var/lib/nextcloud/data/
+#/usr/bin/su www -c "php /usr/bin/occ maintenance:install --database mysql --database-name ${DBASE} --database-host localhost --database-user ${DBUSER} --database-pass=${DBPASSWORD} --data-dir /var/lib/nextcloud/data/"
+
 # Apps
 /usr/bin/occ app:disable recommendation
 /usr/bin/occ app:install notes bookmarks calendar contacts spreed tasks files_markdown news audioplayer mail

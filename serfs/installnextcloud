@@ -78,10 +78,11 @@ APPDDBUSR=${DBUSER}
 APPDDBPAS=${DBPASSWORD}" > /opt/verb/conf/vapp.${CVAPPNAME}
 
 # php-fpm
+/usr/bin/mkdir -p /run/nextcloud
 /usr/bin/cat <<'EOF' > /etc/php/php-fpm.d/nextcloud.conf
 [nextcloud]
-user = nextcloud
-group = nextcloud
+user = www
+group = www
 listen = /run/nextcloud/nextcloud.sock
 env[PATH] = /usr/local/bin:/usr/bin:/bin
 env[TMP] = /tmp
@@ -100,26 +101,25 @@ EOF
 /usr/bin/cat <<'EOF' > /etc/systemd/system/php-fpm.service.d/override.conf
 [Service]
 # Your data directory
-ReadWritePaths=/var/lib/nextcloud/data
+ReadWritePaths=/srv/www/vapps/nextcloud/data
 
 # Optional: add if you've set the default apps directory to be writable in config.php
-ReadWritePaths=/usr/share/webapps/nextcloud/apps
+ReadWritePaths=/srv/www/vapps/nextcloud/apps
 
 # Optional: unnecessary if you've set 'config_is_read_only' => true in your config.php
-ReadWritePaths=/usr/share/webapps/nextcloud/config
-ReadWritePaths=/etc/webapps/nextcloud/config
+ReadWritePaths=/srv/www/vapps/nextcloud/config
 
 # Optional: add if you want to use Nextcloud's internal update process
-# ReadWritePaths=/usr/share/webapps/nextcloud
+# ReadWritePaths=/srv/www/vapps/nextcloud
 EOF
 ## For trouble shooting
 #/usr/bin/sed -i 's?;env\[PATH\] = /usr/local/bin:/usr/bin:/bin?env\[PATH\] = /usr/local/bin:/usr/bin:/bin?' /etc/php/php-fpm.d/www.conf
 /usr/bin/systemctl restart php-fpm; wait
-
+/usr/bin/systemctl daemon-reload
 # Webserver setup
 if [ ${SERVERTYPE} = "laemp" ]; then
   /usr/bin/mv /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf.old
-  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud.conf /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf
+  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud-tar.conf /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf
   /usr/bin/mv /opt/verb/conf/webserver/httpd/sites-available/${blueURI}.conf /opt/verb/conf/webserver/httpd/sites-available/${blueURI}.conf.old
   /usr/bin/rm /opt/verb/conf/webserver/httpd/sites-enabled/${blueURI}.conf
 elif [ ${SERVERTYPE} = "lemp" ]; then
@@ -175,10 +175,10 @@ fi
 # PHP version spoof
 sed -i "s/if (PHP_VERSION_ID >=.*/if (PHP_VERSION_ID >= 90000) {/" /srv/www/vapps/nextcloud/lib/versioncheck.php
 
+##DEV this is disabled because it breaks and causes a "Bad Gateway warning in Nginx across the server"
 # Set the database and credentials for Nextcloud from the command line
-#/usr/bin/su www -c 'php /srv/www/vapps/nextcloud/occ maintenance:install --database mysql --database-name ${DBASE} --database-host localhost --database-user ${DBUSER} --database-pass=${DBPASSWORD} --data-dir /var/lib/nextcloud/data/'
-#/usr/bin/su www -c 'php /srv/www/vapps/nextcloud/occ maintenance:install --database mysql --database-name nextcloudlG49P6 --database-host localhost --database-user nextcloudlG49P6 --database-pass=x870WeniU0 --data-dir /var/lib/nextcloud/data/'
-
+#/usr/bin/chmod ug+x /srv/www/vapps/nextcloud/occ
+#/usr/bin/su www -c 'php /srv/www/vapps/nextcloud/occ maintenance:install --database mysql --database-name ${DBASE} --database-host localhost --database-user ${DBUSER} --database-pass=${DBPASSWORD} --data-dir /srv/www/vapps/nextcloud/data/'
 # Apps
 #/usr/bin/su www -c 'php /srv/www/vapps/nextcloud/occ app:disable recommendation'
 #/usr/bin/su www -c 'php /srv/www/vapps/nextcloud/occ app:install notes bookmarks calendar contacts spreed tasks files_markdown news audioplayer mail'
@@ -186,6 +186,13 @@ sed -i "s/if (PHP_VERSION_ID >=.*/if (PHP_VERSION_ID >= 90000) {/" /srv/www/vapp
 ## Set up cron for updates (manage the crontab files directly)
 /bin/echo '*/15 * * * *  www-data php -f /usr/share/webapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
 /bin/chmod 0644 /etc/cron.d/nextcloud
+
+# See if PFA is installed
+if [ "${SITEPFAPATH}" = "PFA_NOT_INSTALLED" ]; then
+  MESSAGEPFAPATH="_path_after_installed_"
+else
+  MESSAGEPFAPATH="${SITEPFAPATH}"
+fi
 
 # Finish
 /bin/echo "These are setup:
@@ -204,7 +211,7 @@ After installing, do important Admin settings at https://${blueURI}/index.php/se
 - Cron
 2. Email
 - Server address: smtp.${nameURI} Port: 25 (Send mode: SMTP)
-- From address: Use an email address you set up at https://pfa.${emailTLDURI}/${SITEPFAPATH}
+- From address: Use an email address you set up at https://pfa.${emailTLDURI}/${MESSAGEPFAPATH}
 
 After, you may want to run setnextcloudbfdoff to disable brute force detection in order to allow some client apps to work. You can always turn it on again with setnextcloudbfdon
 "

@@ -132,7 +132,7 @@ EOF
 # Webserver setup
 if [ ${SERVERTYPE} = "laemp" ]; then
   /usr/bin/mv /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf.old
-  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud.conf /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf
+  /usr/bin/cp /opt/verb/conf/site-files/conf/nextcloud-pac.conf /opt/verb/conf/webserver/nginx/sites-available/${blueURI}.conf
   /usr/bin/mv /opt/verb/conf/webserver/httpd/sites-available/${blueURI}.conf /opt/verb/conf/webserver/httpd/sites-available/${blueURI}.conf.old
   /usr/bin/rm /opt/verb/conf/webserver/httpd/sites-enabled/${blueURI}.conf
 elif [ ${SERVERTYPE} = "lemp" ]; then
@@ -200,6 +200,13 @@ sed -i "s/if (PHP_VERSION_ID >=.*/if (PHP_VERSION_ID >= 90000) {/" /usr/share/we
 /bin/echo '*/15 * * * *  www-data php -f /usr/share/webapps/nextcloud/cron.php' > /etc/cron.d/nextcloud
 /bin/chmod 0644 /etc/cron.d/nextcloud
 
+# See if PFA is installed
+if [ "${SITEPFAPATH}" = "PFA_NOT_INSTALLED" ]; then
+  MESSAGEPFAPATH="_path_after_installed_"
+else
+  MESSAGEPFAPATH="${SITEPFAPATH}"
+fi
+
 # Finish
 /bin/echo "These are setup:
 
@@ -217,7 +224,7 @@ After installing, do important Admin settings at https://${blueURI}/index.php/se
 - Cron
 2. Email
 - Server address: smtp.${nameURI} Port: 25 (Send mode: SMTP)
-- From address: Use an email address you set up at https://pfa.${emailTLDURI}/${SITEPFAPATH}
+- From address: Use an email address you set up at https://pfa.${emailTLDURI}/${MESSAGEPFAPATH}
 
 After, you may want to run setnextcloudbfdoff to disable brute force detection in order to allow some client apps to work. You can always turn it on again with setnextcloudbfdon
 "

@@ -12,9 +12,9 @@ exit 0
 fi
 
 # Run the script from Nextcloud
-nxcpath='/var/www/vapps/nextcloud'
-htuser='www-data'
-htgroup='www-data'
+nxcpath='/srv/www/vapps/nextcloud'
+htuser='www'
+htgroup='www'
 rootuser='root'
 
 ##NOTE: the "assets" directory breaks the web updater 

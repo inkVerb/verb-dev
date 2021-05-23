@@ -18,12 +18,15 @@ exit 8; fi
 
 IWPEMAIL=$1
 CVAPPNAME=iwpadmin
-# Include the repo versions
+# Include the config files
+. /opt/verb/conf/siteinkget
 . /opt/verb/conf/inklists/repoverlist
 DISTVER="${iwpadmin}"
 
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  cd /opt/verb/repo; fi
+
 # Check current version
-cd /opt/verb/repo
 for VERFILE in ${CVAPPNAME}.ver.*; do
 if [ "${DISTVER}" -le "$(cat ${VERFILE})" ]; then
 /bin/echo "Current version in repo is up to date. Nothing to do."
@@ -50,20 +53,23 @@ exit 4; else
 #exit 4
 #fi
 
-# Set it as the new package
-/bin/rm -f ${CVAPPNAME}.legacy.vtxz
-/usr/bin/touch ${CVAPPNAME}.vtxz
-/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  # Set it as the new package
+  /bin/rm -f ${CVAPPNAME}.legacy.vtxz
+  /usr/bin/touch ${CVAPPNAME}.vtxz
+  /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+fi
 /usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q iwpadmin-${DISTVER}.zip
 /bin/rm iwpadmin-${DISTVER}.zip
 /bin/mv IWPAdminPanel_v${DISTVER} ${CVAPPNAME}
-/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
-/bin/rm -rf ${CVAPPNAME}
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+  /bin/rm -rf ${CVAPPNAME}
 
-# Make a record of current version
-/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+  # Make a record of current version
+  /bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+fi
 
 # Finish
-/bin/echo "Done. This repo now has InfiniteWP-Admin v${DISTVER}."
-
+/bin/echo "Downloaded InfiniteWP-Admin v${DISTVER}."

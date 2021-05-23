@@ -1,7 +1,7 @@
 #!/bin/bash
 # inkVerb donjon asset, verb.ink
 ## This script is written for Nextcloud installation, to ensure all users, folders, and settings are correct
-
+## DEV This is no longer used as of Arch, but kept for reference, it can be deleted from the Verber software
 
 # Check if run previously
 if [ -f /opt/verb/conf/.nextcloudscript ]; then
@@ -37,7 +37,7 @@ chown -R ${htuser}:${htgroup} ${nxcpath}/data/
 chown -R ${htuser}:${htgroup} ${nxcpath}/themes/
 chown -R ${htuser}:${htgroup} ${nxcpath}/updater/
 
-chmod +x ${nxcpath}/occ
+chmod ug+x ${nxcpath}/occ
 
 printf "chmod/chown .htaccess\n"
 if [ -f ${nxcpath}/.htaccess ]

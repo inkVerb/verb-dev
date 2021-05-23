@@ -9,11 +9,13 @@
 
 
 CVAPPNAME=mediawiki
-# Include the repo versions
+# Include the config files
+. /opt/verb/conf/siteinkget
 . /opt/verb/conf/inklists/repoverlist
 DISTVER="${mediawiki}"
 
-cd /opt/verb/repo
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  cd /opt/verb/repo; fi
 
 # Announce
 /bin/echo "Updating the MediaWiki package to v${DISTVER}..."
@@ -35,20 +37,23 @@ else
 exit 4
 fi
 
-# Set it as the new package
-/bin/rm -f ${CVAPPNAME}.legacy.vtxz
-/usr/bin/touch ${CVAPPNAME}.vtxz
-/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  # Set it as the new package
+  /bin/rm -f ${CVAPPNAME}.legacy.vtxz
+  /usr/bin/touch ${CVAPPNAME}.vtxz
+  /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+fi
 /usr/bin/echo "Extracting from vendor..."
 /usr/bin/tar xf mediawiki-${DISTVER}.tar.gz
 /bin/rm mediawiki-${DISTVER}.tar.gz
 /bin/mv mediawiki-${DISTVER} ${CVAPPNAME}
-/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
-/bin/rm -rf ${CVAPPNAME}
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+  /bin/rm -rf ${CVAPPNAME}
 
-# Make a record of current version
-/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+  # Make a record of current version
+  /bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+fi
 
 # Finish
-/bin/echo "Done. This repo now has MediaWiki v${DISTVER}."
-
+/bin/echo "Downloaded MediaWiki v${DISTVER}."

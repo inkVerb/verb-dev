@@ -9,11 +9,13 @@
 
 
 CVAPPNAME=ampache
-# Include the repo versions
+# Include the config files
+. /opt/verb/conf/siteinkget
 . /opt/verb/conf/inklists/repoverlist
 DISTVER="${ampache}"
 
-cd /opt/verb/repo
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  cd /opt/verb/repo; fi
 
 # Announce
 /bin/echo "Updating the Ampache package to v${DISTVER}..."
@@ -34,23 +36,28 @@ else
 exit 4
 fi
 
-# Set it as the new package
-/bin/rm -f ${CVAPPNAME}.legacy.vtxz
-/usr/bin/touch ${CVAPPNAME}.vtxz
-/bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  # Set it as the new package
+  /bin/rm -f ${CVAPPNAME}.legacy.vtxz
+  /usr/bin/touch ${CVAPPNAME}.vtxz
+  /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+fi
 /usr/bin/mkdir ${CVAPPNAME}
 /bin/mv ampache-${DISTVER}_all.zip ${CVAPPNAME}
-cd ${CVAPPNAME}
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  cd ${CVAPPNAME}
+fi
 /usr/bin/echo "Extracting from vendor..."
 /usr/bin/unzip -q ampache-${DISTVER}_all.zip
 /bin/rm ampache-${DISTVER}_all.zip
-cd ..
-/opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
-/bin/rm -rf ${CVAPPNAME}
+if [ $INKGET_METHOD != "ZJZ" ]; then
+  cd ..
+  /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+  /bin/rm -rf ${CVAPPNAME}
 
-# Make a record of current version
-/bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+  # Make a record of current version
+  /bin/echo "${DISTVER}" > ${CVAPPNAME}.ver.${DISTVER}
+fi
 
 # Finish
-/bin/echo "Done. This repo now has Ampache v${DISTVER}."
-
+/bin/echo "Downloaded Ampache v${DISTVER}."

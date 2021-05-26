@@ -591,8 +591,8 @@ cd $OLDPWD
 #/usr/bin/ufw allow ftp
 #/usr/bin/ufw allow sftp
 
-# File permissions for configs
-/bin/chmod 660 -R /opt/verb/conf
+# Security check
+/opt/verb/serfs/setsecure; wait
 
 # Instructions
 ######################### FIX inkCert instructions #########################

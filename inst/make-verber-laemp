@@ -300,6 +300,8 @@ EOF
 /usr/bin/systemctl start php-fpm; wait
 /usr/bin/systemctl enable httpd; wait
 /usr/bin/systemctl start httpd; wait
+/usr/bin/systemctl enable cronie; wait
+/usr/bin/systemctl start cronie; wait
 
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb

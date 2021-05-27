@@ -80,6 +80,5 @@ Postfix Admin:
 - Then run ./postinstallpfa
 
 Roundcube:
-- https://rc.${emailTLDURI}/${RCFOLDER}/installer
-- Then run ./postinstallrc
+- https://rc.${emailTLDURI}/${RCFOLDER}
 "

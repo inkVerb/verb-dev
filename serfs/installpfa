@@ -79,13 +79,7 @@ if [ "$?" = 4 ]; then
 /bin/sed -i "s/rcfolder286/${SITERCPATH}/g" /srv/www/email/postfixadmin/config.local.php
 /bin/sed -i "s/pfafolder286/${PFAFOLDER}/g" /srv/www/email/postfixadmin/config.local.php
 ## Whether web-generated (secure) or auto-generated password
-INSTHASH="$(php -r "echo password_hash('${PFAPASS}', PASSWORD_DEFAULT);")"
-/bin/sed -i "s/\$CONF\['configured'\] = .*/\$CONF\['configured'\] = true;/g" /srv/www/email/postfixadmin/config.local.php
-/bin/sed -i "s/^\$CONF\['setup_password'\] = /#\$CONF\['setup_password'\] = /g" /srv/www/email/postfixadmin/config.local.php
-/bin/sed -i "s/^\$CONF\['setup_password'\] = /#\$CONF\['setup_password'\] = /g" /srv/www/email/postfixadmin/config.inc.php
-/usr/bin/cat <<EOF >> /srv/www/email/postfixadmin/config.local.php
-\$CONF['setup_password'] = '${INSTHASH}';
-EOF
+/opt/verb/serfs/setpfapass ${PFAPASS}
 
 # Replace
 /bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /srv/www/email/postfixadmin/config.local.php

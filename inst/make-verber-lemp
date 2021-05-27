@@ -240,6 +240,8 @@ echo 'security.limit_extensions = .php .html .htm .shtml' >> /etc/php/php-fpm.d/
 /usr/bin/systemctl start nginx; wait
 /usr/bin/systemctl enable php-fpm; wait
 /usr/bin/systemctl start php-fpm; wait
+/usr/bin/systemctl enable cronie; wait
+/usr/bin/systemctl start cronie; wait
 
 # MySQL (viz MariaDB)
 /usr/bin/pacman -S --noconfirm mariadb

@@ -79,7 +79,7 @@ Eg: `./setupverb johnny johnny ink email 56.22.108.77 IPv6NA letsencrypt-message
 
 ## 2. Vmail
 
-`./installvmail YOUR_SECRET`
+`./inkvmailinstall YOUR_SECRET`
 
 ## 3. Start adding your domains
 

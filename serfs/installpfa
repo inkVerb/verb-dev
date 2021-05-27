@@ -48,14 +48,14 @@ exit 8; fi
 
 # Options & secure path
 if [ -n "$1" ]; then
-  export PFAFOLDER=$1 # We need this variable in our Finish echo statement when running via installvmail
+  export PFAFOLDER=$1 # We need this variable in our Finish echo statement when running via inkvmailinstall
 else
-  export PFAFOLDER="$(/usr/bin/pwgen -0 5 1)" # We need this variable in our Finish echo statement when running via installvmail
+  export PFAFOLDER="$(/usr/bin/pwgen -0 5 1)" # We need this variable in our Finish echo statement when running via inkvmailinstall
 fi
 if [ -n "$2" ]; then
-  export PFAPASS=$2 # We need this variable in our Finish echo statement when running via installvmail
+  export PFAPASS=$2 # We need this variable in our Finish echo statement when running via inkvmailinstall
 else
-  export PFAPASS="$(pwgen -1Bcn 10)" # We need this variable in our Finish echo statement when running via installvmail
+  export PFAPASS="$(pwgen -1Bcn 10)" # We need this variable in our Finish echo statement when running via inkvmailinstall
 fi
 
 # Download from repo

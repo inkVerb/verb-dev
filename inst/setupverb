@@ -10,9 +10,9 @@
 ## If using the domain mod (make-dommod), the namespace must be your domain.
 
 # How to use:
-## ./setupverb [host] [namespace] [tld] [email] [serverIPv4] [serverIPv6 - if none use IPv6NA ] [SSLemail] [php.file-limit] [php.up-size] [php.city] [new-port] [new-boss] [boss-pass] [verb-dev - optional]
+## ./setupverb [host] [namespace] [tld] [email] [IT] [serverIPv4] [serverIPv6 - if none use IPv6NA ] [SSLemail] [php.file-limit] [php.up-size] [php.city] [new-port] [new-boss] [boss-pass] [verb-dev - optional]
 # Elaborate how to use:
-## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tls, should be 'email' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/terminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
+## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tld, should be 'email' except multiple servers for namespace] [IT-SQL-FTP server tld, should be 'vip' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/terminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
 
 # IMPORTANT: Choose a hostname that is: 1. short, 2. unique, 3. memorable, and 4. has only numbers and lower-case letters.
 ## You will see this name in terminal tabs and window titles when you connect to your Verber via command line.
@@ -31,10 +31,10 @@
 # America/Los_Angeles
 
 # Eg:
-## ./setupverb johnny johnny ink email 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 Asia/Singapore 22 boss bosspassword
-## ./setupverb johnny johnny ink email 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 Europe/Bucharest 867 boss bosspassword
-## ./setupverb johnny2 johnny pink rocks 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/New_York 5290 boss bosspassword verb-dev-update
-## ./setupverb johnny2 johnny pink rocks 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 America/Phoenix 5290 boss bosspassword verb-dev-update
+## ./setupverb johnny johnny ink email vip 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 Asia/Singapore 22 boss bosspassword
+## ./setupverb johnny johnny ink email vip 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 Europe/Bucharest 867 boss bosspassword
+## ./setupverb johnny2 johnny blue blue blue 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/New_York 5290 boss bosspassword verb-dev-update
+## ./setupverb johnny2 johnny red one kiwi rocks 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 America/Phoenix 5290 boss bosspassword verb-dev-update
 
 ### Domain Mod:
 ## ./setupverb itsme inkisaverb.com ink 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/Detroit 22 boss bosspassword
@@ -49,22 +49,23 @@ HNAME="$1"
 VNAME="$2"
 SERVERTLD="$3"
 SVMAILTLD="$4"
-SERVERIPV4="$5"
-SERVERIPV6="$6"
-SSLEMAIL="$7"
-PHPLIMIT="$8"
-PHPSIZE="$9"
-PHPCITY="${10}"
-NEWPORT="${11}"
-NEWBOSS="${12}"
-NEWBOSSPASS="${13}"
-VUPREPO="${14}"
+ITSQLTLD="$5"
+SERVERIPV4="$6"
+SERVERIPV6="$7"
+SSLEMAIL="$8"
+PHPLIMIT="$9"
+PHPSIZE="${10}"
+PHPCITY="${11}"
+NEWPORT="${12}"
+NEWBOSS="${13}"
+NEWBOSSPASS="${14}"
+VUPREPO="${15}"
 
-if [ -z "${14}" ]; then
+if [ -z "${15}" ]; then
 VUPREPO="verb-dev-update"
 fi
 
-if [ -z "${13}" ]; then
+if [ -z "${14}" ]; then
 /bin/echo "You must set all variables."
 exit 8; fi
 
@@ -109,12 +110,14 @@ if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
 ## This is a config file for other verb scripts
 # Site URI List, whether active or not
 
-emailTLD=\"${SVMAILTLD}\"
 baseDOM=\"${DMODBASE}\"
+emailTLD=\"${SVMAILTLD}\"
+itsqlTLD=\"${ITSQLTLD}\"
 nameURI=\"${SERVERTLD}.${DMODBASE}\"
 hostURI=\"${HNAME}.${SERVERTLD}.${DMODBASE}\"
 serveURI=\"serve.${SERVERTLD}.${DMODBASE}\"
 emailTLDURI=\"${SVMAILTLD}.${DMODBASE}\"
+itsqlTLDURI=\"${ITSQLTLD}.${DMODBASE}\"
 emailURI=\"email.${DMODBASE}\"
 oneURI=\"one.${DMODBASE}\"
 inkURI=\"ink.${DMODBASE}\"
@@ -130,10 +133,12 @@ else
 # Site URI List, whether they are active or not
 
 emailTLD=\"${SVMAILTLD}\"
+itsqlTLD=\"${ITSQLTLD}\"
 nameURI=\"${VNAME}.verb.${SERVERTLD}\"
 hostURI=\"${HNAME}.${VNAME}.verb.${SERVERTLD}\"
 serveURI=\"serve.${VNAME}.verb.${SERVERTLD}\"
 emailTLDURI=\"${VNAME}.verb.${SVMAILTLD}\"
+itsqlTLDURI=\"${VNAME}.verb.${ITSQLTLD}\"
 emailURI=\"${VNAME}.verb.email\"
 oneURI=\"${VNAME}.verb.one\"
 inkURI=\"${VNAME}.verb.ink\"
@@ -217,6 +222,8 @@ if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   ### Replace
   /bin/sed -i "s/emailTLD286/${emailTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+  /bin/sed -i "s/itsqlTLD286/${itsqlTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+  /bin/sed -i "s/itsqlTLDURI286/${itsqlTLDURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/emailURI286/${emailURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/oneURI286/${oneURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/inkURI286/${inkURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
@@ -228,6 +235,10 @@ if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailTLDURI286.conf
   do
     /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI286.conf/}${emailTLDURI}.conf"
+  done
+  for cfg in /opt/verb/conf/webserver/httpd/sites-available/*itsqlTLDURI286.conf
+  do
+    /usr/bin/mv -- "$cfg" "${cfg/%itsqlTLDURI286.conf/}${itsqlTLDURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailURI286.conf
   do
@@ -263,6 +274,8 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ]; then
   ### Replace
   /bin/sed -i "s/emailTLD286/${emailTLD}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
+  /bin/sed -i "s/itsqlTLD286/${itsqlTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
+  /bin/sed -i "s/itsqlTLDURI286/${itsqlTLDURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/emailURI286/${emailURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/oneURI286/${oneURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/inkURI286/${inkURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
@@ -274,6 +287,10 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ]; then
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*emailTLDURI286.conf
   do
     /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI286.conf/}${emailTLDURI}.conf"
+  done
+  for cfg in /opt/verb/conf/webserver/nginx/sites-available/*itsqlTLDURI286.conf
+  do
+    /usr/bin/mv -- "$cfg" "${cfg/%itsqlTLDURI286.conf/}${itsqlTLDURI}.conf"
   done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*emailURI286.conf
   do
@@ -313,6 +330,8 @@ fi
 ## Replace
 /bin/sed -i "s/emailTLD286/${emailTLD}/g" /opt/verb/conf/site-files/conf/*
 /bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /opt/verb/conf/site-files/conf/*
+/bin/sed -i "s/itsqlTLD286/${itsqlTLD}/g" /opt/verb/conf/site-files/conf/*
+/bin/sed -i "s/itsqlTLDURI286/${itsqlTLDURI}/g" /opt/verb/conf/site-files/conf/*
 /bin/sed -i "s/emailURI286/${emailURI}/g" /opt/verb/conf/site-files/conf/*
 /bin/sed -i "s/oneURI286/${oneURI}/g" /opt/verb/conf/site-files/conf/*
 /bin/sed -i "s/inkURI286/${inkURI}/g" /opt/verb/conf/site-files/conf/*
@@ -369,10 +388,17 @@ fi
 /bin/sed -i "s/, rc.${emailTLDURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini
 /bin/sed -i "/^domains =/ s/$/, pfa.${emailTLDURI}, rc.${emailTLDURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${emailTLDURI}.ini
 
+# inkCert email web server subdomains for RoundCube and PostfixAdmin
+/bin/sed -i "s/, sql.${itsqlTLDURI}//g" /opt/verb/conf/inkcert/cli-ini/cli.${itsqlTLDURI}.ini
+/bin/sed -i "/^domains =/ s/$/, sql.${itsqlTLDURI}/" /opt/verb/conf/inkcert/cli-ini/cli.${itsqlTLDURI}.ini
+
 # Enable sites
 . /opt/verb/conf/sitetldstatus
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
   /opt/verb/serfs/ensitenginx pfa.${emailTLDURI} rc.${emailTLDURI}
+fi
+if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+  /opt/verb/serfs/ensitenginx sql.${itsqlTLDURI}
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
   /opt/verb/serfs/ensitenginx ${emailURI} e.${emailURI}
@@ -400,6 +426,9 @@ if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
 fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
   /opt/verb/serfs/ensiteapache pfa.${emailTLDURI} rc.${emailTLDURI}
+fi
+if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
+  /opt/verb/serfs/ensiteapache sql.${itsqlTLDURI}
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
   /opt/verb/serfs/ensiteapache ${emailURI} e.${emailURI}
@@ -516,6 +545,16 @@ hostarpaipv6286  IN  PTR  rc.${emailTLDURI}.
 hostarpaip286  IN  PTR  pfa.${emailTLDURI}.
 hostarpaipv6286  IN  PTR  pfa.${emailTLDURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${SVMAILTLD}
 
+## Set the itsql TLD URI
+/bin/echo "
+; Email Server Records
+sql.${itsqlTLDURI}.	IN  A		hostip286
+sql.${itsqlTLDURI}.	IN  AAAA	hostipv6286" >> /opt/verb/conf/inkdns/inkzones/db.${ITSQLTLD}
+/bin/echo "
+; Email Server PTR Records
+hostarpaip286  IN  PTR  sql.${itsqlTLDURI}.
+hostarpaipv6286  IN  PTR  sql.${itsqlTLDURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${ITSQLTLD}
+
 ## Set the namespace, TLD, and IP values
 /usr/bin/mkdir -p /opt/verb/conf/inkdns/zones
 /bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/inkzones/db.*
@@ -599,9 +638,9 @@ cd $OLDPWD
 /bin/echo "After reboot:
 1. Turn off any unused verb domains and change the email server if you choose
 2. Install:
-  - inkDNS
-  - inkCert (inkcertdole-all-verbs, or inkcertdole ${nameURI} if using multiple servers)
-  - inkVmail
+  - inkDNS (inkdnsinstall)
+  - inkCert (inkcertinstall inkcertdole-all-verbs)
+  - inkVmail (inkvmailinstall)
 
 First, you must reboot the server now using:
 

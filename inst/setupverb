@@ -69,8 +69,53 @@ if [ -z "${14}" ]; then
 /bin/echo "You must set all variables."
 exit 8; fi
 
+# Compress IPv6 or set NA to none
+compress_ipv6() {
+    ip=$1
+
+    blocks=$(/bin/echo $ip | /bin/grep -o "[0-9a-f]\+")
+    set $blocks
+
+    # compress leading zeros
+    ip=$(printf "%x:%x:%x:%x:%x:%x:%x:%x\n" \
+        $(hex2dec $1) \
+        $(hex2dec $2) \
+        $(hex2dec $3) \
+        $(hex2dec $4) \
+        $(hex2dec $5) \
+        $(hex2dec $6) \
+        $(hex2dec $7) \
+        $(hex2dec $8)
+    )
+
+    # prepend : for easier matching
+    ip=:$ip
+
+    # :: must compress the longest chain
+    for pattern in :0:0:0:0:0:0:0:0 \
+            :0:0:0:0:0:0:0 \
+            :0:0:0:0:0:0 \
+            :0:0:0:0:0 \
+            :0:0:0:0 \
+            :0:0; do
+        if /bin/echo $ip | /bin/grep -qs $pattern; then
+            ip=$(/bin/echo $ip | sed "s/$pattern/::/")
+            # if the substitution occured before the end, we have :::
+            ip=$(/bin/echo $ip | sed 's/:::/::/')
+            break # only one substitution
+        fi
+    done
+
+    # remove prepending : if necessary
+    /bin/echo $ip | /bin/grep -qs "^:[^:]" && ip=$(echo $ip | sed 's/://')
+
+    /bin/echo $ip
+}
 if [ "${SERVERIPV6}" = "IPv6NA" ]; then
   SERVERIPV6=""
+else
+  # Call the IP6 compression function just created above
+  SERVERIPV6=$(compress_ipv6 ${SERVERIPV6})
 fi
 
 # Locale (in case a VPS deleted it after make-verber-preserver)
@@ -533,13 +578,13 @@ hostarpaipv6286  IN  PTR  ${hostURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${SI
 
 ## Set the email TLD URI
 /bin/echo "
-; Email Server Records
+; Email Control Records
 rc.${emailTLDURI}.	IN  A		hostip286
 rc.${emailTLDURI}.	IN  AAAA	hostipv6286
 pfa.${emailTLDURI}.	IN  A		hostip286
 pfa.${emailTLDURI}.	IN  AAAA	hostipv6286" >> /opt/verb/conf/inkdns/inkzones/db.${SVMAILTLD}
 /bin/echo "
-; Email Server PTR Records
+; Email Control PTR Records
 hostarpaip286  IN  PTR  rc.${emailTLDURI}.
 hostarpaipv6286  IN  PTR  rc.${emailTLDURI}.
 hostarpaip286  IN  PTR  pfa.${emailTLDURI}.
@@ -547,11 +592,11 @@ hostarpaipv6286  IN  PTR  pfa.${emailTLDURI}." >> /opt/verb/conf/inkdns/inkzones
 
 ## Set the itsql TLD URI
 /bin/echo "
-; Email Server Records
+; IT Control Records
 sql.${itsqlTLDURI}.	IN  A		hostip286
 sql.${itsqlTLDURI}.	IN  AAAA	hostipv6286" >> /opt/verb/conf/inkdns/inkzones/db.${ITSQLTLD}
 /bin/echo "
-; Email Server PTR Records
+; IT Control PTR Records
 hostarpaip286  IN  PTR  sql.${itsqlTLDURI}.
 hostarpaipv6286  IN  PTR  sql.${itsqlTLDURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${ITSQLTLD}
 

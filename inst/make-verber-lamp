@@ -286,7 +286,7 @@ sed -i "s?#  include /etc/monit.d?  include /etc/monit.d?" /etc/monitrc
 /usr/bin/pacman -S --noconfirm certbot certbot-apache
 
 # Pre-install inkDNS
-/usr/bin/pacman -S --noconfirm bind certbot-dns-rfc2136
+/usr/bin/pacman -S --noconfirm bind dnsutils certbot-dns-rfc2136
 
 # Remove unneeded packages
 /usr/bin/pacman -Qdt --noconfirm

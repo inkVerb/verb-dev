@@ -603,6 +603,8 @@ hostarpaipv6286  IN  PTR  sql.${itsqlTLDURI}." >> /opt/verb/conf/inkdns/inkzones
 /bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/db.dnsdomain
 /bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
+/bin/sed -i "s/hostURI286/${hostURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
+/bin/sed -i "s/hostURI286/${hostURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
 /bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
 

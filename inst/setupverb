@@ -569,8 +569,7 @@ EOF
 /bin/echo "
 ; FQDN Host Records
 ${hostURI}.	IN  A		hostip286
-${hostURI}.	IN  AAAA	hostipv6286
-" >> /opt/verb/conf/inkdns/inkzones/db.${SITETLD}
+${hostURI}.	IN  AAAA	hostipv6286" >> /opt/verb/conf/inkdns/inkzones/db.${SITETLD}
 /bin/echo "
 ; FQDN PTR Host Records
 hostarpaip286  IN  PTR  ${hostURI}.
@@ -578,17 +577,9 @@ hostarpaipv6286  IN  PTR  ${hostURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${SI
 
 ## Set the email TLD URI
 /bin/echo "
-; Email Control Records
-rc.${emailTLDURI}.	IN  A		hostip286
-rc.${emailTLDURI}.	IN  AAAA	hostipv6286
-pfa.${emailTLDURI}.	IN  A		hostip286
-pfa.${emailTLDURI}.	IN  AAAA	hostipv6286" >> /opt/verb/conf/inkdns/inkzones/db.${SVMAILTLD}
+; Email Control Records" >> /opt/verb/conf/inkdns/inkzones/db.${SVMAILTLD}
 /bin/echo "
-; Email Control PTR Records
-hostarpaip286  IN  PTR  rc.${emailTLDURI}.
-hostarpaipv6286  IN  PTR  rc.${emailTLDURI}.
-hostarpaip286  IN  PTR  pfa.${emailTLDURI}.
-hostarpaipv6286  IN  PTR  pfa.${emailTLDURI}." >> /opt/verb/conf/inkdns/inkzones/nv.${SVMAILTLD}
+; Email Control PTR Records" >> /opt/verb/conf/inkdns/inkzones/nv.${SVMAILTLD}
 
 ## Set the itsql TLD URI
 /bin/echo "
@@ -684,8 +675,8 @@ cd $OLDPWD
 1. Turn off any unused verb domains and change the email server if you choose
 2. Install:
   - inkDNS (inkdnsinstall)
-  - inkCert (inkcertinstall; inkcertdole-all-verbs)
   - inkVmail (inkvmailinstall)
+  - inkCert (inkcertinstall; inkcertdole-all-verbs)
 
 First, you must reboot the server now using:
 

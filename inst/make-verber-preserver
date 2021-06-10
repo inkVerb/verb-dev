@@ -15,9 +15,9 @@
 ## ./make-verber-preserver
 
 
-# Directory check
-if [ ! -d "/opt/verb" ]; then
-/bin/echo "Put the verb directory at /opt/verb first, then try again."
+# File check
+if [ ! -f "/opt/verb/inst/make-verber-preserver" ]; then
+  /bin/echo "Put the verb directory at /opt/verb first, then try again."
 exit 8; fi
 
 # Locale

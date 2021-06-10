@@ -45,7 +45,40 @@
 ## Get PHP timezone list at: http://php.net/manual/en/timezones.php
 
 
-HNAME="$1"
+# Setup check
+if [ -f "/opt/verb/inst/make-verber-preserver" ]; then
+  /bin/echo "Run make-verber-preserver first, then try again."
+exit 8; fi
+if [ -f "/opt/verb/inst/make-verber-lemp" ] && [ -f "/opt/verb/inst/make-verber-lamp" ] && [ -f "/opt/verb/inst/make-verber-laemp" ]; then
+  /bin/echo "You didn't yet make the verber LEMP, LAMP, or LAEMP, I quit."
+exit 8; fi
+
+# File check
+if [ ! -f "/opt/verb/inst/setupverb" ]; then
+  /bin/echo "I'm not where I'm supposed to be, I quit."
+exit 8; fi
+
+# Slave DNS Server check
+## This will check for consistency in the Slave DNS hostname preconfiguration and the host argument
+if [ -f "/opt/verb/conf/inkdns/sdns/dnshost" ]; then
+  . /opt/verb/conf/inkdns/sdns/dnshost
+  if [ "${HOSTNAME}" = "$1" ]; then
+    HNAME="$1"
+    HOSTURI="${DNSSLAVE}"
+  else
+    /bin/echo "Argued host is not the same as the DNS preconfig, I quit."
+    exit 8
+  fi
+else # Normal verber, not Slave DNS
+  HNAME="$1"
+  if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
+    . /opt/verb/inst/domain.mod.conf
+    HOSTURI="${HNAME}.${SERVERTLD}.${DMODBASE}"
+  else
+    HOSTURI="${HNAME}.${VNAME}.verb.${SERVERTLD}"
+  fi
+fi
+
 VNAME="$2"
 SERVERTLD="$3"
 SVMAILTLD="$4"
@@ -151,15 +184,13 @@ fi
 ## domain.mod?
 if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
 . /opt/verb/inst/domain.mod.conf
-/bin/echo "#!/bin/sh
-## This is a config file for other verb scripts
-# Site URI List, whether active or not
-
+/usr/bin/cat <<EOF > /opt/verb/conf/siteurilist
+#!/bin/sh
 baseDOM=\"${DMODBASE}\"
 emailTLD=\"${SVMAILTLD}\"
 itsqlTLD=\"${ITSQLTLD}\"
 nameURI=\"${SERVERTLD}.${DMODBASE}\"
-hostURI=\"${HNAME}.${SERVERTLD}.${DMODBASE}\"
+hostURI=\"${HOSTURI}\"
 serveURI=\"serve.${SERVERTLD}.${DMODBASE}\"
 emailTLDURI=\"${SVMAILTLD}.${DMODBASE}\"
 itsqlTLDURI=\"${ITSQLTLD}.${DMODBASE}\"
@@ -170,17 +201,15 @@ blueURI=\"blue.${DMODBASE}\"
 vipURI=\"vip.${DMODBASE}\"
 kiwiURI=\"kiwi.${DMODBASE}\"
 redURI=\"red.${DMODBASE}\"
-" > /opt/verb/conf/siteurilist
+EOF
 ## Normal verb domains
 else
-/bin/echo "#!/bin/sh
-## This is a config file for other verb scripts
-# Site URI List, whether they are active or not
-
+/usr/bin/cat <<EOF > /opt/verb/conf/siteurilist
+#!/bin/sh
 emailTLD=\"${SVMAILTLD}\"
 itsqlTLD=\"${ITSQLTLD}\"
 nameURI=\"${VNAME}.verb.${SERVERTLD}\"
-hostURI=\"${HNAME}.${VNAME}.verb.${SERVERTLD}\"
+hostURI=\"${HOSTURI}\"
 serveURI=\"serve.${VNAME}.verb.${SERVERTLD}\"
 emailTLDURI=\"${VNAME}.verb.${SVMAILTLD}\"
 itsqlTLDURI=\"${VNAME}.verb.${ITSQLTLD}\"
@@ -191,7 +220,7 @@ blueURI=\"${VNAME}.verb.blue\"
 vipURI=\"${VNAME}.verb.vip\"
 kiwiURI=\"${VNAME}.verb.kiwi\"
 redURI=\"${VNAME}.verb.red\"
-" > /opt/verb/conf/siteurilist
+EOF
 fi
 . /opt/verb/conf/siteurilist
 
@@ -531,7 +560,6 @@ GRANT ALL PRIVILEGES ON *.* TO '${NEWBOSS}'@'localhost' IDENTIFIED BY '${NEWBOSS
 FLUSH PRIVILEGES;"
 
 # Host name
-
 /usr/bin/hostnamectl set-hostname ${HNAME}
 ##DEV this restart causes an "is masked" error and may not be necessary with the mandatory reboot after setupverb
 #/bin/systemctl restart hostname
@@ -597,16 +625,12 @@ hostarpaipv6286  IN  PTR  sql.${itsqlTLDURI}." >> /opt/verb/conf/inkdns/inkzones
 /bin/sed -i "s/hostip286/${SERVERIPV4}/g" /opt/verb/conf/inkdns/db.dnsdomain
 /bin/sed -i "s/hostipv6286/${SERVERIPV6}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/hostipv6286/${SERVERIPV6}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/sitename286/${SITENAME}/g" /opt/verb/conf/inkdns/inkzones/db.*
-/bin/sed -i "s/sitename286/${SITENAME}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/inkzones/db.*
-/bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/db.dnsdomain
-/bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
-/bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
 /bin/sed -i "s/hostURI286/${hostURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/hostURI286/${hostURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
+/bin/sed -i "s/sitename286/${SITENAME}/g" /opt/verb/conf/inkdns/inkzones/db.*
+/bin/sed -i "s/sitetld286/${SITETLD}/g" /opt/verb/conf/inkdns/inkzones/db.*
+/bin/sed -i "s/nameURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
 /bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/inkzones/db.*
-/bin/sed -i "s/mailURI286/${nameURI}/g" /opt/verb/conf/inkdns/db.dnsdomain
 
 ### nv.*
 /bin/sed -i "s/hostarpaip286/${SITEARPAIP4}/g" /opt/verb/conf/inkdns/inkzones/nv.*
@@ -661,12 +685,6 @@ cd $OLDPWD
 /bin/sed -i "/SITEPORT.*/ c\SITEPORT=${NEWPORT}" /opt/verb/conf/siteport
 /usr/bin/ufw allow ${NEWPORT}
 /usr/bin/ufw --force enable; wait
-## Reset settings
-#/usr/bin/ufw allow ssh
-#/usr/bin/ufw allow http
-#/usr/bin/ufw allow https
-#/usr/bin/ufw allow ftp
-#/usr/bin/ufw allow sftp
 
 # Security check
 /opt/verb/serfs/setsecure; wait

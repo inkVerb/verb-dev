@@ -13,13 +13,22 @@
 ## Should the MySQL root password become necessary it is a headache if lost. Hence, it is saved in this one lo/bin/cation and you don't need to keep track of it.
 
 # How to use:
-## ./make-verber [swap-size, choose GB: 1, 2, 4, 8, 16, 32, 64 - optional (2 default, must be set for root password)] [mysql root password - optional]
+## ./make-verber-lemp [swap-size, choose GB: 1, 2, 4, 8, 16, 32, 64 - optional (2 default, must be set for root password)] [mysql root password - optional]
 
 # Eg:
-## ./make-verber 1 mysqlrootpass
-## ./make-verber 4
-## ./make-verber 2 chewcud62
+## ./make-verber-lemp 1 mysqlrootpass
+## ./make-verber-lemp 4
+## ./make-verber-lemp 2 chewcud62
 
+
+# Setup check
+if [ -f "/opt/verb/inst/make-verber-preserver" ]; then
+  /bin/echo "Run make-verber-preserver first, then try again."
+exit 8; fi
+# File check
+if [ ! -f "/opt/verb/inst/make-verber-lemp" ]; then
+  /bin/echo "I'm not where I'm supposed to be, I quit."
+exit 8; fi
 
 # Good housekeeping
 /bin/chmod 750 /opt/verb/serfs/*

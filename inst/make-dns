@@ -1,0 +1,35 @@
+#!/bin/bash
+#inkVerbMaker! verb.ink
+
+# This presets host information of this verber to become a DNS server for other verbers
+## This creates the directory verb/conf/inkdns/sdns/ to store configurations for transfered secondary DNS domains
+
+# How to use:
+## ./make-dns [host] [domain.tld subdomain.domain.tld]
+
+# Eg:
+## ./make-dns ns1 server.inkisaverb.com # So, the server would be ns1.server.inkisaverb.com
+## ./make-dns ns1 inkisaverb.com # So, the server would be ns1.inkisaverb.com
+## ./make-dns ns2 inkisaverb.com
+
+HOST=$1
+DOMAIN=$2
+
+
+# Location check
+if [ ! -f "/opt/verb/inst/make-dns" ]; then
+  /bin/echo "I'm not where I'm supposed to be, I quit."
+exit 8; fi
+# Setup check
+if [ ! -f "/opt/verb/inst/setupverb" ]; then
+  /bin/echo "It looks like the verber was already setup. Too late, I quit."
+exit 8; fi
+
+# inkDNS slaves directory
+/usr/bin/mkdir -p /opt/verb/conf/inkdns/sdns
+
+# Set the config
+/usr/bin/cat <<EOF > /opt/verb/conf/inkdns/sdns/dnshost
+DNSSLAVE="${HOST}.${DOMAIN}"
+HOSTNAME="${HOST}"
+EOF

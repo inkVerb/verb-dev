@@ -1,6 +1,4 @@
 #!/bin/sh
-## This is a config file for other verb scripts
-
 SITENAME="name286"
 SITEHOST="host286"
 SITETLD="tld286"

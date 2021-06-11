@@ -36,6 +36,9 @@ fi
 # Mail cert links
 /opt/verb/serfs/killinkcertmailcerts ${DOMAIN}
 
+# Mail DNS zone entries
+/opt/verb/serfs/inkdnskillmail ${DOMAIN}
+
 # Dovecot
 /bin/rm -f /etc/dovecot/crt.d/${DOMAIN}.conf
 

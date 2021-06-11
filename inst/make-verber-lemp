@@ -307,6 +307,7 @@ EOF
 /bin/ln -sfn /srv/vip /opt/verb/boss/
 /bin/ln -sfn /srv/vip /root/
 ## And the domains directory for hosted domains
+/bin/mkdir -p /srv/www/verb
 /bin/mkdir -p /srv/www/domains
 /bin/mkdir -p /srv/www/forwards
 ## Create inkVerb app directories

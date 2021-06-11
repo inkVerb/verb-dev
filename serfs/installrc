@@ -79,8 +79,26 @@ FLUSH PRIVILEGES;"
 
 # Webserver
 ## Web directories
-/bin/ln -sfn /srv/www/email/roundcube /srv/www/html/${SITEEMAILTLD}.rc/${RCFOLDER}
-/bin/chown -R www:www /srv/www/html/${SITEEMAILTLD}.rc
+/usr/bin/mkdir -p /srv/www/verb/${SITEEMAILTLD}.rc
+/bin/ln -sfn /srv/www/email/roundcube /srv/www/verb/${SITEEMAILTLD}.rc/${RCFOLDER}
+/bin/chown -R www:www /srv/www/verb/${SITEEMAILTLD}.rc
+## Hosting conf
+if [ ${SERVERTYPE} = "laemp" ]; then
+  /bin/cp /opt/verb/conf/site-files/conf/rc-nginx.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf
+  /bin/cp /opt/verb/conf/site-files/conf/rc-httpd.conf /opt/verb/conf/webserver/httpd/sites-enabled/rc.${emailTLDURI}.conf
+  /opt/verb/serfs/ensitenginx rc.${emailTLDURI}
+  /opt/verb/serfs/ensiteapache pfa.${emailTLDURI}
+  /usr/bin/systemctl restart nginx; wait
+  /usr/bin/systemctl restart httpd; wait
+elif [ ${SERVERTYPE} = "lemp" ]; then
+  /bin/cp /opt/verb/conf/site-files/conf/rc-nginx.conf /opt/verb/conf/webserver/nginx/sites-available/rc.${emailTLDURI}.conf
+  /opt/verb/serfs/ensitenginx rc.${emailTLDURI}
+  /usr/bin/systemctl restart nginx; wait
+elif [ ${SERVERTYPE} = "lamp" ]; then
+  /bin/cp /opt/verb/conf/site-files/conf/rc-httpd.conf /opt/verb/conf/webserver/httpd/sites-enabled/rc.${emailTLDURI}.conf
+  /opt/verb/serfs/ensiteapache rc.${emailTLDURI}
+  /usr/bin/systemctl restart httpd; wait
+fi
 
 # inkCert
 ## This adds the declared domain to the end of the "domains =" line

@@ -161,11 +161,6 @@ IncludeOptional /etc/httpd/sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
 </html>
 EOF
 
-## Verber Apache site configs
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
-/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
-/usr/bin/chown -R www:www /srv/www/html
-
 ## PHP
 /usr/bin/pacman -S --noconfirm php php-fpm
 
@@ -244,6 +239,7 @@ EOF
 /bin/ln -sfn /srv/vip /opt/verb/boss/
 /bin/ln -sfn /srv/vip /root/
 ## And the domains directory for hosted domains
+/bin/mkdir -p /srv/www/verb
 /bin/mkdir -p /srv/www/domains
 /bin/mkdir -p /srv/www/forwards
 ## Create inkVerb app directories

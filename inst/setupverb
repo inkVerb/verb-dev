@@ -295,7 +295,6 @@ fi
 if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   ### Replace
   /bin/sed -i "s/emailTLD286/${emailTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
-  /bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/itsqlTLD286/${itsqlTLD}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/itsqlTLDURI286/${itsqlTLDURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/emailURI286/${emailURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
@@ -306,10 +305,6 @@ if [ -d "/opt/verb/conf/webserver/httpd/sites-available" ]; then
   /bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   /bin/sed -i "s/redURI286/${redURI}/g" /opt/verb/conf/webserver/httpd/sites-available/*.conf
   ### Rename
-  for cfg in /opt/verb/conf/webserver/httpd/sites-available/*emailTLDURI286.conf
-  do
-    /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI286.conf/}${emailTLDURI}.conf"
-  done
   for cfg in /opt/verb/conf/webserver/httpd/sites-available/*itsqlTLDURI286.conf
   do
     /usr/bin/mv -- "$cfg" "${cfg/%itsqlTLDURI286.conf/}${itsqlTLDURI}.conf"
@@ -347,7 +342,6 @@ fi
 if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ]; then
   ### Replace
   /bin/sed -i "s/emailTLD286/${emailTLD}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
-  /bin/sed -i "s/emailTLDURI286/${emailTLDURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/itsqlTLD286/${itsqlTLD}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/itsqlTLDURI286/${itsqlTLDURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/emailURI286/${emailURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
@@ -358,10 +352,6 @@ if [ -d "/opt/verb/conf/webserver/nginx/sites-available" ]; then
   /bin/sed -i "s/kiwiURI286/${kiwiURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   /bin/sed -i "s/redURI286/${redURI}/g" /opt/verb/conf/webserver/nginx/sites-available/*.conf
   ### Rename
-  for cfg in /opt/verb/conf/webserver/nginx/sites-available/*emailTLDURI286.conf
-  do
-    /usr/bin/mv -- "$cfg" "${cfg/%emailTLDURI286.conf/}${emailTLDURI}.conf"
-  done
   for cfg in /opt/verb/conf/webserver/nginx/sites-available/*itsqlTLDURI286.conf
   do
     /usr/bin/mv -- "$cfg" "${cfg/%itsqlTLDURI286.conf/}${itsqlTLDURI}.conf"
@@ -469,9 +459,6 @@ fi
 # Enable sites
 . /opt/verb/conf/sitetldstatus
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
-  /opt/verb/serfs/ensitenginx pfa.${emailTLDURI} rc.${emailTLDURI}
-fi
-if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
   /opt/verb/serfs/ensitenginx sql.${itsqlTLDURI}
 fi
 if [ ${VERBemail} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
@@ -497,9 +484,6 @@ if [ ${VERBred} = "true" ] && [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "
 fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
   /bin/systemctl restart nginx; wait
-fi
-if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lamp" ]; then
-  /opt/verb/serfs/ensiteapache pfa.${emailTLDURI} rc.${emailTLDURI}
 fi
 if [ ${SERVERTYPE} = "laemp" ] || [ ${SERVERTYPE} = "lemp" ]; then
   /opt/verb/serfs/ensiteapache sql.${itsqlTLDURI}

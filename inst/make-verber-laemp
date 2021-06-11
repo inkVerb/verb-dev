@@ -106,7 +106,7 @@ cd ..
 # Record the MySQL root password
 /bin/echo "${MYSQLPASS}" > /opt/verb/inst/mysqlrootpassword
 
-#  LEMP Server
+#  LAEMP Server
 ## Web directory
 /usr/bin/mkdir -p /srv/www/html
 /usr/bin/useradd -g www www
@@ -163,11 +163,6 @@ EOF
 
 ## New Apache & Nginx site-files
 /usr/bin/cp /opt/verb/inst/webserver/laemp-conf/* /opt/verb/conf/site-files/conf/
-
-## Verber Apache site defaults
-/usr/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/
-/usr/bin/cp -r /opt/verb/inst/conf/lab/html/0sitedefaultInProgress /srv/www/html/vsslsitedefault
-/usr/bin/chown -R www:www /srv/www/html
 
 ## Nginx
 /usr/bin/pacman -S --noconfirm nginx
@@ -367,6 +362,7 @@ EOF
 /bin/ln -sfn /srv/vip /opt/verb/boss/
 /bin/ln -sfn /srv/vip /root/
 ## And the domains directory for hosted domains
+/bin/mkdir -p /srv/www/verb
 /bin/mkdir -p /srv/www/domains
 /bin/mkdir -p /srv/www/forwards
 ## Create inkVerb app directories

@@ -3,7 +3,7 @@
 
 # This makes the initial inkVerb Verber server with a "boss" sudoer user, new SSH login port, the name286 namespace for setupverb
 ## Prerequisite: Copy the Vubuntu directory contents (verb) to /var/local/
-## Prerequisite: make-verber-preserver
+## Prerequisite: make-preverber
 
 # NOTE on MySQL:
 ## The MySQL root password will be saved to a filename in the inst directory for your reference
@@ -22,8 +22,8 @@
 
 
 # Setup check
-if [ -f "/opt/verb/inst/make-verber-preserver" ]; then
-  /bin/echo "Run make-verber-preserver first, then try again."
+if [ -f "/opt/verb/inst/make-preverber" ]; then
+  /bin/echo "Run make-preverber first, then try again."
 exit 8; fi
 # File check
 if [ ! -f "/opt/verb/inst/make-verber-lemp" ]; then

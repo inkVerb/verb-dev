@@ -12,11 +12,11 @@
 ### configure locale
 
 # How to use:
-## ./make-verber-preserver
+## ./make-preverber
 
 
 # File check
-if [ ! -f "/opt/verb/inst/make-verber-preserver" ]; then
+if [ ! -f "/opt/verb/inst/make-preverber" ]; then
   /bin/echo "Put the verb directory at /opt/verb first, then try again."
 exit 8; fi
 
@@ -56,4 +56,4 @@ Then log back onto the server to run make-verber.
 "
 
 # Delete this one-time script
-/bin/rm -f /opt/verb/inst/make-verber-preserver
+/bin/rm -f /opt/verb/inst/make-preverber

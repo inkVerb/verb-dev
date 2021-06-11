@@ -45,7 +45,7 @@ On a fresh Ubuntu VPS with ssh keys already installed...
 
 `mv verb-dev verb && cd verb/inst`
 
-`./make-verber-preserver`
+`./make-preverber`
 
 `reboot`
 

@@ -13,5 +13,5 @@
 
 SITEOFF=$1
 
-/bin/sed -i "s/VERB${SITEOFF}=.*/VERB${SITEOFF}=true/g" /opt/verb/inst/conf/sitetldstatus286
+/bin/sed -i "s/VERB${SITEOFF}=.*/VERB${SITEOFF}=true/g" /opt/verb/conf/sitetldstatus286
 

@@ -62,7 +62,7 @@ This has a few advantages to the webmaster, saves money, and pays the bills.
 
 3. Run the scripts
 	`cd /opt/verb/inst`
-	i. `./make-verber-preserver`    # prepares the server, mainly for locale
+	i. `./make-preverber`    # prepares the server, mainly for locale
 		* Follow in-file instructions, has optional parameters, reboot
 		* Choose "y" or "Yes" when prompted
 		* Locale setup may ask for settings, defaults should be okay, US-English is usually the goal.
@@ -131,7 +131,7 @@ I. All files are in the "verb" directory
 	B. Note basic directory (folder) structures (folder and directory are used interchangeably in Verber instructions)
 		- verb is the install folder
 		- Before being installed, verb only contains: INSTALL, serfs, and inst
-		- First, the "Verber" server must be pre-made (make-verber-preserver), then made (make-verber).
+		- First, the "Verber" server must be pre-made (make-preverber), then made (make-verber).
 		- Installing with "setupverb" will create the local/verb directory: configs
 		- After installing with "setupverb", the inst directory can theoretically be deleted but it is not at all necessary
 	C. The "configs" directory is simple and useful, created by setupverb, containing many things:

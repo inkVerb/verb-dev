@@ -46,8 +46,8 @@
 
 
 # Setup check
-if [ -f "/opt/verb/inst/make-verber-preserver" ]; then
-  /bin/echo "Run make-verber-preserver first, then try again."
+if [ -f "/opt/verb/inst/make-preverber" ]; then
+  /bin/echo "Run make-preverber first, then try again."
 exit 8; fi
 if [ -f "/opt/verb/inst/make-verber-lemp" ] && [ -f "/opt/verb/inst/make-verber-lamp" ] && [ -f "/opt/verb/inst/make-verber-laemp" ]; then
   /bin/echo "You didn't yet make the verber LEMP, LAMP, or LAEMP, I quit."
@@ -59,6 +59,8 @@ if [ ! -f "/opt/verb/inst/setupverb" ]; then
 exit 8; fi
 
 # Slave DNS Server check
+VNAME="$2"
+SERVERTLD="$3"
 ## This will check for consistency in the Slave DNS hostname preconfiguration and the host argument
 if [ -f "/opt/verb/conf/inkdns/sdns/dnshost" ]; then
   . /opt/verb/conf/inkdns/sdns/dnshost
@@ -79,8 +81,6 @@ else # Normal verber, not Slave DNS
   fi
 fi
 
-VNAME="$2"
-SERVERTLD="$3"
 SVMAILTLD="$4"
 ITSQLTLD="$5"
 SERVERIPV4="$6"
@@ -103,6 +103,9 @@ if [ -z "${14}" ]; then
 exit 8; fi
 
 # Compress IPv6 or set NA to none
+hex2dec(){
+    [ "$1" != "" ] && printf "%d" "$(( 0x$1 ))"
+}
 compress_ipv6() {
     ip=$1
 
@@ -151,7 +154,7 @@ else
   SERVERIPV6=$(compress_ipv6 ${SERVERIPV6})
 fi
 
-# Locale (in case a VPS deleted it after make-verber-preserver)
+# Locale (in case a VPS deleted it after make-preverber)
 /usr/bin/localectl set-locale LANG=en_US.UTF-8
 
 # System timezone
@@ -186,40 +189,40 @@ if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
 . /opt/verb/inst/domain.mod.conf
 /usr/bin/cat <<EOF > /opt/verb/conf/siteurilist
 #!/bin/sh
-baseDOM=\"${DMODBASE}\"
-emailTLD=\"${SVMAILTLD}\"
-itsqlTLD=\"${ITSQLTLD}\"
-nameURI=\"${SERVERTLD}.${DMODBASE}\"
-hostURI=\"${HOSTURI}\"
-serveURI=\"serve.${SERVERTLD}.${DMODBASE}\"
-emailTLDURI=\"${SVMAILTLD}.${DMODBASE}\"
-itsqlTLDURI=\"${ITSQLTLD}.${DMODBASE}\"
-emailURI=\"email.${DMODBASE}\"
-oneURI=\"one.${DMODBASE}\"
-inkURI=\"ink.${DMODBASE}\"
-blueURI=\"blue.${DMODBASE}\"
-vipURI=\"vip.${DMODBASE}\"
-kiwiURI=\"kiwi.${DMODBASE}\"
-redURI=\"red.${DMODBASE}\"
+baseDOM="${DMODBASE}"
+emailTLD="${SVMAILTLD}"
+itsqlTLD="${ITSQLTLD}"
+nameURI="${SERVERTLD}.${DMODBASE}"
+hostURI="${HOSTURI}"
+serveURI="serve.${SERVERTLD}.${DMODBASE}"
+emailTLDURI="${SVMAILTLD}.${DMODBASE}"
+itsqlTLDURI="${ITSQLTLD}.${DMODBASE}"
+emailURI="email.${DMODBASE}"
+oneURI="one.${DMODBASE}"
+inkURI="ink.${DMODBASE}"
+blueURI="blue.${DMODBASE}"
+vipURI="vip.${DMODBASE}"
+kiwiURI="kiwi.${DMODBASE}"
+redURI="red.${DMODBASE}"
 EOF
 ## Normal verb domains
 else
 /usr/bin/cat <<EOF > /opt/verb/conf/siteurilist
 #!/bin/sh
-emailTLD=\"${SVMAILTLD}\"
-itsqlTLD=\"${ITSQLTLD}\"
-nameURI=\"${VNAME}.verb.${SERVERTLD}\"
-hostURI=\"${HOSTURI}\"
-serveURI=\"serve.${VNAME}.verb.${SERVERTLD}\"
-emailTLDURI=\"${VNAME}.verb.${SVMAILTLD}\"
-itsqlTLDURI=\"${VNAME}.verb.${ITSQLTLD}\"
-emailURI=\"${VNAME}.verb.email\"
-oneURI=\"${VNAME}.verb.one\"
-inkURI=\"${VNAME}.verb.ink\"
-blueURI=\"${VNAME}.verb.blue\"
-vipURI=\"${VNAME}.verb.vip\"
-kiwiURI=\"${VNAME}.verb.kiwi\"
-redURI=\"${VNAME}.verb.red\"
+emailTLD="${SVMAILTLD}"
+itsqlTLD="${ITSQLTLD}"
+nameURI="${VNAME}.verb.${SERVERTLD}"
+hostURI="${HOSTURI}"
+serveURI="serve.${VNAME}.verb.${SERVERTLD}"
+emailTLDURI="${VNAME}.verb.${SVMAILTLD}"
+itsqlTLDURI="${VNAME}.verb.${ITSQLTLD}"
+emailURI="${VNAME}.verb.email"
+oneURI="${VNAME}.verb.one"
+inkURI="${VNAME}.verb.ink"
+blueURI="${VNAME}.verb.blue"
+vipURI="${VNAME}.verb.vip"
+kiwiURI="${VNAME}.verb.kiwi"
+redURI="${VNAME}.verb.red"
 EOF
 fi
 . /opt/verb/conf/siteurilist

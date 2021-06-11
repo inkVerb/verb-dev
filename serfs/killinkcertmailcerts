@@ -30,6 +30,6 @@ if /bin/grep -q "${DOMAIN}" /opt/verb/conf/siteurilist; then
 fi
 
 # Remove the inkCert-LE certs if they exist, otherwise use Snakeoil
-/bin/rm -f /etc/inkcert/mail/${DOMAIN}.crt
-/bin/rm -f /etc/inkcert/mail/${DOMAIN}.key
+/bin/rm -f /etc/ssl/server/mail/${DOMAIN}.crt
+/bin/rm -f /etc/ssl/server/mail/${DOMAIN}.key
 

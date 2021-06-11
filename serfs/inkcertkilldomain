@@ -26,6 +26,6 @@ KILLDOMAIN=$1
 /bin/rm -f /etc/inkcert/cli.${KILLDOMAIN}.ini
 /bin/rm -rf /etc/inkcert/le/live/${KILLDOMAIN}
 /bin/rm -rf /etc/inkcert/live/${KILLDOMAIN}
-/bin/rm -f /etc/inkcert/mail/${KILLDOMAIN}.crt
-/bin/rm -f /etc/inkcert/mail/${KILLDOMAIN}.key
+/bin/rm -f /etc/ssl/server/mail/${KILLDOMAIN}.crt
+/bin/rm -f /etc/ssl/server/mail/${KILLDOMAIN}.key
 

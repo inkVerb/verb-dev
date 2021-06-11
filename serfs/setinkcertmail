@@ -48,8 +48,8 @@ EOF
 # Dovecot
 /usr/bin/cat <<EOF > /etc/dovecot/crt.d/${DOMAIN}.conf
 local_name imap.${DOMAIN} {
-  ssl_cert = </etc/inkcert/mail/${DOMAIN}.crt
-  ssl_key = </etc/inkcert/mail/${DOMAIN}.key
+  ssl_cert = </etc/ssl/server/mail/${DOMAIN}.crt
+  ssl_key = </etc/ssl/server/mail/${DOMAIN}.key
 }
 EOF
 ## Own
@@ -57,9 +57,9 @@ EOF
 /bin/chmod o-rwx /etc/dovecot/crt.d/${DOMAIN}.conf
 
 # Postfix
-if ! /bin/grep -q "mail.${DOMAIN} /etc/inkcert/mail/${DOMAIN}.key /etc/inkcert/mail/${DOMAIN}.crt" /etc/postfix/virtual_ssl.map; then
+if ! /bin/grep -q "mail.${DOMAIN} /etc/ssl/server/mail/${DOMAIN}.key /etc/ssl/server/mail/${DOMAIN}.crt" /etc/postfix/virtual_ssl.map; then
   /usr/bin/cat <<EOF >> /etc/postfix/virtual_ssl.map
-mail.${DOMAIN} /etc/inkcert/mail/${DOMAIN}.key /etc/inkcert/mail/${DOMAIN}.crt
+mail.${DOMAIN} /etc/ssl/server/mail/${DOMAIN}.key /etc/ssl/server/mail/${DOMAIN}.crt
 EOF
 fi
 /usr/bin/postmap -F hash:/etc/postfix/virtual_ssl.map

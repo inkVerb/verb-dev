@@ -26,14 +26,14 @@ shlib_directory = /usr/lib/postfix
 maillog_file = /var/log/maillog
 
 # SSL certs (symlinks)
-#smtpd_tls_cert_file=/etc/inkcert/mail/vmail.crt
-#smtpd_tls_key_file=/etc/inkcert/mail/vmail.key
+#smtpd_tls_cert_file=/etc/ssl/server/mail/vmail.crt
+#smtpd_tls_key_file=/etc/ssl/server/mail/vmail.key
 # Snakeoil Certs
 #smtpd_tls_cert_file=/etc/ssl/server/server.crt
 #smtpd_tls_key_file=/etc/ssl/server/server.key
 
 # SNI
-smtpd_tls_chain_files = /etc/inkcert/mail/vmail.key, /etc/inkcert/mail/vmail.crt
+smtpd_tls_chain_files = /etc/ssl/server/mail/vmail.key, /etc/ssl/server/mail/vmail.crt
 tls_server_sni_maps = hash:/etc/postfix/virtual_ssl.map
 
 # TLS

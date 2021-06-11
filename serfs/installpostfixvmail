@@ -241,11 +241,11 @@ FLUSH PRIVILEGES;"
 
 # SSL certs
 ## Directory
-/usr/bin/mkdir -p /etc/inkcert/mail
+/usr/bin/mkdir -p /etc/ssl/server/mail
 ## Snakeoil
 if /bin/grep -Fq "INKCERTED=NO" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${nameURI}; then
-  /usr/bin/ln -sfn /etc/ssl/server/server.crt /etc/inkcert/mail/vmail.crt
-  /usr/bin/ln -sfn /etc/ssl/server/server.key /etc/inkcert/mail/vmail.key
+  /usr/bin/ln -sfn /etc/ssl/server/server.crt /etc/ssl/server/mail/vmail.crt
+  /usr/bin/ln -sfn /etc/ssl/server/server.key /etc/ssl/server/mail/vmail.key
 ## inkCert
 else
   /opt/verb/serfs/setinkcertmailcerts ${nameURI} vmail

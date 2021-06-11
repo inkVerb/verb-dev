@@ -275,6 +275,7 @@ IX. Other notes
 		- 6 - catostrophic error (something is wrong that shouldn't be possible, such as a script is messed up or something was changed manually-incorrectly, this error status is only for circumstances that creat a problem that didn't exist before, errors that notice a pre-existing problem should exit 0)
 		- 7 - already installed dilemma ('already installed' reports 7 only if it would cause a problem to continue, this is a mass abort exit status to avoid conflict. A benign 'already installed' will exit 0)
 		- 8 - unmet dependency (the basic 'do your homework' message: something else should have been done first, but can't be complete automatically)
+		- 9 - illegal attempt ('you are not allowed to destroy the system' or 'you are not authorized in this area' message)
 	B. If statements, checks, and inclusions
 		1. Scripts are organized to keep file size small and to standardize system-wide jobs, not to be fool-proof for lazy programming or new users.
 		2. Many "if" checks and "usage" messages could be included in serfs, but are not because the user should more or less know what he is doing. Such errors will be in yoemen for easier command line use and a GUI.

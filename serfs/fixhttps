@@ -40,7 +40,6 @@ server {
 
   return 301 https://\$host\$request_uri;
 }
-
 ##verbFIXhttps" >> /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf
 		/bin/systemctl restart nginx; wait
 

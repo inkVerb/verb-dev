@@ -7,6 +7,17 @@
 ## ./addsubdomaincgi [subdomain-only] [olddomain.tld]
 
 
+# Dependencies
+if ! /bin/grep -q 'INKCERTINSTALLED="DONE"' /opt/verb/conf/inkcert/inkcertstatus; then
+  /usr/bin/echo "Install inkCert first, I quit."; exit 8
+fi
+if ! /bin/grep -q 'INKDNSSTAT="INSTALLED"' /opt/verb/conf/inkdns/inkdnsconf; then
+  /usr/bin/echo "Install inkDNS first, I quit."; exit 8
+fi
+if ! /bin/grep -q 'SITEMAILSTATUS="VMAIL_SERVER"' /opt/verb/conf/sitemailpath; then
+  /usr/bin/echo "Install Postfix Vmail first, I quit."; exit 8
+fi
+
 SUBDOMAIN=$1
 OLDDOMAIN=$2
 
@@ -38,6 +49,36 @@ fi
 /bin/chmod -R 750 /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
 /opt/verb/serfs/ensiteapache ${SUBDOMAIN}.${OLDDOMAIN}
 /usr/bin/apachectl graceful
+
+# Server config files
+## Web directory
+if [ ! -d /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN} ]; then
+  /bin/cp -rf /opt/verb/conf/site-files/newdomain.tld /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+fi
+/bin/ln -s /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN} /srv/www/html/
+/bin/chown -R www:www /srv/www/html/${SUBDOMAIN}.${OLDDOMAIN}
+/bin/chown -R www:www /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+/bin/chmod -R 750 /srv/www/domains/${SUBDOMAIN}.${OLDDOMAIN}
+## Copy
+if [ ${SERVERTYPE} = "lemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newnginxdomaincgi.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensitenginx -r ${SUBDOMAIN}.${OLDDOMAIN}
+elif [ ${SERVERTYPE} = "lamp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newdomaincgi.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensiteapache -r ${SUBDOMAIN}.${OLDDOMAIN}
+elif [ ${SERVERTYPE} = "laemp" ]; then
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newdomaincgi.tld.conf /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /usr/bin/cp /opt/verb/conf/site-files/conf/newrpnginxdomain.tld.conf /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/httpd/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  /bin/sed -i "s/newdomain.tld/${SUBDOMAIN}.${OLDDOMAIN}/g" /opt/verb/conf/webserver/nginx/sites-available/${SUBDOMAIN}.${OLDDOMAIN}.conf
+  ## Server
+  /opt/verb/serfs/ensiteapache -r ${SUBDOMAIN}.${OLDDOMAIN}
+  /opt/verb/serfs/ensitenginx -r ${SUBDOMAIN}.${OLDDOMAIN}
+fi
 
 # inkDNS
 /opt/verb/serfs/inkdnsaddsub ${SUBDOMAIN} ${OLDDOMAIN}

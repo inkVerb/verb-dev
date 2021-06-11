@@ -8,6 +8,18 @@
 ## ./setinkcertmail somedomain.tld
 ## ./setinkcertmail name.verb.ink verber (skip inkCert cli.ini, used by installpostfixvmail)
 
+
+# Dependencies
+if ! /bin/grep -q 'INKCERTINSTALLED="DONE"' /opt/verb/conf/inkcert/inkcertstatus; then
+  /usr/bin/echo "Install inkCert first, I quit."; exit 8
+fi
+if ! /bin/grep -q 'INKDNSSTAT="INSTALLED"' /opt/verb/conf/inkdns/inkdnsconf; then
+  /usr/bin/echo "Install inkDNS first, I quit."; exit 8
+fi
+if ! /bin/grep -q 'SITEMAILSTATUS="VMAIL_SERVER"' /opt/verb/conf/sitemailpath; then
+  /usr/bin/echo "Install Postfix Vmail first, I quit."; exit 8
+fi
+
 DOMAIN="$1"
 
 # Include the config
@@ -41,8 +53,8 @@ local_name imap.${DOMAIN} {
 }
 EOF
 ## Own
-/bin/chown vmail:dovecot /etc/dovecot/crt.d/name.verb.ink.conf
-/bin/chmod o-rwx /etc/dovecot/crt.d/name.verb.ink.conf
+/bin/chown vmail:dovecot /etc/dovecot/crt.d/${DOMAIN}.conf
+/bin/chmod o-rwx /etc/dovecot/crt.d/${DOMAIN}.conf
 
 # Postfix
 if ! /bin/grep -q "mail.${DOMAIN} /etc/inkcert/mail/${DOMAIN}.key /etc/inkcert/mail/${DOMAIN}.crt" /etc/postfix/virtual_ssl.map; then

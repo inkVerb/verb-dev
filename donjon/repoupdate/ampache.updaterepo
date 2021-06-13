@@ -38,9 +38,9 @@ fi
 
 if [ $INKGET_METHOD != "ZJZ" ]; then
   # Set it as the new package
-  /bin/rm -f ${CVAPPNAME}.legacy.vtxz
-  /usr/bin/touch ${CVAPPNAME}.vtxz
-  /bin/mv ${CVAPPNAME}.vtxz ${CVAPPNAME}.legacy.vtxz
+  /bin/rm -f ${CVAPPNAME}.legacy.txz
+  /usr/bin/touch ${CVAPPNAME}.txz
+  /bin/mv ${CVAPPNAME}.txz ${CVAPPNAME}.legacy.txz
 fi
 /usr/bin/mkdir ${CVAPPNAME}
 /bin/mv ampache-${DISTVER}_all.zip ${CVAPPNAME}
@@ -52,7 +52,7 @@ fi
 /bin/rm ampache-${DISTVER}_all.zip
 if [ $INKGET_METHOD != "ZJZ" ]; then
   cd ..
-  /opt/verb/serfs/vtxzin ${CVAPPNAME}; wait
+  /opt/verb/serfs.txzin ${CVAPPNAME}; wait
   /bin/rm -rf ${CVAPPNAME}
 
   # Make a record of current version

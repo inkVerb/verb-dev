@@ -135,7 +135,6 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
   fi
 
   ## Stop Apache
-  /usr/bin/apachectl graceful-stop; wait
   /bin/systemctl stop httpd; wait
 
   ## Comment the Snakeoil certs

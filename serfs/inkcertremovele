@@ -107,7 +107,7 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
   /bin/sed -i '/#INKVERB-INKCERT=DONE_LE/,/#INKVERB-INKCERT-stop/{/#INKVERB-INKCERT=DONE_LE/!{/#INKVERB-INKCERT-stop/!d}}' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
   /bin/sed -i 's/#INKVERB-INKCERT=DONE_LE/#INKVERB-INKCERT=INK_NO_REMOVED/' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
   /bin/sed -i '/#INKVERB-INKCERT-stop/d' /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf
-  /usr/bin/apachectl graceful
+  /usr/bin/systemctl restart httpd
   ## Note to the config
   /bin/sed -i "s/INKCERTED=DONE_LE/INKCERTED=NO_REMOVED_LE/" /opt/verb/conf/inkcert/cli-ini/siteinkcert.${DOMAIN}
 

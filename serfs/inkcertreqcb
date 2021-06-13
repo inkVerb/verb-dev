@@ -152,7 +152,6 @@ if [ "${DOMAIN}" = "${redURI}" ]; then
 fi
 
 # Stop Apache
-/usr/bin/apachectl graceful-stop; wait
 /bin/systemctl stop httpd; wait
 
 # Get the certs
@@ -174,7 +173,6 @@ sleep 1
 # https://certbot.eff.org/#ubuntuxenial-apache
 
 # Turn Apache on again
-#/usr/bin/apachectl start; wait
 /bin/systemctl start httpd; wait
 
 # Verify the certs

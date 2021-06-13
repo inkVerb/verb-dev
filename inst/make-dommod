@@ -4,26 +4,21 @@
 # This runs the pre- setupverb domain mod, to use run the verber on a custom domain
 
 # How to use:
-## ./make-dommod [domain.tld]
+## ./make-dommod [host] [domain.tld]
 
 # Eg:
-## ./make-dommod inkisaverb.com
+## ./make-dommod hname inkisaverb.com
 
 
 # Check variables
-if [ -z "$1" ]; then
-/bin/echo "Set the domain, genius. That's the whole point."
+if [ -z "$2" ]; then
+/bin/echo "You must set a host and domain, for example:
+hostname inkisaverb.com (hostname = the host; inkisaverb.com = the domain)"
 exit 8; fi
 
-DOMMODBASE=$1
+DOMMODHOST=$1
+DOMMODBASE=$2
 
-/bin/echo "#!/bin/sh
-#inkVerbMaker! domain.mod
-
-# This is the mod domain that will be u/bin/sed on this Verber once it is set.
-
-# To change this, run make-dommod again.
-
-DMODBASE="${DOMMODBASE}"
-" > /opt/verb/inst/domain.mod.conf
+/bin/echo "DMODHOST=\"${DOMMODHOST}\"
+DMODBASE=\"${DOMMODBASE}\"" > /opt/verb/inst/domain.mod.conf
 

@@ -1,6 +1,5 @@
 #!/bin/sh
 SITENAME="name286"
-SITEHOST="host286"
 SITETLD="tld286"
 SITESERVE="tldserve286"
 SERVEDIR="servedir286"

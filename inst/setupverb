@@ -10,7 +10,7 @@
 ## If using the domain mod (make-dommod), the namespace must be your domain.
 
 # How to use:
-## ./setupverb [host] [namespace] [tld] [email] [IT] [serverIPv4] [serverIPv6 - if none use IPv6NA ] [SSLemail] [php.file-limit] [php.up-size] [php.city] [new-port] [new-boss] [boss-pass] [verb-dev - optional]
+## ./setupverb [namespace] [tld] [email] [IT] [serverIPv4] [serverIPv6 - if none use IPv6NA ] [SSLemail] [php.file-limit] [php.up-size] [php.city] [new-port] [new-boss] [boss-pass] [verb-dev - optional]
 # Elaborate how to use:
 ## ./setupverb [host - should be namespace or FQDN tld, unless you want to be strange] [inkVerb namespace (purcha/bin/sed) || Domain Mod domain] [FQDN tld, should be 'ink' except multiple servers for namespace] [email server tld, should be 'email' except multiple servers for namespace] [IT-SQL-FTP server tld, should be 'vip' except multiple servers for namespace] [server IP] [SSL email - used for Letsencrypt and the like] [php file upload limit] [php upload size in MB] [php timezone city] [new port number for ssh/terminal login] [new "boss" sudo user] [boss user password] [verb-update-dev - optional]
 
@@ -18,11 +18,14 @@
 ## You will see this name in terminal tabs and window titles when you connect to your Verber via command line.
 ## Do not choose the same host name on different Verbers of the same namespace, for example ...verb.email and ...verb.ink also need different hosts.
 ## Consider combining your verb.TLD extension with your Verb namespace
-## Eg: joesbigasphalttrucking.verb.ink = joe1ink OR joesbigasphalttrucking.verb.email joeemail
+## Eg: joesbigasphalttrucking.verb.ink = joeink OR joesbigasphalttrucking.verb.email joeemail
 
+## PHP timezone can't use third option of state or country such as America/Indiana/Knox, only such as America/Chicago
+## Get PHP timezone list at: http://php.net/manual/en/timezones.php
 # Timezone list: http://php.net/manual/en/timezones.php
 # Common lo/bin/cations:
 # Europe/Berlin
+# Asia/Tokyo
 # Asia/Hong_Kong
 # Asia/Singapore
 # America/New_York
@@ -31,18 +34,14 @@
 # America/Los_Angeles
 
 # Eg:
-## ./setupverb johnny johnny ink email vip 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 Asia/Singapore 22 boss bosspassword
-## ./setupverb johnny johnny ink email vip 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 Europe/Bucharest 867 boss bosspassword
-## ./setupverb johnny2 johnny blue blue blue 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/New_York 5290 boss bosspassword verb-dev-update
-## ./setupverb johnny2 johnny red one kiwi rocks 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 America/Phoenix 5290 boss bosspassword verb-dev-update
+## ./setupverb johnny ink email vip 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 Asia/Singapore 22 boss bosspassword
+## ./setupverb johnny ink email vip 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 Europe/Bucharest 867 boss bosspassword
+## ./setupverb johnny blue blue blue 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/New_York 5290 boss bosspassword verb-dev-update
+## ./setupverb johnny red one kiwi rocks 56.22.108.77 ffff:894:aad8::821 letsencrypt-messages@emaildomain.com 100 1000 America/Phoenix 5290 boss bosspassword verb-dev-update
 
 ### Domain Mod:
-## ./setupverb itsme inkisaverb.com ink 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/Detroit 22 boss bosspassword
-## ./setupverb itsme inkisaverb.com ink 56.22.108.77 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff letsencrypt-messages@emaildomain.com 100 1000 America/Detroit 22 boss bosspassword
-
-
-## PHP timezone can't use third option of state or country such as America/Argentina/San_Juan or America/Indiana/Knox, only such as America/Chicago
-## Get PHP timezone list at: http://php.net/manual/en/timezones.php
+## ./setupverb inkisaverb.com ink 56.22.108.77 IPv6NA letsencrypt-messages@emaildomain.com 100 1000 America/Detroit 22 boss bosspassword
+## ./setupverb inkisaverb.com ink 56.22.108.77 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff letsencrypt-messages@emaildomain.com 100 1000 America/Detroit 22 boss bosspassword
 
 
 # Setup check
@@ -59,46 +58,53 @@ if [ ! -f "/opt/verb/inst/setupverb" ]; then
 exit 8; fi
 
 # Slave DNS Server check
-VNAME="$2"
-SERVERTLD="$3"
+VNAME="$1"
+SERVERTLD="$2"
+## Check for consistency if there is a domain mod
+if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
+  . /opt/verb/inst/domain.mod.conf
+  if [ "${DOMMODHOST}" = "$1" ]; then
+    VNAME="$1"
+  else
+    /bin/echo "Argued host is not the same as the DNS preconfig, I quit."
+    exit 8
+  fi
+
+fi
 ## This will check for consistency in the Slave DNS hostname preconfiguration and the host argument
 if [ -f "/opt/verb/conf/inkdns/sdns/dnshost" ]; then
   . /opt/verb/conf/inkdns/sdns/dnshost
   if [ "${HOSTNAME}" = "$1" ]; then
-    HNAME="$1"
+    VNAME="$1"
     HOSTURI="${DNSSLAVE}"
   else
     /bin/echo "Argued host is not the same as the DNS preconfig, I quit."
     exit 8
   fi
 else # Normal verber, not Slave DNS
-  HNAME="$1"
-  if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
-    . /opt/verb/inst/domain.mod.conf
-    HOSTURI="${HNAME}.${SERVERTLD}.${DMODBASE}"
-  else
-    HOSTURI="${HNAME}.${VNAME}.verb.${SERVERTLD}"
-  fi
+  . /opt/verb/conf/inkdns/inkdnsinkers
+  VNAME="$1"
+  HOSTURI="${SERVERTLD}.${VNAME}.${BASEHOSTns}"
 fi
 
-SVMAILTLD="$4"
-ITSQLTLD="$5"
-SERVERIPV4="$6"
-SERVERIPV6="$7"
-SSLEMAIL="$8"
-PHPLIMIT="$9"
-PHPSIZE="${10}"
-PHPCITY="${11}"
-NEWPORT="${12}"
-NEWBOSS="${13}"
-NEWBOSSPASS="${14}"
-VUPREPO="${15}"
+SVMAILTLD="$3"
+ITSQLTLD="$4"
+SERVERIPV4="$5"
+SERVERIPV6="$6"
+SSLEMAIL="$7"
+PHPLIMIT="$8"
+PHPSIZE="$9"
+PHPCITY="${10}"
+NEWPORT="${11}"
+NEWBOSS="${12}"
+NEWBOSSPASS="${13}"
+VUPREPO="${14}"
 
-if [ -z "${15}" ]; then
+if [ -z "${14}" ]; then
 VUPREPO="verb-dev-update"
 fi
 
-if [ -z "${14}" ]; then
+if [ -z "${13}" ]; then
 /bin/echo "You must set all variables."
 exit 8; fi
 
@@ -186,10 +192,10 @@ fi
 # Site URI List
 ## domain.mod?
 if [ -f "/opt/verb/inst/domain.mod.conf" ]; then
-. /opt/verb/inst/domain.mod.conf
 /usr/bin/cat <<EOF > /opt/verb/conf/siteurilist
 #!/bin/sh
 baseDOM="${DMODBASE}"
+nameTLD="${SERVERTLD}"
 emailTLD="${SVMAILTLD}"
 itsqlTLD="${ITSQLTLD}"
 nameURI="${SERVERTLD}.${DMODBASE}"
@@ -209,6 +215,7 @@ EOF
 else
 /usr/bin/cat <<EOF > /opt/verb/conf/siteurilist
 #!/bin/sh
+nameTLD="${SERVERTLD}"
 emailTLD="${SVMAILTLD}"
 itsqlTLD="${ITSQLTLD}"
 nameURI="${VNAME}.verb.${SERVERTLD}"
@@ -256,7 +263,7 @@ cd $OLDPWD
 
 # Site name & IP
 serveDIR="$(/usr/bin/pwgen -s -1 6)"
-/bin/sed -i "s/host286/${HNAME}/" /opt/verb/conf/sitenameip
+/bin/sed -i "s/host286/${VNAME}/" /opt/verb/conf/sitenameip
 /bin/sed -i "s/tld286/${SERVERTLD}/" /opt/verb/conf/sitenameip
 /bin/sed -i "s/tldserve286/${SERVERTLD}/" /opt/verb/conf/sitenameip
 /bin/sed -i "s/servedir286/${serveDIR}/" /opt/verb/conf/sitenameip
@@ -547,7 +554,7 @@ GRANT ALL PRIVILEGES ON *.* TO '${NEWBOSS}'@'localhost' IDENTIFIED BY '${NEWBOSS
 FLUSH PRIVILEGES;"
 
 # Host name
-/usr/bin/hostnamectl set-hostname ${HNAME}
+/usr/bin/hostnamectl set-hostname ${SERVERTLD}
 ##DEV this restart causes an "is masked" error and may not be necessary with the mandatory reboot after setupverb
 #/bin/systemctl restart hostname
 ## Set /etc/hostname
@@ -555,8 +562,8 @@ FLUSH PRIVILEGES;"
 ## Set /etc/hosts
 /usr/bin/cat <<EOF > /etc/hosts
 # inkVerb IPv4
-127.0.1.1 ${hostURI} ${HNAME}
-${SERVERIPV4} ${hostURI} ${HNAME}
+127.0.1.1 ${hostURI} ${SERVERTLD}
+${SERVERIPV4} ${hostURI} ${SERVERTLD}
 ::1 localhost
 127.0.0.1 localhost.localdomain localhost
 
@@ -569,7 +576,7 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 ## inkVerb IPv6 ##
-${SERVERIPV6} ${hostURI} ${HNAME}
+${SERVERIPV6} ${hostURI} ${SERVERTLD}
 EOF
 
 # ARPA & inverse IP

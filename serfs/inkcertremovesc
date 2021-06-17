@@ -35,8 +35,8 @@ if [ ${SERVERTYPE} = "lemp" ] || [ ${SERVERTYPE} = "laemp" ]; then
    elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CB" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
     /bin/echo "Server configs use inkCert-Certbot. Use: inkcertremovecb"
     exit 8
-   elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBDIGOC" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
-    /bin/echo "Server configs use inkCert Proper. Use: inkcertremovecbdigoc"
+   elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBWILD" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
+    /bin/echo "Server configs use inkCert Proper. Use: inkcertremovecbwild"
     exit 8
    elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_IC" /opt/verb/conf/webserver/httpd/sites-available/${DOMAIN}.conf ; then
     /bin/echo "Server configs use inkCert Proper. Use: inkcertremovesc"
@@ -96,8 +96,8 @@ elif [ ${SERVERTYPE} = "lamp" ]; then
    elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CB" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf ; then
     /bin/echo "Server configs use inkCert-Certbot. Use: inkcertremovecb"
     exit 8
-   elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBDIGOC" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf ; then
-    /bin/echo "Server configs use inkCert Proper. Use: inkcertremovecbdigoc"
+   elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_CBWILD" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf ; then
+    /bin/echo "Server configs use inkCert Proper. Use: inkcertremovecbwild"
     exit 8
    elif /bin/grep -Fq "#INKVERB-INKCERT=DONE_IC" /opt/verb/conf/webserver/nginx/sites-available/${DOMAIN}.conf ; then
     /bin/echo "Server configs use inkCert Proper. Use: inkcertremovesc"

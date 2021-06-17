@@ -64,7 +64,6 @@ IMPORTANT: As of v0.86.00, serfs are being integrated into the "yeo" tool in the
 ## 4. SSL certs: hosted domain websites & email
 ### Two cert methods
 #### Wildcard SSL certs: CertBot (cb)
-	- `setinkcertcb LONGKEY` add the key from Vultr (if using a Vultr VPS)
 	- `inkcertcb*` (Use for any wildcard certs)
 #### Itemized SSL certs: Letsencrypt (le)
   - `inkcertle*` (This is used in example instructions)

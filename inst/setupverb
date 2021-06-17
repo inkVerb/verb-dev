@@ -84,7 +84,7 @@ if [ -f "/opt/verb/conf/inkdns/sdns/dnshost" ]; then
 else # Normal verber, not Slave DNS
   . /opt/verb/conf/inkdns/inkdnsinkers
   VNAME="$1"
-  HOSTURI="${SERVERTLD}.${VNAME}.${BASEHOSTns}"
+  HOSTURI="${VNAME}.${SERVERTLD}.${BASEHOSTns}"
 fi
 
 SVMAILTLD="$3"
@@ -276,7 +276,6 @@ serveDIR="$(/usr/bin/pwgen -s -1 6)"
 /bin/sed -i "s/inkcertemail286/${SSLEMAIL}/" /opt/verb/conf/inkcert/inkcertstatus
 ## Copy other config files with pre-install status
 /usr/bin/mv /opt/verb/conf/sitemailpass286 /opt/verb/conf/sitemailpass
-/usr/bin/mv /opt/verb/conf/siteufwip286 /opt/verb/conf/siteufwip
 
 # LAEMP Reverse Proxy?
 if [ -f "/etc/httpd/conf/rpaf.conf" ]; then
@@ -554,7 +553,7 @@ GRANT ALL PRIVILEGES ON *.* TO '${NEWBOSS}'@'localhost' IDENTIFIED BY '${NEWBOSS
 FLUSH PRIVILEGES;"
 
 # Host name
-/usr/bin/hostnamectl set-hostname ${SERVERTLD}
+/usr/bin/hostnamectl set-hostname ${hostURI}
 ##DEV this restart causes an "is masked" error and may not be necessary with the mandatory reboot after setupverb
 #/bin/systemctl restart hostname
 ## Set /etc/hostname
@@ -562,8 +561,8 @@ FLUSH PRIVILEGES;"
 ## Set /etc/hosts
 /usr/bin/cat <<EOF > /etc/hosts
 # inkVerb IPv4
-127.0.1.1 ${hostURI} ${SERVERTLD}
-${SERVERIPV4} ${hostURI} ${SERVERTLD}
+127.0.1.1 ${hostURI} ${VNAME}
+${SERVERIPV4} ${hostURI} ${VNAME}
 ::1 localhost
 127.0.0.1 localhost.localdomain localhost
 
@@ -576,7 +575,7 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 ## inkVerb IPv6 ##
-${SERVERIPV6} ${hostURI} ${SERVERTLD}
+${SERVERIPV6} ${hostURI} ${VNAME}
 EOF
 
 # ARPA & inverse IP
